@@ -10,9 +10,15 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>LINE Membership</title>
+  <title>Membership</title>
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <!-- LINE LIFF SDK -->
+
+  <script
+    src="https://static.line-scdn.net/liff/edge/2/sdk.js">
+  </script>
+
 
   <style>
 
@@ -20,8 +26,11 @@
       box-sizing: border-box;
     }
 
+
     body {
+
       margin: 0;
+
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -29,93 +38,352 @@
         sans-serif;
 
       background: #f5f5f5;
+
       color: #222;
+
     }
+
 
     .container {
+
+      width: 100%;
+
       max-width: 480px;
-      margin: auto;
+
+      margin: 0 auto;
+
       padding: 24px;
+
     }
+
 
     .card {
-      background: white;
+
+      background: #ffffff;
+
       border-radius: 20px;
+
       padding: 24px;
+
       box-shadow:
-        0 5px 20px rgba(0,0,0,.08);
+        0 5px 20px rgba(0, 0, 0, 0.08);
+
     }
+
 
     .center {
+
       text-align: center;
+
     }
+
+
+    /* =========================
+       PROFILE IMAGE
+    ========================= */
 
     .profile-image {
+
       width: 90px;
+
       height: 90px;
+
       border-radius: 50%;
+
       object-fit: cover;
+
       margin-bottom: 15px;
+
     }
+
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .form-group {
+
+      margin-bottom: 16px;
+
+    }
+
+
+    label {
+
+      display: block;
+
+      font-size: 14px;
+
+      font-weight: 600;
+
+      margin-bottom: 7px;
+
+    }
+
+
+    .required {
+
+      color: #e53935;
+
+    }
+
+
+    .optional {
+
+      color: #999;
+
+      font-weight: normal;
+
+      font-size: 12px;
+
+    }
+
+
+    input {
+
+      width: 100%;
+
+      padding: 14px;
+
+      border: 1px solid #dddddd;
+
+      border-radius: 10px;
+
+      font-size: 16px;
+
+      outline: none;
+
+      background: #ffffff;
+
+    }
+
+
+    input:focus {
+
+      border-color: #06c755;
+
+    }
+
+
+    input::placeholder {
+
+      color: #aaaaaa;
+
+    }
+
+
+    /* =========================
+       BUTTON
+    ========================= */
 
     button {
+
       width: 100%;
+
       padding: 14px;
+
       border: 0;
+
       border-radius: 12px;
+
       font-size: 16px;
+
       cursor: pointer;
+
       margin-top: 10px;
+
     }
+
 
     .primary {
+
       background: #06c755;
-      color: white;
+
+      color: #ffffff;
+
     }
+
+
+    .primary:disabled {
+
+      background: #9edfb5;
+
+      cursor: not-allowed;
+
+    }
+
 
     .secondary {
-      background: #eee;
-      color: #222;
+
+      background: #eeeeee;
+
+      color: #222222;
+
     }
 
-    .hidden {
-      display: none !important;
-    }
+
+    /* =========================
+       LOADING
+    ========================= */
 
     .loading {
+
       text-align: center;
-      padding: 60px 20px;
+
+      padding: 70px 20px;
+
     }
+
 
     .spinner {
+
       width: 40px;
+
       height: 40px;
-      border: 4px solid #ddd;
+
+      border: 4px solid #dddddd;
+
       border-top-color: #06c755;
+
       border-radius: 50%;
+
       animation: spin 1s linear infinite;
+
       margin: 0 auto 20px;
+
     }
+
 
     @keyframes spin {
+
       to {
+
         transform: rotate(360deg);
+
       }
+
     }
+
+
+    /* =========================
+       ERROR
+    ========================= */
 
     .error {
+
       background: #fff0f0;
-      color: #c00;
+
+      color: #c62828;
+
       padding: 15px;
+
       border-radius: 12px;
+
       margin-top: 15px;
+
       white-space: pre-wrap;
+
+      word-break: break-word;
+
     }
 
+
+    /* =========================
+       POINTS
+    ========================= */
+
     .points {
+
       font-size: 42px;
+
       font-weight: bold;
+
       margin: 10px 0;
+
+    }
+
+
+    /* =========================
+       MEMBER INFO
+    ========================= */
+
+    .member-info {
+
+      margin-top: 25px;
+
+    }
+
+
+    .info-row {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: flex-start;
+
+      gap: 20px;
+
+      padding: 12px 0;
+
+      border-bottom: 1px solid #eeeeee;
+
+    }
+
+
+    .info-label {
+
+      color: #777777;
+
+      flex-shrink: 0;
+
+    }
+
+
+    .info-value {
+
+      text-align: right;
+
+      word-break: break-word;
+
+    }
+
+
+    hr {
+
+      border: 0;
+
+      border-top: 1px solid #eeeeee;
+
+      margin: 25px 0;
+
+    }
+
+
+    h2 {
+
+      margin-top: 5px;
+
+    }
+
+
+    .note {
+
+      font-size: 13px;
+
+      color: #888888;
+
+      line-height: 1.5;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .hidden {
+
+      display: none !important;
+
     }
 
   </style>
@@ -126,24 +394,29 @@
 <body>
 
 
-<!-- =========================
-     LOADING
-========================= -->
+<!-- =====================================
+     LOADING SCREEN
+===================================== -->
 
-<div id="loading" class="loading">
+<div
+  id="loading"
+  class="loading"
+>
 
   <div class="spinner"></div>
 
   <div id="loadingText">
+
     กำลังเชื่อมต่อ LINE...
+
   </div>
 
 </div>
 
 
-<!-- =========================
-     ERROR
-========================= -->
+<!-- =====================================
+     ERROR SCREEN
+===================================== -->
 
 <div
   id="errorScreen"
@@ -156,20 +429,26 @@
 
       <h2>⚠️</h2>
 
-      <h3>เกิดข้อผิดพลาด</h3>
+      <h3>
+        เกิดข้อผิดพลาด
+      </h3>
 
     </div>
+
 
     <div
       id="errorMessage"
       class="error"
     ></div>
 
+
     <button
       class="secondary"
       onclick="location.reload()"
     >
+
       ลองใหม่
+
     </button>
 
   </div>
@@ -177,9 +456,9 @@
 </div>
 
 
-<!-- =========================
-     REGISTER
-========================= -->
+<!-- =====================================
+     REGISTER SCREEN
+===================================== -->
 
 <div
   id="registerScreen"
@@ -188,36 +467,194 @@
 
   <div class="card">
 
+
     <div class="center">
 
       <img
         id="registerImage"
         class="profile-image"
+        alt="LINE Profile"
       >
 
-      <h2 id="registerName"></h2>
 
-      <p>
-        ยังไม่มีข้อมูลสมาชิก
+      <h2>
+        สมัครสมาชิก
+      </h2>
+
+
+      <p class="note">
+
+        กรอกข้อมูลเพื่อสมัครสมาชิก
+
+        <br>
+
+        ชื่อ นามสกุล และเบอร์โทรศัพท์
+        จำเป็นต้องกรอก
+
       </p>
 
-      <button
-        class="primary"
-        onclick="registerMember()"
+    </div>
+
+
+    <!-- =========================
+         FIRST NAME
+    ========================= -->
+
+    <div class="form-group">
+
+      <label>
+
+        ชื่อ
+
+        <span class="required">
+          *
+        </span>
+
+      </label>
+
+
+      <input
+        id="firstName"
+        type="text"
+        placeholder="กรุณากรอกชื่อ"
+        autocomplete="given-name"
       >
-        สมัครสมาชิก
-      </button>
 
     </div>
+
+
+    <!-- =========================
+         LAST NAME
+    ========================= -->
+
+    <div class="form-group">
+
+      <label>
+
+        นามสกุล
+
+        <span class="required">
+          *
+        </span>
+
+      </label>
+
+
+      <input
+        id="lastName"
+        type="text"
+        placeholder="กรุณากรอกนามสกุล"
+        autocomplete="family-name"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         PHONE
+    ========================= -->
+
+    <div class="form-group">
+
+      <label>
+
+        เบอร์โทรศัพท์
+
+        <span class="required">
+          *
+        </span>
+
+      </label>
+
+
+      <input
+        id="phone"
+        type="tel"
+        inputmode="tel"
+        placeholder="กรุณากรอกเบอร์โทรศัพท์"
+        autocomplete="tel"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         EMAIL
+    ========================= -->
+
+    <div class="form-group">
+
+      <label>
+
+        Email
+
+        <span class="optional">
+          (ไม่บังคับ)
+        </span>
+
+      </label>
+
+
+      <input
+        id="email"
+        type="email"
+        placeholder="กรอก Email หากต้องการ"
+        autocomplete="email"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         PROVINCE
+    ========================= -->
+
+    <div class="form-group">
+
+      <label>
+
+        จังหวัด
+
+        <span class="optional">
+          (ไม่บังคับ)
+        </span>
+
+      </label>
+
+
+      <input
+        id="province"
+        type="text"
+        placeholder="กรอกจังหวัด หากต้องการ"
+        autocomplete="address-level1"
+      >
+
+    </div>
+
+
+    <!-- =========================
+         REGISTER BUTTON
+    ========================= -->
+
+    <button
+      id="registerButton"
+      class="primary"
+      onclick="registerMember()"
+    >
+
+      สมัครสมาชิก
+
+    </button>
+
 
   </div>
 
 </div>
 
 
-<!-- =========================
+<!-- =====================================
      DASHBOARD
-========================= -->
+===================================== -->
 
 <div
   id="dashboardScreen"
@@ -226,16 +663,29 @@
 
   <div class="card">
 
+
+    <!-- =========================
+         PROFILE
+    ========================= -->
+
     <div class="center">
 
       <img
         id="profileImage"
         class="profile-image"
+        alt="LINE Profile"
       >
 
-      <h2 id="profileName"></h2>
 
-      <p>คะแนนสะสม</p>
+      <h2
+        id="profileName"
+      ></h2>
+
+
+      <p>
+        คะแนนสะสม
+      </p>
+
 
       <div
         id="points"
@@ -244,9 +694,124 @@
         0
       </div>
 
-      <p>คะแนน</p>
+
+      <p>
+        คะแนน
+      </p>
 
     </div>
+
+
+    <hr>
+
+
+    <!-- =========================
+         MEMBER INFORMATION
+    ========================= -->
+
+    <div class="member-info">
+
+      <h3>
+        ข้อมูลสมาชิก
+      </h3>
+
+
+      <!-- FIRST NAME -->
+
+      <div class="info-row">
+
+        <span class="info-label">
+          ชื่อ
+        </span>
+
+
+        <span
+          id="memberFirstName"
+          class="info-value"
+        >
+          -
+        </span>
+
+      </div>
+
+
+      <!-- LAST NAME -->
+
+      <div class="info-row">
+
+        <span class="info-label">
+          นามสกุล
+        </span>
+
+
+        <span
+          id="memberLastName"
+          class="info-value"
+        >
+          -
+        </span>
+
+      </div>
+
+
+      <!-- PHONE -->
+
+      <div class="info-row">
+
+        <span class="info-label">
+          เบอร์โทร
+        </span>
+
+
+        <span
+          id="memberPhone"
+          class="info-value"
+        >
+          -
+        </span>
+
+      </div>
+
+
+      <!-- EMAIL -->
+
+      <div class="info-row">
+
+        <span class="info-label">
+          Email
+        </span>
+
+
+        <span
+          id="memberEmail"
+          class="info-value"
+        >
+          -
+        </span>
+
+      </div>
+
+
+      <!-- PROVINCE -->
+
+      <div class="info-row">
+
+        <span class="info-label">
+          จังหวัด
+        </span>
+
+
+        <span
+          id="memberProvince"
+          class="info-value"
+        >
+          -
+        </span>
+
+      </div>
+
+    </div>
+
 
   </div>
 
@@ -256,28 +821,39 @@
 <script>
 
 
-/* ==================================
-   CONFIG
-================================== */
+/* =====================================
+   CONFIGURATION
+===================================== */
+
+
+/*
+ * ใส่ LIFF ID ของคุณตรงนี้
+ */
 
 const LIFF_ID =
   '2010909031-tWUD4KXE';
 
 
+/*
+ * ใส่ Apps Script /exec URL ตรงนี้
+ */
+
 const API_URL =
-  'https://script.google.com/macros/s/AKfycbysKZTMALB61uN1nA7Mg8gDVIM6EQ7rLjogwhaAHzoc3PPyYb1ky3ak_66shxjgIw/exec';
+  'https://script.google.com/macros/s/AKfycbxPcTr9eI-Ckon-FUxwF_XNEMRt5DTzYNOvbYr0jZYzd-jsomyU0TOGPiPdUAP6P3A/exec';
 
 
-/* ==================================
-   USER DATA
-================================== */
+
+/* =====================================
+   GLOBAL USER DATA
+===================================== */
 
 let lineProfile = null;
 
 
-/* ==================================
-   START
-================================== */
+
+/* =====================================
+   START APP
+===================================== */
 
 document.addEventListener(
   'DOMContentLoaded',
@@ -285,22 +861,25 @@ document.addEventListener(
 );
 
 
+
 async function startApp() {
 
   try {
+
 
     setLoading(
       'กำลังเริ่มต้น LIFF...'
     );
 
 
-    /*
-     * ตรวจว่า config ถูกใส่หรือยัง
-     */
+    /* =========================
+       CHECK CONFIG
+    ========================= */
 
     if (
       !LIFF_ID ||
-      LIFF_ID === 'ใส่_LIFF_ID_ตรงนี้'
+      LIFF_ID ===
+        'ใส่_LIFF_ID_ตรงนี้'
     ) {
 
       throw new Error(
@@ -312,7 +891,8 @@ async function startApp() {
 
     if (
       !API_URL ||
-      API_URL === 'ใส่_APPS_SCRIPT_EXEC_URL_ตรงนี้'
+      API_URL ===
+        'ใส่_APPS_SCRIPT_EXEC_URL_ตรงนี้'
     ) {
 
       throw new Error(
@@ -322,18 +902,20 @@ async function startApp() {
     }
 
 
-    /*
-     * INIT LIFF
-     */
+    /* =========================
+       INIT LIFF
+    ========================= */
 
     await liff.init({
+
       liffId: LIFF_ID
+
     });
 
 
-    /*
-     * LOGIN
-     */
+    /* =========================
+       CHECK LOGIN
+    ========================= */
 
     if (!liff.isLoggedIn()) {
 
@@ -341,35 +923,44 @@ async function startApp() {
         'กำลังเข้าสู่ระบบ LINE...'
       );
 
+
       liff.login();
 
+
       return;
+
     }
 
 
-    /*
-     * GET PROFILE
-     */
+    /* =========================
+       GET LINE PROFILE
+    ========================= */
 
     setLoading(
       'กำลังโหลดข้อมูลสมาชิก...'
     );
 
+
     lineProfile =
       await liff.getProfile();
 
 
-    /*
-     * CHECK MEMBER
-     */
+    /* =========================
+       CHECK MEMBER
+    ========================= */
 
     const result =
       await apiRequest(
+
         'checkMember',
+
         {
+
           userId:
             lineProfile.userId
+
         }
+
       );
 
 
@@ -383,9 +974,9 @@ async function startApp() {
     }
 
 
-    /*
-     * EXISTING MEMBER
-     */
+    /* =========================
+       EXISTING MEMBER
+    ========================= */
 
     if (result.member) {
 
@@ -393,19 +984,26 @@ async function startApp() {
         result.member
       );
 
+
       return;
+
     }
 
 
-    /*
-     * NEW MEMBER
-     */
+    /* =========================
+       NEW MEMBER
+    ========================= */
 
     showRegister();
 
+
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      'START APP ERROR:',
+      error
+    );
+
 
     showError(
       error.message ||
@@ -417,34 +1015,208 @@ async function startApp() {
 }
 
 
-/* ==================================
-   REGISTER
-================================== */
+
+/* =====================================
+   REGISTER MEMBER
+===================================== */
 
 async function registerMember() {
 
   try {
+
+
+    /* =========================
+       GET FORM VALUES
+    ========================= */
+
+    const firstName =
+      document
+        .getElementById(
+          'firstName'
+        )
+        .value
+        .trim();
+
+
+    const lastName =
+      document
+        .getElementById(
+          'lastName'
+        )
+        .value
+        .trim();
+
+
+    const phone =
+      document
+        .getElementById(
+          'phone'
+        )
+        .value
+        .trim();
+
+
+    const email =
+      document
+        .getElementById(
+          'email'
+        )
+        .value
+        .trim();
+
+
+    const province =
+      document
+        .getElementById(
+          'province'
+        )
+        .value
+        .trim();
+
+
+
+    /* =========================
+       REQUIRED VALIDATION
+    ========================= */
+
+
+    // ชื่อ
+
+    if (!firstName) {
+
+      alert(
+        'กรุณากรอกชื่อ'
+      );
+
+      document
+        .getElementById(
+          'firstName'
+        )
+        .focus();
+
+      return;
+
+    }
+
+
+    // นามสกุล
+
+    if (!lastName) {
+
+      alert(
+        'กรุณากรอกนามสกุล'
+      );
+
+      document
+        .getElementById(
+          'lastName'
+        )
+        .focus();
+
+      return;
+
+    }
+
+
+    // เบอร์โทร
+
+    if (!phone) {
+
+      alert(
+        'กรุณากรอกเบอร์โทรศัพท์'
+      );
+
+      document
+        .getElementById(
+          'phone'
+        )
+        .focus();
+
+      return;
+
+    }
+
+
+
+    /* =========================
+       DISABLE BUTTON
+    ========================= */
+
+    const button =
+      document.getElementById(
+        'registerButton'
+      );
+
+
+    button.disabled = true;
+
+
+    button.textContent =
+      'กำลังสมัครสมาชิก...';
+
+
 
     setLoading(
       'กำลังสมัครสมาชิก...'
     );
 
 
+
+    /* =========================
+       SEND DATA
+    ========================= */
+
+    const data = {
+
+      userId:
+        lineProfile.userId,
+
+
+      displayName:
+        lineProfile.displayName,
+
+
+      pictureUrl:
+        lineProfile.pictureUrl,
+
+
+      firstName:
+        firstName,
+
+
+      lastName:
+        lastName,
+
+
+      phone:
+        phone,
+
+
+      email:
+        email,
+
+
+      province:
+        province
+
+    };
+
+
+
     const result =
       await apiRequest(
+
         'registerMember',
-        {
-          userId:
-            lineProfile.userId,
 
-          displayName:
-            lineProfile.displayName,
+        data
 
-          pictureUrl:
-            lineProfile.pictureUrl
-        }
       );
 
+
+
+    /* =========================
+       CHECK RESULT
+    ========================= */
 
     if (!result.success) {
 
@@ -456,19 +1228,30 @@ async function registerMember() {
     }
 
 
-    /*
-     * สมัครเสร็จ
-     * โหลดข้อมูลใหม่
-     */
+
+    /* =========================
+       GET MEMBER AGAIN
+    ========================= */
+
+    setLoading(
+      'กำลังโหลดข้อมูลสมาชิก...'
+    );
+
 
     const memberResult =
       await apiRequest(
+
         'checkMember',
+
         {
+
           userId:
             lineProfile.userId
+
         }
+
       );
+
 
 
     if (
@@ -480,24 +1263,52 @@ async function registerMember() {
         memberResult.member
       );
 
-    } else {
-
-      showDashboard({
-        DISPLAY_NAME:
-          lineProfile.displayName,
-
-        PICTURE_URL:
-          lineProfile.pictureUrl,
-
-        POINTS: 0
-      });
+      return;
 
     }
 
 
+
+    /* =========================
+       FALLBACK
+    ========================= */
+
+    showDashboard({
+
+      DISPLAY_NAME:
+        lineProfile.displayName,
+
+      PICTURE_URL:
+        lineProfile.pictureUrl,
+
+      First_Name:
+        firstName,
+
+      Last_Name:
+        lastName,
+
+      Phone:
+        phone,
+
+      Email:
+        email,
+
+      Province:
+        province,
+
+      POINTS:
+        0
+
+    });
+
+
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      'REGISTER ERROR:',
+      error
+    );
+
 
     showError(
       error.message ||
@@ -509,64 +1320,141 @@ async function registerMember() {
 }
 
 
-/* ==================================
+
+/* =====================================
    API REQUEST
-================================== */
+===================================== */
 
 async function apiRequest(
   action,
   data
 ) {
 
+
   const response =
     await fetch(
+
       API_URL,
+
       {
+
         method: 'POST',
 
+
         headers: {
+
+          /*
+           * ใช้ text/plain
+           * เพื่อลดปัญหา CORS preflight
+           */
+
           'Content-Type':
             'text/plain;charset=utf-8'
+
         },
 
-        body: JSON.stringify({
 
-          action:
+        body:
+          JSON.stringify({
 
-            action,
+            action:
+              action,
 
-          ...data
+            ...data
 
-        })
+          })
+
       }
+
     );
 
+
+
+  /* =========================
+     HTTP ERROR
+  ========================= */
 
   if (!response.ok) {
 
     throw new Error(
+
       'Backend HTTP Error: ' +
       response.status
+
     );
 
   }
 
+
+
+  /* =========================
+     JSON
+  ========================= */
 
   return await response.json();
 
 }
 
 
-/* ==================================
-   DASHBOARD
-================================== */
 
-function showDashboard(member) {
+/* =====================================
+   SHOW REGISTER
+===================================== */
+
+function showRegister() {
+
 
   hideAll();
 
 
-  const name =
+  /* =========================
+     PROFILE IMAGE
+  ========================= */
+
+  document
+    .getElementById(
+      'registerImage'
+    )
+    .src =
+      lineProfile.pictureUrl || '';
+
+
+
+  /* =========================
+     SHOW SCREEN
+  ========================= */
+
+  document
+    .getElementById(
+      'registerScreen'
+    )
+    .classList
+    .remove(
+      'hidden'
+    );
+
+}
+
+
+
+/* =====================================
+   SHOW DASHBOARD
+===================================== */
+
+function showDashboard(
+  member
+) {
+
+
+  hideAll();
+
+
+
+  /* =========================
+     BASIC PROFILE
+  ========================= */
+
+  const displayName =
     member.DISPLAY_NAME ||
     lineProfile.displayName ||
     'สมาชิก';
@@ -584,121 +1472,197 @@ function showDashboard(member) {
     );
 
 
-  document.getElementById(
-    'profileName'
-  ).textContent = name;
+
+  /* =========================
+     PROFILE NAME
+  ========================= */
+
+  document
+    .getElementById(
+      'profileName'
+    )
+    .textContent =
+      displayName;
 
 
-  document.getElementById(
-    'profileImage'
-  ).src = picture;
+
+  /* =========================
+     PROFILE IMAGE
+  ========================= */
+
+  document
+    .getElementById(
+      'profileImage'
+    )
+    .src =
+      picture;
 
 
-  document.getElementById(
-    'points'
-  ).textContent = points;
+
+  /* =========================
+     POINTS
+  ========================= */
+
+  document
+    .getElementById(
+      'points'
+    )
+    .textContent =
+      points;
 
 
-  document.getElementById(
-    'dashboardScreen'
-  ).classList.remove(
-    'hidden'
-  );
+
+  /* =========================
+     MEMBER DATA
+  ========================= */
+
+  document
+    .getElementById(
+      'memberFirstName'
+    )
+    .textContent =
+      member.First_Name || '-';
+
+
+  document
+    .getElementById(
+      'memberLastName'
+    )
+    .textContent =
+      member.Last_Name || '-';
+
+
+  document
+    .getElementById(
+      'memberPhone'
+    )
+    .textContent =
+      member.Phone || '-';
+
+
+  document
+    .getElementById(
+      'memberEmail'
+    )
+    .textContent =
+      member.Email || '-';
+
+
+  document
+    .getElementById(
+      'memberProvince'
+    )
+    .textContent =
+      member.Province || '-';
+
+
+
+  /* =========================
+     SHOW DASHBOARD
+  ========================= */
+
+  document
+    .getElementById(
+      'dashboardScreen'
+    )
+    .classList
+    .remove(
+      'hidden'
+    );
 
 }
 
 
-/* ==================================
-   REGISTER SCREEN
-================================== */
 
-function showRegister() {
+/* =====================================
+   LOADING SCREEN
+===================================== */
+
+function setLoading(
+  message
+) {
+
 
   hideAll();
 
 
-  document.getElementById(
-    'registerName'
-  ).textContent =
-    lineProfile.displayName;
+  document
+    .getElementById(
+      'loadingText'
+    )
+    .textContent =
+      message;
 
 
-  document.getElementById(
-    'registerImage'
-  ).src =
-    lineProfile.pictureUrl || '';
-
-
-  document.getElementById(
-    'registerScreen'
-  ).classList.remove(
-    'hidden'
-  );
-
-}
-
-
-/* ==================================
-   LOADING
-================================== */
-
-function setLoading(message) {
-
-  hideAll();
-
-  document.getElementById(
-    'loadingText'
-  ).textContent = message;
-
-
-  document.getElementById(
-    'loading'
-  ).classList.remove(
-    'hidden'
-  );
+  document
+    .getElementById(
+      'loading'
+    )
+    .classList
+    .remove(
+      'hidden'
+    );
 
 }
 
 
-/* ==================================
-   ERROR
-================================== */
 
-function showError(message) {
+/* =====================================
+   ERROR SCREEN
+===================================== */
+
+function showError(
+  message
+) {
+
 
   hideAll();
 
 
-  document.getElementById(
-    'errorMessage'
-  ).textContent = message;
+  document
+    .getElementById(
+      'errorMessage'
+    )
+    .textContent =
+      message;
 
 
-  document.getElementById(
-    'errorScreen'
-  ).classList.remove(
-    'hidden'
-  );
+  document
+    .getElementById(
+      'errorScreen'
+    )
+    .classList
+    .remove(
+      'hidden'
+    );
 
 }
 
 
-/* ==================================
-   HIDE ALL
-================================== */
+
+/* =====================================
+   HIDE ALL SCREENS
+===================================== */
 
 function hideAll() {
+
 
   document
     .querySelectorAll(
       'body > div'
     )
     .forEach(
+
       element => {
-        element.classList.add(
-          'hidden'
-        );
+
+        element
+          .classList
+          .add(
+            'hidden'
+          );
+
       }
+
     );
 
 }
