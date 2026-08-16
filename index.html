@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>LINE Membership</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      background: #f5f5f5;
+      color: #222;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow:
+        0 5px 20px rgba(0,0,0,.08);
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .profile-image {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 12px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .primary {
+      background: #06c755;
+      color: white;
+    }
+
+    .secondary {
+      background: #eee;
+      color: #222;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #ddd;
+      border-top-color: #06c755;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .error {
+      background: #fff0f0;
+      color: #c00;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 15px;
+      white-space: pre-wrap;
+    }
+
+    .points {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     LOADING
+========================= -->
+
+<div id="loading" class="loading">
+
+  <div class="spinner"></div>
+
+  <div id="loadingText">
+    กำลังเชื่อมต่อ LINE...
+  </div>
+
+</div>
+
+
+<!-- =========================
+     ERROR
+========================= -->
+
+<div
+  id="errorScreen"
+  class="container hidden"
+>
+
+  <div class="card">
+
+    <div class="center">
+
+      <h2>⚠️</h2>
+
+      <h3>เกิดข้อผิดพลาด</h3>
+
+    </div>
+
+    <div
+      id="errorMessage"
+      class="error"
+    ></div>
+
+    <button
+      class="secondary"
+      onclick="location.reload()"
+    >
+      ลองใหม่
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     REGISTER
+========================= -->
+
+<div
+  id="registerScreen"
+  class="container hidden"
+>
+
+  <div class="card">
+
+    <div class="center">
+
+      <img
+        id="registerImage"
+        class="profile-image"
+      >
+
+      <h2 id="registerName"></h2>
+
+      <p>
+        ยังไม่มีข้อมูลสมาชิก
+      </p>
+
+      <button
+        class="primary"
+        onclick="registerMember()"
+      >
+        สมัครสมาชิก
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div
+  id="dashboardScreen"
+  class="container hidden"
+>
+
+  <div class="card">
+
+    <div class="center">
+
+      <img
+        id="profileImage"
+        class="profile-image"
+      >
+
+      <h2 id="profileName"></h2>
+
+      <p>คะแนนสะสม</p>
+
+      <div
+        id="points"
+        class="points"
+      >
+        0
+      </div>
+
+      <p>คะแนน</p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+/* ==================================
+   CONFIG
+================================== */
+
+const LIFF_ID =
+  '2010909031-tWUD4KXE';
+
+
+const API_URL =
+  'https://script.google.com/macros/s/AKfycbzCrCKI58v7XWAQuYLYK4NYipvv-6rNiREIn8emNxFAsRDcTOc-XoeL6VEEiRJnl8Y/exec';
+
+
+/* ==================================
+   USER DATA
+================================== */
+
+let lineProfile = null;
+
+
+/* ==================================
+   START
+================================== */
+
+document.addEventListener(
+  'DOMContentLoaded',
+  startApp
+);
+
+
+async function startApp() {
+
+  try {
+
+    setLoading(
+      'กำลังเริ่มต้น LIFF...'
+    );
+
+
+    /*
+     * ตรวจว่า config ถูกใส่หรือยัง
+     */
+
+    if (
+      !LIFF_ID ||
+      LIFF_ID === 'ใส่_LIFF_ID_ตรงนี้'
+    ) {
+
+      throw new Error(
+        'ยังไม่ได้ใส่ LIFF ID'
+      );
+
+    }
+
+
+    if (
+      !API_URL ||
+      API_URL === 'ใส่_APPS_SCRIPT_EXEC_URL_ตรงนี้'
+    ) {
+
+      throw new Error(
+        'ยังไม่ได้ใส่ Apps Script API URL'
+      );
+
+    }
+
+
+    /*
+     * INIT LIFF
+     */
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+
+    /*
+     * LOGIN
+     */
+
+    if (!liff.isLoggedIn()) {
+
+      setLoading(
+        'กำลังเข้าสู่ระบบ LINE...'
+      );
+
+      liff.login();
+
+      return;
+    }
+
+
+    /*
+     * GET PROFILE
+     */
+
+    setLoading(
+      'กำลังโหลดข้อมูลสมาชิก...'
+    );
+
+    lineProfile =
+      await liff.getProfile();
+
+
+    /*
+     * CHECK MEMBER
+     */
+
+    const result =
+      await apiRequest(
+        'checkMember',
+        {
+          userId:
+            lineProfile.userId
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.message ||
+        'ตรวจสอบสมาชิกไม่สำเร็จ'
+      );
+
+    }
+
+
+    /*
+     * EXISTING MEMBER
+     */
+
+    if (result.member) {
+
+      showDashboard(
+        result.member
+      );
+
+      return;
+    }
+
+
+    /*
+     * NEW MEMBER
+     */
+
+    showRegister();
+
+  } catch (error) {
+
+    console.error(error);
+
+    showError(
+      error.message ||
+      String(error)
+    );
+
+  }
+
+}
+
+
+/* ==================================
+   REGISTER
+================================== */
+
+async function registerMember() {
+
+  try {
+
+    setLoading(
+      'กำลังสมัครสมาชิก...'
+    );
+
+
+    const result =
+      await apiRequest(
+        'registerMember',
+        {
+          userId:
+            lineProfile.userId,
+
+          displayName:
+            lineProfile.displayName,
+
+          pictureUrl:
+            lineProfile.pictureUrl
+        }
+      );
+
+
+    if (!result.success) {
+
+      throw new Error(
+        result.message ||
+        'สมัครสมาชิกไม่สำเร็จ'
+      );
+
+    }
+
+
+    /*
+     * สมัครเสร็จ
+     * โหลดข้อมูลใหม่
+     */
+
+    const memberResult =
+      await apiRequest(
+        'checkMember',
+        {
+          userId:
+            lineProfile.userId
+        }
+      );
+
+
+    if (
+      memberResult.success &&
+      memberResult.member
+    ) {
+
+      showDashboard(
+        memberResult.member
+      );
+
+    } else {
+
+      showDashboard({
+        DISPLAY_NAME:
+          lineProfile.displayName,
+
+        PICTURE_URL:
+          lineProfile.pictureUrl,
+
+        POINTS: 0
+      });
+
+    }
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    showError(
+      error.message ||
+      String(error)
+    );
+
+  }
+
+}
+
+
+/* ==================================
+   API REQUEST
+================================== */
+
+async function apiRequest(
+  action,
+  data
+) {
+
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method: 'POST',
+
+        headers: {
+          'Content-Type':
+            'text/plain;charset=utf-8'
+        },
+
+        body: JSON.stringify({
+
+          action:
+
+            action,
+
+          ...data
+
+        })
+      }
+    );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      'Backend HTTP Error: ' +
+      response.status
+    );
+
+  }
+
+
+  return await response.json();
+
+}
+
+
+/* ==================================
+   DASHBOARD
+================================== */
+
+function showDashboard(member) {
+
+  hideAll();
+
+
+  const name =
+    member.DISPLAY_NAME ||
+    lineProfile.displayName ||
+    'สมาชิก';
+
+
+  const picture =
+    member.PICTURE_URL ||
+    lineProfile.pictureUrl ||
+    '';
+
+
+  const points =
+    Number(
+      member.POINTS || 0
+    );
+
+
+  document.getElementById(
+    'profileName'
+  ).textContent = name;
+
+
+  document.getElementById(
+    'profileImage'
+  ).src = picture;
+
+
+  document.getElementById(
+    'points'
+  ).textContent = points;
+
+
+  document.getElementById(
+    'dashboardScreen'
+  ).classList.remove(
+    'hidden'
+  );
+
+}
+
+
+/* ==================================
+   REGISTER SCREEN
+================================== */
+
+function showRegister() {
+
+  hideAll();
+
+
+  document.getElementById(
+    'registerName'
+  ).textContent =
+    lineProfile.displayName;
+
+
+  document.getElementById(
+    'registerImage'
+  ).src =
+    lineProfile.pictureUrl || '';
+
+
+  document.getElementById(
+    'registerScreen'
+  ).classList.remove(
+    'hidden'
+  );
+
+}
+
+
+/* ==================================
+   LOADING
+================================== */
+
+function setLoading(message) {
+
+  hideAll();
+
+  document.getElementById(
+    'loadingText'
+  ).textContent = message;
+
+
+  document.getElementById(
+    'loading'
+  ).classList.remove(
+    'hidden'
+  );
+
+}
+
+
+/* ==================================
+   ERROR
+================================== */
+
+function showError(message) {
+
+  hideAll();
+
+
+  document.getElementById(
+    'errorMessage'
+  ).textContent = message;
+
+
+  document.getElementById(
+    'errorScreen'
+  ).classList.remove(
+    'hidden'
+  );
+
+}
+
+
+/* ==================================
+   HIDE ALL
+================================== */
+
+function hideAll() {
+
+  document
+    .querySelectorAll(
+      'body > div'
+    )
+    .forEach(
+      element => {
+        element.classList.add(
+          'hidden'
+        );
+      }
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>
