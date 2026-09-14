@@ -1,3174 +1,1832 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MEIN MOTION</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="theme-color"
-    content="#2C2C2C"
-  >
-
-  <title>Mein Motion</title>
-
-  <!-- LINE LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
-    rel="stylesheet"
-  >
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-
-    /* =====================================================
-       BRAND
-    ===================================================== */
-
     :root {
       --blue: #c4dffc;
       --dark: #2C2C2C;
       --white: #ffffff;
       --black: #000000;
-      --gray: #777777;
-      --light-gray: #f4f4f4;
-      --border: #e6e6e6;
+      --gray-50: #f7f8fa;
+      --gray-100: #eef0f3;
+      --gray-300: #d5d9df;
+      --gray-500: #777d87;
+      --radius: 20px;
     }
 
+    * { box-sizing: border-box; }
 
-    /* =====================================================
-       RESET
-    ===================================================== */
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      min-height: 100%;
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--gray-50);
+      color: var(--dark);
+      font-family: "DM Sans", "Noto Sans Thai", sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
 
     body {
-      margin: 0;
       min-height: 100vh;
-      background: var(--white);
-      color: var(--dark);
-
-      font-family:
-        "DM Sans",
-        "Noto Sans Thai",
-        sans-serif;
     }
 
-
-    /* =====================================================
-       TYPOGRAPHY
-    ===================================================== */
-
-    h1,
-    h2,
-    h3 {
-      margin-top: 0;
-
-      font-family:
-        "Space Grotesk",
-        "Noto Sans Thai",
-        sans-serif;
+    button, input {
+      font: inherit;
     }
 
-    button,
-    input,
-    select {
-      font-family:
-        "DM Sans",
-        "Noto Sans Thai",
-        sans-serif;
+    button {
+      cursor: pointer;
+      border: 0;
     }
-
-
-    /* =====================================================
-       APP
-    ===================================================== */
 
     .app {
-      min-height: 100vh;
-    }
-
-    .container {
       width: 100%;
       max-width: 480px;
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 20px;
+      background: var(--gray-50);
+      padding-bottom: 86px;
     }
 
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 22px 18px 24px;
+      animation: fade .18s ease;
+    }
 
-    /* =====================================================
-       LOGO
-    ===================================================== */
-
-    .logo {
+    .screen.active {
       display: block;
-      max-width: 150px;
-      max-height: 55px;
-      object-fit: contain;
-      margin: 0 auto 20px;
     }
 
-    .logo-text {
-      text-align: center;
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-      font-family:
-        "Space Grotesk",
-        sans-serif;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
 
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 700;
-      font-size: 22px;
-      letter-spacing: 2px;
+      letter-spacing: .04em;
+    }
 
+    .brand img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      border-radius: 10px;
+      background: var(--white);
+    }
+
+    .brand-fallback {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: var(--dark);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .greeting {
+      margin: 4px 0 18px;
+    }
+
+    .greeting .small {
+      color: var(--gray-500);
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .greeting h1 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+
+    .points-card {
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 24px;
+      padding: 22px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    .points-label {
+      font-size: 12px;
+      letter-spacing: .12em;
+      opacity: .72;
+      font-weight: 600;
+    }
+
+    .points-number {
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 700;
+      margin: 12px 0 18px;
+      letter-spacing: -.04em;
+    }
+
+    .points-link {
+      background: rgba(255,255,255,.1);
+      color: var(--white);
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 0 12px;
+    }
+
+    .section-head h2 {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .text-button {
+      background: transparent;
+      color: #222;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 5px 0;
+    }
+
+    .reward-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .reward-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 5px 18px rgba(0,0,0,.035);
+    }
+
+    .reward-image {
+      width: 100%;
+      aspect-ratio: 1.15;
+      background: var(--gray-100);
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .reward-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .reward-placeholder {
+      font-size: 28px;
+    }
+
+    .reward-content {
+      padding: 12px;
+    }
+
+    .reward-name {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.35;
+      min-height: 38px;
+    }
+
+    .reward-points {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin: 5px 0 10px;
+    }
+
+    .reward-button {
+      width: 100%;
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 11px;
+      padding: 9px 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .info-card {
+      background: var(--blue);
+      border-radius: 20px;
+      padding: 18px;
+      margin-top: 8px;
+    }
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+
+    .step {
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--white);
+      display: grid;
+      place-items: center;
+      margin: 0 auto 5px;
+    }
+
+    .page-title {
+      margin: 0 0 5px;
+      font-size: 26px;
+      letter-spacing: -.03em;
+    }
+
+    .page-subtitle {
+      color: var(--gray-500);
+      margin: 0 0 22px;
+      font-size: 14px;
+    }
+
+    .balance-strip {
+      background: var(--blue);
+      border-radius: 18px;
+      padding: 15px 17px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .balance-strip span {
+      color: #4f5965;
+      font-size: 13px;
+    }
+
+    .balance-strip strong {
+      font-size: 21px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .filter {
+      flex: 0 0 auto;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .filter.active {
+      background: var(--dark);
+      color: var(--white);
+      border-color: var(--dark);
+    }
+
+    .reward-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .reward-list .reward-card {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+    }
+
+    .reward-list .reward-image {
+      aspect-ratio: auto;
+      min-height: 130px;
+      height: 100%;
+    }
+
+    .reward-list .reward-content {
+      padding: 15px;
+    }
+
+    .reward-list .reward-name {
+      min-height: auto;
+      font-size: 15px;
+    }
+
+    .reward-detail-image {
+      width: 100%;
+      aspect-ratio: 1.15;
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--gray-100);
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+    }
+
+    .reward-detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-points {
+      font-size: 25px;
+      font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .detail-description {
+      color: var(--gray-500);
+      line-height: 1.6;
+      font-size: 14px;
       margin-bottom: 20px;
     }
 
-
-    /* =====================================================
-       CARD
-    ===================================================== */
-
-    .card {
+    .detail-box {
       background: var(--white);
-
-      border: 1px solid var(--border);
-      border-radius: 24px;
-
-      padding: 24px;
-
-      box-shadow:
-        0 10px 30px
-        rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--gray-100);
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 18px;
     }
 
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 14px;
+    }
 
-    /* =====================================================
-       LOADING
-    ===================================================== */
+    .detail-row + .detail-row {
+      border-top: 1px solid var(--gray-100);
+    }
 
-    .loading-screen {
-      min-height: 100vh;
+    .primary-button {
+      width: 100%;
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 15px;
+      padding: 14px;
+      font-weight: 700;
+    }
 
+    .primary-button:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .secondary-button {
+      width: 100%;
+      background: var(--white);
+      color: var(--dark);
+      border: 1px solid var(--gray-300);
+      border-radius: 15px;
+      padding: 14px;
+      font-weight: 700;
+      margin-top: 9px;
+    }
+
+    .back-button {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .confirm-card,
+    .success-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 22px;
+      padding: 22px;
+      text-align: center;
+      margin-top: 22px;
+    }
+
+    .confirm-icon,
+    .success-icon {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 14px;
+      background: var(--blue);
+      font-size: 28px;
+    }
+
+    .confirm-card h2,
+    .success-card h2 {
+      margin: 0 0 8px;
+    }
+
+    .confirm-card p,
+    .success-card p {
+      margin: 0 0 18px;
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+
+    .history-balance {
+      background: var(--dark);
+      color: var(--white);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .history-balance span {
+      opacity: .7;
+      font-size: 13px;
+    }
+
+    .history-balance strong {
+      display: block;
+      font-size: 34px;
+      margin-top: 4px;
+    }
+
+    .history-list {
+      background: var(--white);
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--gray-100);
+    }
+
+    .history-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-
-      padding: 30px;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 15px;
     }
 
-    .loading-content {
+    .history-item + .history-item {
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .history-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .history-date {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 3px;
+    }
+
+    .history-points {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .plus { color: #1f7a45; }
+    .minus { color: #b44b4b; }
+
+    .profile-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+
+    .profile-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+
+    .profile-photo {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--gray-100);
+    }
+
+    .profile-name {
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .profile-label {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    .profile-row {
+      padding: 11px 0;
+      border-top: 1px solid var(--gray-100);
+    }
+
+    .profile-row label {
+      display: block;
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-bottom: 3px;
+    }
+
+    .profile-row div {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 22px;
+      padding: 20px;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 7px;
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid var(--gray-300);
+      border-radius: 13px;
+      padding: 12px 13px;
+      outline: none;
+      background: var(--white);
+    }
+
+    .field input:focus {
+      border-color: var(--dark);
+    }
+
+    .required {
+      color: #b44b4b;
+    }
+
+    .consent {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #5d6470;
+      margin: 4px 0 18px;
+    }
+
+    .consent input {
+      margin-top: 3px;
+      flex: 0 0 auto;
+    }
+
+    .empty {
+      background: var(--white);
+      border: 1px dashed var(--gray-300);
+      border-radius: 18px;
+      padding: 30px 18px;
+      text-align: center;
+      color: var(--gray-500);
+      font-size: 13px;
+    }
+
+    .loading {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      display: grid;
+      place-items: center;
+      background: var(--gray-50);
+      padding: 25px;
+    }
+
+    .loading-box {
+      width: min(360px, 100%);
       text-align: center;
     }
 
     .spinner {
-      width: 42px;
-      height: 42px;
-
-      margin: 0 auto 20px;
-
-      border: 4px solid var(--blue);
+      width: 38px;
+      height: 38px;
+      border: 3px solid var(--gray-300);
       border-top-color: var(--dark);
-
       border-radius: 50%;
-
-      animation:
-        spin 0.8s linear infinite;
+      margin: 0 auto 15px;
+      animation: spin .7s linear infinite;
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
     }
 
     .loading-text {
-      font-size: 15px;
-    }
-
-
-    /* =====================================================
-       PROFILE IMAGE
-    ===================================================== */
-
-    .profile-image {
-      width: 88px;
-      height: 88px;
-
-      border-radius: 50%;
-
-      object-fit: cover;
-
-      display: block;
-
-      margin: 0 auto 15px;
-
-      border: 4px solid var(--blue);
-    }
-
-
-    /* =====================================================
-       FORM
-    ===================================================== */
-
-    .form-group {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-
-      font-weight: 600;
       font-size: 14px;
-
-      margin-bottom: 7px;
+      color: var(--gray-500);
     }
-
-    .required {
-      color: #d32f2f;
-    }
-
-    .optional {
-      color: #999;
-
-      font-size: 12px;
-      font-weight: 400;
-    }
-
-    input,
-    select {
-      width: 100%;
-
-      min-height: 48px;
-
-      border: 1px solid #d9d9d9;
-
-      border-radius: 12px;
-
-      padding: 12px 14px;
-
-      font-size: 16px;
-
-      background: #fff;
-      color: var(--dark);
-
-      outline: none;
-    }
-
-    input:focus,
-    select:focus {
-      border-color: var(--dark);
-
-      box-shadow:
-        0 0 0 3px
-        rgba(196, 223, 252, 0.65);
-    }
-
-    textarea {
-      width: 100%;
-
-      min-height: 90px;
-
-      border: 1px solid #d9d9d9;
-
-      border-radius: 12px;
-
-      padding: 12px 14px;
-
-      font-size: 15px;
-
-      font-family:
-        "DM Sans",
-        "Noto Sans Thai",
-        sans-serif;
-
-      resize: vertical;
-    }
-
-
-    /* =====================================================
-       CHECKBOX GROUP
-    ===================================================== */
-
-    .option-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap: 9px;
-    }
-
-    .option {
-      position: relative;
-    }
-
-    .option input {
-      position: absolute;
-
-      opacity: 0;
-
-      pointer-events: none;
-    }
-
-    .option label {
-      display: flex;
-
-      align-items: center;
-      justify-content: center;
-
-      min-height: 45px;
-
-      padding: 8px 10px;
-
-      border: 1px solid var(--border);
-
-      border-radius: 12px;
-
-      background: #fff;
-
-      cursor: pointer;
-
-      text-align: center;
-
-      font-size: 13px;
-      font-weight: 500;
-
-      margin: 0;
-
-      transition: 0.15s ease;
-    }
-
-    .option input:checked + label {
-      background: var(--blue);
-
-      border-color: var(--dark);
-
-      color: var(--dark);
-    }
-
-
-    /* =====================================================
-       CONSENT
-    ===================================================== */
-
-    .consent {
-      display: flex;
-
-      align-items: flex-start;
-
-      gap: 10px;
-
-      margin: 18px 0;
-
-      font-size: 13px;
-
-      line-height: 1.5;
-
-      color: #555;
-    }
-
-    .consent input {
-      width: 18px;
-
-      min-height: 18px;
-
-      flex-shrink: 0;
-
-      margin-top: 2px;
-    }
-
-
-    /* =====================================================
-       BUTTON
-    ===================================================== */
-
-    .button {
-      width: 100%;
-
-      min-height: 50px;
-
-      border: 0;
-
-      border-radius: 14px;
-
-      padding: 12px 18px;
-
-      font-size: 16px;
-
-      font-weight: 700;
-
-      cursor: pointer;
-    }
-
-    .button-primary {
-      background: var(--dark);
-
-      color: var(--white);
-    }
-
-    .button-primary:disabled {
-      opacity: 0.5;
-
-      cursor: not-allowed;
-    }
-
-    .button-blue {
-      background: var(--blue);
-
-      color: var(--dark);
-    }
-
-    .button-secondary {
-      background: #eeeeee;
-
-      color: var(--dark);
-    }
-
-
-    /* =====================================================
-       ERROR
-    ===================================================== */
 
     .error-box {
-      background: #fff2f2;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.05);
+    }
 
-      border: 1px solid #ffcaca;
+    .error-box h2 {
+      margin-top: 0;
+    }
 
-      color: #b71c1c;
-
-      border-radius: 14px;
-
-      padding: 15px;
-
-      font-size: 14px;
-
-      line-height: 1.5;
-
+    .error-box pre {
       white-space: pre-wrap;
-
       word-break: break-word;
-
-      margin-bottom: 15px;
-    }
-
-
-    /* =====================================================
-       DASHBOARD HEADER
-    ===================================================== */
-
-    .dashboard-header {
-      text-align: center;
-
-      padding: 10px 0 25px;
-    }
-
-    .greeting {
-      font-size: 14px;
-
-      color: var(--gray);
-
-      margin-bottom: 5px;
-    }
-
-    .member-name {
-      font-size: 28px;
-
-      margin-bottom: 5px;
-    }
-
-    .tagline {
-      font-size: 13px;
-
-      color: var(--gray);
-    }
-
-
-    /* =====================================================
-       POINT CARD
-    ===================================================== */
-
-    .point-card {
-      background: var(--dark);
-
-      color: var(--white);
-
-      border-radius: 22px;
-
-      padding: 24px;
-
-      margin-bottom: 18px;
-    }
-
-    .point-label {
-      font-size: 13px;
-
-      opacity: 0.7;
-    }
-
-    .points {
-      font-family:
-        "Space Mono",
-        monospace;
-
-      font-size: 42px;
-
-      font-weight: 700;
-
-      margin: 5px 0;
-    }
-
-    .tier {
-      display: inline-block;
-
-      background: var(--blue);
-
-      color: var(--dark);
-
-      padding: 5px 10px;
-
-      border-radius: 99px;
-
       font-size: 12px;
-
-      font-weight: 700;
+      color: #777;
     }
 
-
-    /* =====================================================
-       MEMBER INFO
-    ===================================================== */
-
-    .section-title {
-      font-size: 18px;
-
-      margin-bottom: 15px;
+    .bottom-nav {
+      position: fixed;
+      z-index: 100;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(480px, 100%);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--gray-100);
+      padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
     }
 
-    .info-row {
-      display: flex;
-
-      justify-content: space-between;
-
-      align-items: flex-start;
-
-      gap: 15px;
-
-      padding: 12px 0;
-
-      border-bottom: 1px solid #eeeeee;
+    .nav-item {
+      background: transparent;
+      color: #90959d;
+      padding: 5px 3px;
+      border-radius: 12px;
+      font-size: 10px;
+      font-weight: 600;
     }
 
-    .info-label {
-      color: var(--gray);
+    .nav-item .nav-icon {
+      display: block;
+      font-size: 19px;
+      line-height: 20px;
+      margin-bottom: 2px;
+    }
 
+    .nav-item.active {
+      color: var(--dark);
+      background: var(--gray-50);
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      bottom: 88px;
+      transform: translateX(-50%) translateY(15px);
+      width: min(390px, calc(100% - 32px));
+      background: var(--dark);
+      color: var(--white);
+      padding: 12px 15px;
+      border-radius: 13px;
       font-size: 13px;
-
-      flex-shrink: 0;
-    }
-
-    .info-value {
-      text-align: right;
-
-      font-size: 14px;
-
-      word-break: break-word;
-    }
-
-
-    /* =====================================================
-       PROFILE COMPLETION
-    ===================================================== */
-
-    .progress-box {
-      margin-bottom: 20px;
-    }
-
-    .progress-text {
-      display: flex;
-
-      justify-content: space-between;
-
-      font-size: 13px;
-
-      margin-bottom: 7px;
-    }
-
-    .progress-bar {
-      height: 8px;
-
-      background: #eeeeee;
-
-      border-radius: 99px;
-
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-
-      width: 0%;
-
-      background: var(--blue);
-
-      transition: width 0.3s ease;
-    }
-
-
-    /* =====================================================
-       HIDDEN
-    ===================================================== */
-
-    .hidden {
-      display: none !important;
-    }
-
-    .text-center {
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s;
       text-align: center;
     }
 
-    .small {
-      font-size: 13px;
-
-      color: var(--gray);
-
-      line-height: 1.5;
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
-    .divider {
-      height: 1px;
-
-      background: #eeeeee;
-
-      margin: 25px 0;
+    @media (min-width: 481px) {
+      body { padding: 20px 0; }
+      .app { border-radius: 28px; overflow: hidden; box-shadow: 0 12px 50px rgba(0,0,0,.08); }
+      .bottom-nav { bottom: 20px; border: 1px solid var(--gray-100); border-radius: 18px; width: 480px; }
     }
-
   </style>
-
 </head>
 
-
 <body>
-
-<div id="app">
-
-
-  <!-- =================================================
-       LOADING
-  ================================================== -->
-
-  <div
-    id="loadingScreen"
-    class="loading-screen"
-  >
-
-    <div class="loading-content">
-
-      <div class="logo-text">
-        MEIN MOTION
-      </div>
-
+  <div id="loading" class="loading">
+    <div class="loading-box">
       <div class="spinner"></div>
-
-      <div
-        id="loadingText"
-        class="loading-text"
-      >
-        กำลังเชื่อมต่อ LINE...
-      </div>
-
+      <div id="loadingText" class="loading-text">กำลังเชื่อมต่อ LINE...</div>
     </div>
-
   </div>
 
+  <div id="errorView" class="loading" style="display:none;">
+    <div class="loading-box error-box">
+      <h2>เกิดข้อผิดพลาด</h2>
+      <p id="errorMessage"></p>
+      <button class="primary-button" onclick="location.reload()">ลองใหม่</button>
+    </div>
+  </div>
 
-  <!-- =================================================
-       ERROR
-  ================================================== -->
+  <main id="app" class="app" style="display:none;">
 
-  <div
-    id="errorScreen"
-    class="container hidden"
-  >
-
-    <div class="card">
-
-      <div class="text-center">
-
-        <div class="logo-text">
-          MEIN MOTION
+    <!-- HOME -->
+    <section id="screen-home" class="screen active">
+      <div class="topbar">
+        <div class="brand">
+          <img id="homeLogo" alt="MEIN MOTION">
+          <div id="homeLogoFallback" class="brand-fallback" style="display:none;">MM</div>
+          <span>MEIN MOTION</span>
         </div>
-
-        <h2>
-          เกิดข้อผิดพลาด
-        </h2>
-
       </div>
-
-      <div
-        id="errorMessage"
-        class="error-box"
-      ></div>
-
-      <button
-        class="button button-secondary"
-        onclick="location.reload()"
-      >
-        ลองใหม่
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =================================================
-       REGISTER
-  ================================================== -->
-
-  <div
-    id="registerScreen"
-    class="container hidden"
-  >
-
-    <div class="card">
-
-      <img
-        id="registerLogo"
-        class="logo hidden"
-        alt="Mein Motion"
-      >
-
-      <div
-        id="registerLogoText"
-        class="logo-text"
-      >
-        MEIN MOTION
-      </div>
-
-      <div class="text-center">
-
-        <img
-          id="registerProfileImage"
-          class="profile-image"
-          alt="LINE Profile"
-        >
-
-        <h2>
-          สมัครสมาชิก
-        </h2>
-
-        <p class="small">
-          คนธรรมดาที่ใช้ชีวิตเต็มที่
-        </p>
-
-      </div>
-
-      <div class="divider"></div>
-
-
-      <!-- FIRST NAME -->
-
-      <div class="form-group">
-
-        <label>
-          ชื่อ
-          <span class="required">*</span>
-        </label>
-
-        <input
-          id="firstName"
-          type="text"
-          placeholder="กรุณากรอกชื่อ"
-          autocomplete="given-name"
-        >
-
-      </div>
-
-
-      <!-- LAST NAME -->
-
-      <div class="form-group">
-
-        <label>
-          นามสกุล
-          <span class="required">*</span>
-        </label>
-
-        <input
-          id="lastName"
-          type="text"
-          placeholder="กรุณากรอกนามสกุล"
-          autocomplete="family-name"
-        >
-
-      </div>
-
-
-      <!-- PHONE -->
-
-      <div class="form-group">
-
-        <label>
-          เบอร์โทรศัพท์
-          <span class="required">*</span>
-        </label>
-
-        <input
-          id="phone"
-          type="tel"
-          inputmode="tel"
-          placeholder="08xxxxxxxx"
-          autocomplete="tel"
-        >
-
-      </div>
-
-
-      <!-- EMAIL -->
-
-      <div class="form-group">
-
-        <label>
-          Email
-          <span class="optional">
-            (ไม่บังคับ)
-          </span>
-        </label>
-
-        <input
-          id="email"
-          type="email"
-          placeholder="example@email.com"
-          autocomplete="email"
-        >
-
-      </div>
-
-
-      <!-- BIRTHDAY -->
-
-      <div class="form-group">
-
-        <label>
-          วันเกิด
-          <span class="optional">
-            (ไม่บังคับ)
-          </span>
-        </label>
-
-        <input
-          id="birthday"
-          type="date"
-        >
-
-      </div>
-
-
-      <!-- PROVINCE -->
-
-      <div class="form-group">
-
-        <label>
-          จังหวัด
-          <span class="optional">
-            (ไม่บังคับ)
-          </span>
-        </label>
-
-        <input
-          id="province"
-          type="text"
-          placeholder="เช่น ขอนแก่น"
-          autocomplete="address-level1"
-        >
-
-      </div>
-
-
-      <!-- CONSENT -->
-
-      <label class="consent">
-
-        <input
-          id="marketingConsent"
-          type="checkbox"
-        >
-
-        <span>
-          ฉันต้องการรับข่าวสาร โปรโมชั่น
-          และสิทธิพิเศษจาก Mein Motion
-        </span>
-
-      </label>
-
-
-      <button
-        id="registerButton"
-        class="button button-primary"
-        onclick="registerMember()"
-      >
-        สมัครสมาชิก
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =================================================
-       DASHBOARD
-  ================================================== -->
-
-  <div
-    id="dashboardScreen"
-    class="container hidden"
-  >
-
-    <img
-      id="dashboardLogo"
-      class="logo hidden"
-      alt="Mein Motion"
-    >
-
-    <div
-      id="dashboardLogoText"
-      class="logo-text"
-    >
-      MEIN MOTION
-    </div>
-
-
-    <div class="dashboard-header">
-
-      <img
-        id="dashboardProfileImage"
-        class="profile-image"
-        alt="Profile"
-      >
 
       <div class="greeting">
-        ยินดีต้อนรับ
+        <div class="small">สวัสดี 👋</div>
+        <h1 id="homeGreeting">สมาชิก Mein Motion</h1>
       </div>
 
-      <h1
-        id="dashboardName"
-        class="member-name"
-      >
-        -
-      </h1>
-
-      <div class="tagline">
-        คนธรรมดาที่ใช้ชีวิตเต็มที่
+      <div class="points-card">
+        <div class="points-label">MEIN MOTION POINTS</div>
+        <div id="homePoints" class="points-number">0</div>
+        <button class="points-link" onclick="showScreen('history')">ดูประวัติแต้ม →</button>
       </div>
 
-    </div>
-
-
-    <!-- POINT -->
-
-    <div class="point-card">
-
-      <div class="point-label">
-        MEIN MOTION POINTS
+      <div class="section-head">
+        <h2>รางวัลที่แลกได้</h2>
+        <button class="text-button" onclick="showScreen('rewards')">ดูทั้งหมด →</button>
       </div>
 
-      <div
-        id="dashboardPoints"
-        class="points"
-      >
-        0
+      <div id="homeRewards" class="reward-row"></div>
+
+      <div class="info-card">
+        <h3>สะสมแต้มง่าย ๆ</h3>
+        <div class="steps">
+          <div class="step"><div class="step-icon">🛍️</div>ซื้อสินค้า</div>
+          <div class="step"><div class="step-icon">＋</div>รับแต้ม</div>
+          <div class="step"><div class="step-icon">💙</div>สะสม</div>
+          <div class="step"><div class="step-icon">🎁</div>แลกรางวัล</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REWARDS -->
+    <section id="screen-rewards" class="screen">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">รางวัล</h1>
+          <p class="page-subtitle">ใช้แต้มแลกรางวัลที่คุณต้องการ</p>
+        </div>
       </div>
 
-      <span
-        id="dashboardTier"
-        class="tier"
-      >
-        MEMBER
-      </span>
-
-    </div>
-
-
-    <!-- MEMBER INFORMATION -->
-
-    <div class="card">
-
-      <h3 class="section-title">
-        ข้อมูลสมาชิก
-      </h3>
-
-
-      <div class="info-row">
-
-        <span class="info-label">
-          ชื่อ
-        </span>
-
-        <span
-          id="infoFirstName"
-          class="info-value"
-        >
-          -
-        </span>
-
+      <div class="balance-strip">
+        <span>แต้มของคุณ</span>
+        <strong id="rewardsPoints">0 แต้ม</strong>
       </div>
 
-
-      <div class="info-row">
-
-        <span class="info-label">
-          นามสกุล
-        </span>
-
-        <span
-          id="infoLastName"
-          class="info-value"
-        >
-          -
-        </span>
-
+      <div class="filter-row">
+        <button class="filter active" onclick="setRewardFilter('all', this)">ทั้งหมด</button>
+        <button class="filter" onclick="setRewardFilter('available', this)">แลกได้ตอนนี้</button>
       </div>
 
+      <div id="rewardList" class="reward-list"></div>
+    </section>
 
-      <div class="info-row">
-
-        <span class="info-label">
-          เบอร์โทร
-        </span>
-
-        <span
-          id="infoPhone"
-          class="info-value"
-        >
-          -
-        </span>
-
+    <!-- REWARD DETAIL -->
+    <section id="screen-detail" class="screen">
+      <div class="topbar">
+        <button class="back-button" onclick="showScreen('rewards')">← กลับ</button>
       </div>
 
+      <div id="detailContent"></div>
+    </section>
 
-      <div class="info-row">
-
-        <span class="info-label">
-          Email
-        </span>
-
-        <span
-          id="infoEmail"
-          class="info-value"
-        >
-          -
-        </span>
-
+    <!-- CONFIRM -->
+    <section id="screen-confirm" class="screen">
+      <div class="topbar">
+        <button class="back-button" onclick="showRewardDetail(selectedReward)">← กลับ</button>
       </div>
 
+      <div id="confirmContent"></div>
+    </section>
 
-      <div class="info-row">
+    <!-- SUCCESS -->
+    <section id="screen-success" class="screen">
+      <div class="success-card">
+        <div class="success-icon">✓</div>
+        <h2>แลกรางวัลสำเร็จ!</h2>
+        <p id="successReward"></p>
 
-        <span class="info-label">
-          วันเกิด
-        </span>
-
-        <span
-          id="infoBirthday"
-          class="info-value"
-        >
-          -
-        </span>
-
-      </div>
-
-
-      <div class="info-row">
-
-        <span class="info-label">
-          จังหวัด
-        </span>
-
-        <span
-          id="infoProvince"
-          class="info-value"
-        >
-          -
-        </span>
-
-      </div>
-
-
-      <div class="info-row">
-
-        <span class="info-label">
-          สถานะ
-        </span>
-
-        <span
-          id="infoStatus"
-          class="info-value"
-        >
-          -
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <br>
-
-
-    <!-- COMPLETE PROFILE -->
-
-    <div class="card">
-
-      <h3 class="section-title">
-        Complete Your Profile
-      </h3>
-
-      <p class="small">
-        บอกเราเพิ่มอีกนิด
-        เพื่อให้ Mein Motion
-        เข้าใจ Lifestyle ของคุณมากขึ้น
-      </p>
-
-
-      <div class="progress-box">
-
-        <div class="progress-text">
-
-          <span>
-            Profile
-          </span>
-
-          <span id="profilePercent">
-            0%
-          </span>
-
+        <div class="detail-box" style="text-align:left;">
+          <div class="detail-row">
+            <span>ใช้แต้ม</span>
+            <strong id="successSpent"></strong>
+          </div>
+          <div class="detail-row">
+            <span>แต้มคงเหลือ</span>
+            <strong id="successBalance"></strong>
+          </div>
+          <div class="detail-row">
+            <span>รหัสการแลก</span>
+            <strong id="successCode"></strong>
+          </div>
         </div>
 
-        <div class="progress-bar">
+        <button class="primary-button" onclick="showScreen('rewards')">กลับไปดูรางวัล</button>
+        <button class="secondary-button" onclick="showScreen('home')">กลับหน้าแรก</button>
+      </div>
+    </section>
 
-          <div
-            id="profileProgress"
-            class="progress-fill"
-          ></div>
-
+    <!-- HISTORY -->
+    <section id="screen-history" class="screen">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">ประวัติ</h1>
+          <p class="page-subtitle">ดูการรับและใช้แต้มของคุณ</p>
         </div>
-
       </div>
 
+      <div class="history-balance">
+        <span>แต้มปัจจุบัน</span>
+        <strong id="historyPoints">0</strong>
+      </div>
 
-      <!-- LIFESTYLE -->
+      <div id="historyList" class="history-list"></div>
+    </section>
 
-      <div class="form-group">
+    <!-- PROFILE -->
+    <section id="screen-profile" class="screen">
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">โปรไฟล์</h1>
+          <p class="page-subtitle">ข้อมูลสมาชิกของคุณ</p>
+        </div>
+      </div>
 
-        <label>
-          คุณใช้ชีวิตแบบไหน?
+      <div class="profile-card">
+        <div class="profile-head">
+          <img id="profilePhoto" class="profile-photo" alt="Profile">
+          <div>
+            <div id="profileName" class="profile-name">-</div>
+            <div class="profile-label">สมาชิก Mein Motion</div>
+          </div>
+        </div>
+
+        <div class="profile-row"><label>ชื่อ</label><div id="profileFirstName">-</div></div>
+        <div class="profile-row"><label>นามสกุล</label><div id="profileLastName">-</div></div>
+        <div class="profile-row"><label>เบอร์โทรศัพท์</label><div id="profilePhone">-</div></div>
+        <div class="profile-row"><label>อีเมล</label><div id="profileEmail">-</div></div>
+        <div class="profile-row"><label>วันเกิด</label><div id="profileBirthday">-</div></div>
+        <div class="profile-row"><label>จังหวัด</label><div id="profileProvince">-</div></div>
+      </div>
+
+      <button class="primary-button" onclick="showEditProfile()">แก้ไขข้อมูล</button>
+    </section>
+
+    <!-- EDIT PROFILE -->
+    <section id="screen-edit-profile" class="screen">
+      <div class="topbar">
+        <button class="back-button" onclick="showScreen('profile')">← กลับ</button>
+      </div>
+
+      <h1 class="page-title">แก้ไขข้อมูล</h1>
+      <p class="page-subtitle">อัปเดตข้อมูลสมาชิกของคุณ</p>
+
+      <div class="form-card">
+        <div class="field">
+          <label>ชื่อ <span class="required">*</span></label>
+          <input id="editFirstName" type="text" autocomplete="given-name">
+        </div>
+
+        <div class="field">
+          <label>นามสกุล <span class="required">*</span></label>
+          <input id="editLastName" type="text" autocomplete="family-name">
+        </div>
+
+        <div class="field">
+          <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
+          <input id="editPhone" type="tel" inputmode="tel" autocomplete="tel">
+        </div>
+
+        <div class="field">
+          <label>อีเมล</label>
+          <input id="editEmail" type="email" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label>วันเกิด</label>
+          <input id="editBirthday" type="date">
+        </div>
+
+        <div class="field">
+          <label>จังหวัด</label>
+          <input id="editProvince" type="text" placeholder="เช่น ขอนแก่น">
+        </div>
+
+        <label class="consent">
+          <input id="editConsent" type="checkbox">
+          <span>ฉันต้องการรับข่าวสาร โปรโมชั่น และสิทธิพิเศษจาก Mein Motion</span>
         </label>
 
-        <div
-          id="lifestyleOptions"
-          class="option-grid"
-        >
+        <button id="saveEditButton" class="primary-button" onclick="saveEditedProfile()">บันทึกข้อมูล</button>
+      </div>
+    </section>
 
-          <div class="option">
+    <!-- REGISTER -->
+    <section id="screen-register" class="screen">
+      <div class="topbar">
+        <div class="brand">
+          <img id="registerLogo" alt="MEIN MOTION">
+          <div id="registerLogoFallback" class="brand-fallback" style="display:none;">MM</div>
+          <span>MEIN MOTION</span>
+        </div>
+      </div>
 
-            <input
-              type="checkbox"
-              value="ทำงาน / เรียน"
-              id="life1"
-            >
+      <h1 class="page-title">สมัครสมาชิก</h1>
+      <p class="page-subtitle">กรอกข้อมูลสั้น ๆ เพื่อเริ่มสะสมแต้มกับ Mein Motion</p>
 
-            <label for="life1">
-              ทำงาน / เรียน
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="ออกกำลังกาย"
-              id="life2"
-            >
-
-            <label for="life2">
-              ออกกำลังกาย
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เล่นกีฬา"
-              id="life3"
-            >
-
-            <label for="life3">
-              เล่นกีฬา
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Outdoor"
-              id="life4"
-            >
-
-            <label for="life4">
-              Outdoor
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เดินทาง"
-              id="life5"
-            >
-
-            <label for="life5">
-              เดินทาง
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Self-care / Wellness"
-              id="life6"
-            >
-
-            <label for="life6">
-              Self-care
-            </label>
-
-          </div>
-
+      <div class="form-card">
+        <div class="field">
+          <label>ชื่อ <span class="required">*</span></label>
+          <input id="regFirstName" type="text" autocomplete="given-name">
         </div>
 
-      </div>
-
-
-      <!-- SPORTS -->
-
-      <div class="form-group">
-
-        <label>
-          กิจกรรม / กีฬา
-        </label>
-
-        <div class="option-grid">
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Running"
-              id="sport1"
-            >
-
-            <label for="sport1">
-              Running
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Gym"
-              id="sport2"
-            >
-
-            <label for="sport2">
-              Gym
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Cycling"
-              id="sport3"
-            >
-
-            <label for="sport3">
-              Cycling
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Yoga / Pilates"
-              id="sport4"
-            >
-
-            <label for="sport4">
-              Yoga
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Badminton"
-              id="sport5"
-            >
-
-            <label for="sport5">
-              Badminton
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Tennis"
-              id="sport6"
-            >
-
-            <label for="sport6">
-              Tennis
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Football"
-              id="sport7"
-            >
-
-            <label for="sport7">
-              Football
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Basketball"
-              id="sport8"
-            >
-
-            <label for="sport8">
-              Basketball
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Swimming"
-              id="sport9"
-            >
-
-            <label for="sport9">
-              Swimming
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Hiking / Outdoor"
-              id="sport10"
-            >
-
-            <label for="sport10">
-              Hiking
-            </label>
-
-          </div>
-
+        <div class="field">
+          <label>นามสกุล <span class="required">*</span></label>
+          <input id="regLastName" type="text" autocomplete="family-name">
         </div>
 
-      </div>
-
-
-      <!-- WORKOUT FREQUENCY -->
-
-      <div class="form-group">
-
-        <label>
-          ออกกำลังกายบ่อยแค่ไหน?
-        </label>
-
-        <select id="workoutFrequency">
-
-          <option value="">
-            เลือกความถี่
-          </option>
-
-          <option value="ไม่ค่อยออกกำลังกาย">
-            ไม่ค่อยออกกำลังกาย
-          </option>
-
-          <option value="1-2 วัน/สัปดาห์">
-            1–2 วัน/สัปดาห์
-          </option>
-
-          <option value="3-4 วัน/สัปดาห์">
-            3–4 วัน/สัปดาห์
-          </option>
-
-          <option value="5-6 วัน/สัปดาห์">
-            5–6 วัน/สัปดาห์
-          </option>
-
-          <option value="ทุกวัน">
-            ทุกวัน
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- PAIN POINTS -->
-
-      <div class="form-group">
-
-        <label>
-          ปัญหาที่เจอบ่อย
-        </label>
-
-        <div class="option-grid">
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เหงื่อออกเยอะ"
-              id="pain1"
-            >
-
-            <label for="pain1">
-              เหงื่อเยอะ
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="กลิ่นตัว"
-              id="pain2"
-            >
-
-            <label for="pain2">
-              กลิ่นตัว
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เสื้อผ้าเสียดสี"
-              id="pain3"
-            >
-
-            <label for="pain3">
-              เสื้อผ้าเสียดสี
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เสื้อผ้าอับชื้น"
-              id="pain4"
-            >
-
-            <label for="pain4">
-              อับชื้น
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="เหนียวตัว"
-              id="pain5"
-            >
-
-            <label for="pain5">
-              เหนียวตัว
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="ผิวระคายเคือง"
-              id="pain6"
-            >
-
-            <label for="pain6">
-              ผิวระคายเคือง
-            </label>
-
-          </div>
-
+        <div class="field">
+          <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
+          <input id="regPhone" type="tel" inputmode="tel" autocomplete="tel">
         </div>
 
-      </div>
-
-
-      <!-- PRODUCT INTEREST -->
-
-      <div class="form-group">
-
-        <label>
-          สนใจสินค้าประเภทไหน?
-        </label>
-
-        <div class="option-grid">
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Everyday"
-              id="product1"
-            >
-
-            <label for="product1">
-              Everyday
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Activewear"
-              id="product2"
-            >
-
-            <label for="product2">
-              Activewear
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Sportswear"
-              id="product3"
-            >
-
-            <label for="product3">
-              Sportswear
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Body Care"
-              id="product4"
-            >
-
-            <label for="product4">
-              Body Care
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Accessories"
-              id="product5"
-            >
-
-            <label for="product5">
-              Accessories
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="New Arrival"
-              id="product6"
-            >
-
-            <label for="product6">
-              New Arrival
-            </label>
-
-          </div>
-
-
-          <div class="option">
-
-            <input
-              type="checkbox"
-              value="Limited Edition"
-              id="product7"
-            >
-
-            <label for="product7">
-              Limited
-            </label>
-
-          </div>
-
+        <div class="field">
+          <label>อีเมล</label>
+          <input id="regEmail" type="email" autocomplete="email">
         </div>
 
+        <div class="field">
+          <label>วันเกิด</label>
+          <input id="regBirthday" type="date">
+        </div>
+
+        <div class="field">
+          <label>จังหวัด</label>
+          <input id="regProvince" type="text" placeholder="เช่น ขอนแก่น">
+        </div>
+
+        <label class="consent">
+          <input id="regConsent" type="checkbox">
+          <span>ฉันต้องการรับข่าวสาร โปรโมชั่น และสิทธิพิเศษจาก Mein Motion</span>
+        </label>
+
+        <button id="registerButton" class="primary-button" onclick="registerMember()">สมัครสมาชิก</button>
       </div>
+    </section>
+  </main>
 
+  <nav id="bottomNav" class="bottom-nav" style="display:none;">
+    <button class="nav-item active" data-screen="home" onclick="showScreen('home')">
+      <span class="nav-icon">⌂</span>หน้าแรก
+    </button>
+    <button class="nav-item" data-screen="rewards" onclick="showScreen('rewards')">
+      <span class="nav-icon">🎁</span>รางวัล
+    </button>
+    <button class="nav-item" data-screen="history" onclick="showScreen('history')">
+      <span class="nav-icon">≡</span>ประวัติ
+    </button>
+    <button class="nav-item" data-screen="profile" onclick="showScreen('profile')">
+      <span class="nav-icon">○</span>โปรไฟล์
+    </button>
+  </nav>
 
-      <button
-        id="profileButton"
-        class="button button-blue"
-        onclick="saveProfile()"
-      >
-        บันทึก Profile
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
+  <div id="toast" class="toast"></div>
 
 <script>
+  /* =====================================================
+     CONFIG — ใส่เฉพาะ 3 ค่านี้
+  ===================================================== */
 
-/* =====================================================
-   CONFIG
-===================================================== */
+  const LIFF_ID = '2010909031-tWUD4KXE';
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwJcmzdNv6kTXsBNPAYwZy0cYvVdgcxONcfAlvRw1IWtH0BVAAyvuWsF3TRqZy0C64/exec';
+  const LOGO_URL = 'https://script.google.com/macros/s/AKfycbz58G1vDE2VzSObrgiMA6JhYvDKyezABoEpU9EyZ9WIeN9rMzKVkfbgT2jb4FvFyfs/exec';
 
-/*
- * 1. LIFF ID
- *
- * ใส่ LIFF ID จริงของคุณตรงนี้
- */
+  let lineProfile = null;
+  let currentMember = null;
+  let rewards = [];
+  let history = [];
+  let selectedReward = null;
+  let currentScreen = 'home';
 
-const LIFF_ID =
-  '2010909031-tWUD4KXE';
+  document.addEventListener('DOMContentLoaded', startApp);
 
+  async function startApp() {
+    try {
+      validateConfig();
 
-/*
- * 2. Apps Script /exec URL
- *
- * ใส่ URL จริงของ Apps Script ตรงนี้
- */
+      setLoading('กำลังเริ่มต้น LIFF...');
+      await liff.init({ liffId: LIFF_ID });
 
-const API_URL =
-  'https://script.google.com/macros/s/AKfycbz58G1vDE2VzSObrgiMA6JhYvDKyezABoEpU9EyZ9WIeN9rMzKVkfbgT2jb4FvFyfs/exec';
+      if (!liff.isLoggedIn()) {
+        setLoading('กำลังเข้าสู่ระบบ LINE...');
+        liff.login();
+        return;
+      }
 
+      setLoading('กำลังโหลดข้อมูล...');
+      lineProfile = await liff.getProfile();
 
-/*
- * 3. โลโก้ Mein Motion
- *
- * ถ้ามี URL รูปโลโก้ ให้ใส่ตรงนี้
- *
- * ถ้ายังไม่มี ให้เป็น ''
- */
+      const result = await apiRequest('checkMember', {
+        userId: lineProfile.userId
+      });
 
-const LOGO_URL =
-  'https://github.com/OOng789/meinmotion-membership/blob/main/%E0%B9%82%E0%B8%A5%E0%B9%82%E0%B8%81%E0%B9%89.png?raw=true';
+      if (!result.success) {
+        throw new Error(result.message || 'ตรวจสอบสมาชิกไม่สำเร็จ');
+      }
 
+      if (!result.member) {
+        showRegister();
+        return;
+      }
 
-/* =====================================================
-   GLOBAL
-===================================================== */
-
-let lineProfile = null;
-
-let currentMember = null;
-
-
-/* =====================================================
-   START
-===================================================== */
-
-document.addEventListener(
-  'DOMContentLoaded',
-  startApp
-);
-
-
-async function startApp() {
-
-  try {
-
-    setLoading(
-      'กำลังเริ่มต้น LIFF...'
-    );
-
-
-    /*
-     * CONFIG CHECK
-     */
-
-    if (
-      !LIFF_ID ||
-      LIFF_ID === 'ใส่_LIFF_ID_ของคุณตรงนี้'
-    ) {
-
-      throw new Error(
-        'ยังไม่ได้ใส่ LIFF ID ใน index.html'
-      );
-
-    }
-
-
-    if (
-      !API_URL ||
-      API_URL ===
-      'ใส่_APPS_SCRIPT_EXEC_URL_ของคุณตรงนี้'
-    ) {
-
-      throw new Error(
-        'ยังไม่ได้ใส่ Apps Script /exec URL'
-      );
-
-    }
-
-
-    /*
-     * INIT LIFF
-     */
-
-    await liff.init({
-
-      liffId:
-        LIFF_ID
-
-    });
-
-
-    /*
-     * LOGIN
-     */
-
-    if (!liff.isLoggedIn()) {
-
-      setLoading(
-        'กำลังเข้าสู่ระบบ LINE...'
-      );
-
-      liff.login();
-
-      return;
-
-    }
-
-
-    /*
-     * GET PROFILE
-     */
-
-    setLoading(
-      'กำลังโหลดข้อมูล...'
-    );
-
-    lineProfile =
-      await liff.getProfile();
-
-
-    /*
-     * CHECK MEMBER
-     */
-
-    const result =
-      await apiRequest(
-        'checkMember',
-        {
-          userId:
-            lineProfile.userId
-        }
-      );
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        'ตรวจสอบสมาชิกไม่สำเร็จ'
-      );
-
-    }
-
-
-    /*
-     * EXISTING MEMBER
-     */
-
-    if (result.member) {
-
-      currentMember =
-        result.member;
-
-
-      /*
-       * UPDATE LAST LOGIN
-       */
+      currentMember = result.member;
 
       try {
-
-        await apiRequest(
-          'updateLastLogin',
-          {
-            userId:
-              lineProfile.userId
-          }
-        );
-
+        await apiRequest('updateLastLogin', {
+          userId: lineProfile.userId
+        });
       } catch (e) {
-
-        console.warn(
-          'updateLastLogin failed',
-          e
-        );
-
+        console.warn('updateLastLogin failed', e);
       }
 
+      await loadRewards();
+      await loadHistory();
+      renderAll();
 
-      showDashboard(
-        currentMember
-      );
+      hideLoading();
+      document.getElementById('app').style.display = 'block';
+      document.getElementById('bottomNav').style.display = 'grid';
+      showScreen('home');
 
-      return;
-
+    } catch (error) {
+      console.error(error);
+      showError(error.message || String(error));
     }
-
-
-    /*
-     * NEW MEMBER
-     */
-
-    showRegister();
-
-  } catch (error) {
-
-    console.error(
-      'START ERROR:',
-      error
-    );
-
-    showError(
-      error.message ||
-      String(error)
-    );
-
   }
 
-}
-
-
-/* =====================================================
-   REGISTER
-===================================================== */
-
-async function registerMember() {
-
-  try {
-
-    const firstName =
-      getValue('firstName');
-
-
-    const lastName =
-      getValue('lastName');
-
-
-    const phone =
-      getValue('phone');
-
-
-    const email =
-      getValue('email');
-
-
-    const birthday =
-      getValue('birthday');
-
-
-    const province =
-      getValue('province');
-
-
-    const marketingConsent =
-      document
-        .getElementById(
-          'marketingConsent'
-        )
-        .checked;
-
-
-    /*
-     * REQUIRED
-     */
-
-    if (!firstName) {
-
-      alert('กรุณากรอกชื่อ');
-
-      document
-        .getElementById('firstName')
-        .focus();
-
-      return;
-
+  function validateConfig() {
+    if (!LIFF_ID || LIFF_ID.includes('ใส่_')) {
+      throw new Error('ยังไม่ได้ใส่ LIFF ID ใน index.html');
     }
 
-
-    if (!lastName) {
-
-      alert('กรุณากรอกนามสกุล');
-
-      document
-        .getElementById('lastName')
-        .focus();
-
-      return;
-
+    if (!API_URL || API_URL.includes('ใส่_')) {
+      throw new Error('ยังไม่ได้ใส่ Apps Script /exec URL ใน index.html');
     }
+  }
 
+  async function apiRequest(action, payload = {}) {
+    const response = await fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action,
+        ...payload
+      })
+    });
 
-    if (!phone) {
+    const text = await response.text();
 
-      alert(
-        'กรุณากรอกเบอร์โทรศัพท์'
-      );
-
-      document
-        .getElementById('phone')
-        .focus();
-
-      return;
-
+    let result;
+    try {
+      result = JSON.parse(text);
+    } catch (e) {
+      throw new Error('API ส่งข้อมูลกลับมาไม่ใช่ JSON');
     }
-
-
-    /*
-     * SIMPLE PHONE VALIDATION
-     */
-
-    const phoneClean =
-      phone.replace(
-        /[\s-]/g,
-        ''
-      );
-
-
-    if (
-      !/^[0-9+]{8,15}$/.test(
-        phoneClean
-      )
-    ) {
-
-      alert(
-        'กรุณาตรวจสอบเบอร์โทรศัพท์'
-      );
-
-      document
-        .getElementById('phone')
-        .focus();
-
-      return;
-
-    }
-
-
-    /*
-     * EMAIL VALIDATION
-     *
-     * เฉพาะเมื่อกรอก
-     */
-
-    if (
-      email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-        .test(email)
-    ) {
-
-      alert(
-        'กรุณาตรวจสอบ Email'
-      );
-
-      document
-        .getElementById('email')
-        .focus();
-
-      return;
-
-    }
-
-
-    const button =
-      document.getElementById(
-        'registerButton'
-      );
-
-
-    button.disabled = true;
-
-    button.textContent =
-      'กำลังสมัครสมาชิก...';
-
-
-    setLoading(
-      'กำลังสมัครสมาชิก...'
-    );
-
-
-    /*
-     * SEND
-     */
-
-    const result =
-      await apiRequest(
-        'registerMember',
-        {
-
-          userId:
-            lineProfile.userId,
-
-          displayName:
-            lineProfile.displayName,
-
-          pictureUrl:
-            lineProfile.pictureUrl,
-
-          firstName:
-            firstName,
-
-          lastName:
-            lastName,
-
-          phone:
-            phoneClean,
-
-          email:
-            email,
-
-          birthday:
-            birthday,
-
-          province:
-            province,
-
-          marketingConsent:
-            marketingConsent
-
-        }
-      );
-
 
     if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        'สมัครสมาชิกไม่สำเร็จ'
-      );
-
+      throw new Error(result.message || 'เกิดข้อผิดพลาดจากระบบ');
     }
 
-
-    /*
-     * GET MEMBER
-     */
-
-    setLoading(
-      'สมัครสมาชิกสำเร็จ กำลังโหลดข้อมูล...'
-    );
-
-
-    const memberResult =
-      await apiRequest(
-        'checkMember',
-        {
-          userId:
-            lineProfile.userId
-        }
-      );
-
-
-    if (
-      !memberResult.success ||
-      !memberResult.member
-    ) {
-
-      throw new Error(
-        'สมัครสำเร็จแล้ว แต่ไม่พบข้อมูลสมาชิก'
-      );
-
-    }
-
-
-    currentMember =
-      memberResult.member;
-
-
-    showDashboard(
-      currentMember
-    );
-
-  } catch (error) {
-
-    console.error(
-      'REGISTER ERROR:',
-      error
-    );
-
-
-    showError(
-      error.message ||
-      String(error)
-    );
-
+    return result;
   }
 
-}
+  /* =========================
+     NAVIGATION
+  ========================= */
 
+  function showScreen(screenName) {
+    const protectedScreens = [
+      'home',
+      'rewards',
+      'history',
+      'profile',
+      'detail',
+      'confirm',
+      'success',
+      'edit-profile'
+    ];
 
-/* =====================================================
-   SAVE PROFILE
-===================================================== */
+    if (protectedScreens.includes(screenName) && !currentMember) {
+      return;
+    }
 
-async function saveProfile() {
+    document.querySelectorAll('.screen').forEach(function(screen) {
+      screen.classList.remove('active');
+    });
 
-  try {
+    const target = document.getElementById('screen-' + screenName);
 
-    /*
-     * FIX:
-     *
-     * getCheckedValues() ต้องรับ
-     * HTML Element ไม่ใช่ string
-     *
-     * จุดนี้คือบั๊กที่ทำให้เกิด:
-     *
-     * container.querySelectorAll is not a function
-     */
+    if (!target) return;
 
-    const lifestyleContainer =
-      document.getElementById(
-        'lifestyleOptions'
+    target.classList.add('active');
+    currentScreen = screenName;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const mainNavScreen =
+      ['home', 'rewards', 'history', 'profile'].includes(screenName)
+        ? screenName
+        : (
+            screenName === 'detail' || screenName === 'confirm'
+              ? 'rewards'
+              : screenName === 'success'
+                ? 'rewards'
+                : screenName === 'edit-profile'
+                  ? 'profile'
+                  : null
+          );
+
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+      item.classList.toggle(
+        'active',
+        item.dataset.screen === mainNavScreen
       );
+    });
 
+    document.getElementById('bottomNav').style.display =
+      ['home', 'rewards', 'history', 'profile'].includes(screenName)
+        ? 'grid'
+        : 'none';
 
-    const lifestyle =
-      getCheckedValues(
-        lifestyleContainer
-      );
+    if (screenName === 'history') {
+      loadHistory().catch(showToast);
+    }
+  }
 
+  /* =========================
+     REGISTER
+  ========================= */
 
-    const sports =
-      getCheckedValuesByPrefix(
-        'sport'
-      );
+  function showRegister() {
+    document.getElementById('bottomNav').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('screen-register').classList.add('active');
 
+    setLogo('registerLogo', 'registerLogoFallback');
+    hideLoading();
+  }
 
-    const painPoints =
-      getCheckedValuesByPrefix(
-        'pain'
-      );
+  async function registerMember() {
+    const firstName = value('regFirstName');
+    const lastName = value('regLastName');
+    const phone = value('regPhone');
 
+    if (!firstName) return showToast('กรุณากรอกชื่อ');
+    if (!lastName) return showToast('กรุณากรอกนามสกุล');
+    if (!phone) return showToast('กรุณากรอกเบอร์โทรศัพท์');
 
-    const productInterest =
-      getCheckedValuesByPrefix(
-        'product'
-      );
-
-
-    const workoutFrequency =
-      getValue(
-        'workoutFrequency'
-      );
-
-
-    const button =
-      document.getElementById(
-        'profileButton'
-      );
-
-
+    const button = document.getElementById('registerButton');
     button.disabled = true;
+    button.textContent = 'กำลังสมัครสมาชิก...';
 
-    button.textContent =
-      'กำลังบันทึก...';
+    try {
+      const result = await apiRequest('registerMember', {
+        userId: lineProfile.userId,
+        displayName: lineProfile.displayName || '',
+        pictureUrl: lineProfile.pictureUrl || '',
+        firstName,
+        lastName,
+        phone,
+        email: value('regEmail'),
+        birthday: value('regBirthday'),
+        province: value('regProvince'),
+        marketingConsent: document.getElementById('regConsent').checked
+      });
 
-
-    setLoading(
-      'กำลังบันทึก Profile...'
-    );
-
-
-    /*
-     * SEND PROFILE TO BACKEND
-     */
-
-    const result =
-      await apiRequest(
-        'updateProfile',
-        {
-
-          userId:
-            lineProfile.userId,
-
-          lifestyle:
-            lifestyle,
-
-          sports:
-            sports,
-
-          workoutFrequency:
-            workoutFrequency,
-
-          painPoints:
-            painPoints,
-
-          productInterest:
-            productInterest
-
-        }
-      );
-
-
-    if (!result.success) {
-
-      throw new Error(
-        result.message ||
-        'บันทึก Profile ไม่สำเร็จ'
-      );
-
-    }
-
-
-    /*
-     * GET UPDATED MEMBER
-     */
-
-    const memberResult =
-      await apiRequest(
-        'checkMember',
-        {
-          userId:
-            lineProfile.userId
-        }
-      );
-
-
-    if (
-      memberResult.success &&
-      memberResult.member
-    ) {
-
-      currentMember =
-        memberResult.member;
-
-    }
-
-
-    showDashboard(
-      currentMember
-    );
-
-
-    alert(
-      'บันทึก Profile สำเร็จ 🎉'
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      'PROFILE ERROR:',
-      error
-    );
-
-
-    showError(
-      error.message ||
-      String(error)
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   API
-===================================================== */
-
-async function apiRequest(
-  action,
-  data
-) {
-
-  const response =
-    await fetch(
-      API_URL,
-      {
-
-        method: 'POST',
-
-        headers: {
-
-          'Content-Type':
-            'text/plain;charset=utf-8'
-
-        },
-
-        body:
-          JSON.stringify({
-
-            action:
-              action,
-
-            ...data
-
-          })
-
+      if (!result.success) {
+        throw new Error(result.message);
       }
-    );
 
+      const memberResult = await apiRequest('checkMember', {
+        userId: lineProfile.userId
+      });
 
-  if (!response.ok) {
+      currentMember = memberResult.member;
 
-    throw new Error(
-      'Backend HTTP Error: ' +
-      response.status
-    );
+      await loadRewards();
+      await loadHistory();
+      renderAll();
 
+      document.getElementById('bottomNav').style.display = 'grid';
+      showScreen('home');
+
+      showToast('สมัครสมาชิกสำเร็จ 🎉');
+
+    } catch (error) {
+      showToast(error.message || 'สมัครสมาชิกไม่สำเร็จ');
+    } finally {
+      button.disabled = false;
+      button.textContent = 'สมัครสมาชิก';
+    }
   }
 
+  /* =========================
+     PROFILE
+  ========================= */
 
-  const text =
-    await response.text();
+  function showEditProfile() {
+    setValue('editFirstName', currentMember.FIRST_NAME);
+    setValue('editLastName', currentMember.LAST_NAME);
+    setValue('editPhone', currentMember.PHONE);
+    setValue('editEmail', currentMember.EMAIL);
+    setValue('editBirthday', normalizeDateInput(currentMember.BIRTHDAY));
+    setValue('editProvince', currentMember.PROVINCE);
 
+    document.getElementById('editConsent').checked =
+      currentMember.MARKETING_CONSENT === true ||
+      String(currentMember.MARKETING_CONSENT).toUpperCase() === 'TRUE';
 
-  let result;
-
-
-  try {
-
-    result =
-      JSON.parse(text);
-
-  } catch (e) {
-
-    console.error(
-      'Invalid API response:',
-      text
-    );
-
-    throw new Error(
-      'Backend ส่งข้อมูลกลับมาไม่ใช่ JSON'
-    );
-
+    showScreen('edit-profile');
   }
 
+  async function saveEditedProfile() {
+    const firstName = value('editFirstName');
+    const lastName = value('editLastName');
+    const phone = value('editPhone');
 
-  return result;
+    if (!firstName) return showToast('กรุณากรอกชื่อ');
+    if (!lastName) return showToast('กรุณากรอกนามสกุล');
+    if (!phone) return showToast('กรุณากรอกเบอร์โทรศัพท์');
 
-}
+    const button = document.getElementById('saveEditButton');
+    button.disabled = true;
+    button.textContent = 'กำลังบันทึก...';
 
+    try {
+      await apiRequest('updateMember', {
+        userId: lineProfile.userId,
+        firstName,
+        lastName,
+        phone,
+        email: value('editEmail'),
+        birthday: value('editBirthday'),
+        province: value('editProvince'),
+        marketingConsent: document.getElementById('editConsent').checked
+      });
 
-/* =====================================================
-   REGISTER SCREEN
-===================================================== */
+      const result = await apiRequest('checkMember', {
+        userId: lineProfile.userId
+      });
 
-function showRegister() {
+      currentMember = result.member;
+      renderProfile();
+      renderHome();
 
-  hideAll();
+      showScreen('profile');
+      showToast('บันทึกข้อมูลเรียบร้อย');
 
+    } catch (error) {
+      showToast(error.message || 'บันทึกข้อมูลไม่สำเร็จ');
+    } finally {
+      button.disabled = false;
+      button.textContent = 'บันทึกข้อมูล';
+    }
+  }
 
-  setLogo(
-    'registerLogo',
-    'registerLogoText'
-  );
+  /* =========================
+     REWARDS
+  ========================= */
 
+  async function loadRewards() {
+    const result = await apiRequest('getRewards');
+    rewards = result.rewards || [];
+    renderRewards();
+  }
 
-  const image =
-    document.getElementById(
-      'registerProfileImage'
-    );
+  function renderRewards() {
+    const home = document.getElementById('homeRewards');
+    const list = document.getElementById('rewardList');
 
+    const sorted = rewards
+      .slice()
+      .sort(function(a, b) {
+        return Number(a.POINTS_REQUIRED) - Number(b.POINTS_REQUIRED);
+      });
 
-  image.src =
-    lineProfile.pictureUrl || '';
+    const homeItems = sorted.slice(0, 2);
 
+    home.innerHTML = homeItems.length
+      ? homeItems.map(rewardCardHTML).join('')
+      : emptyHTML('ยังไม่มีของรางวัล');
 
-  document
-    .getElementById(
-      'registerScreen'
-    )
-    .classList
-    .remove('hidden');
+    list.innerHTML = sorted.length
+      ? sorted.map(rewardListHTML).join('')
+      : emptyHTML('ยังไม่มีของรางวัล');
 
-}
+    document.getElementById('rewardsPoints').textContent =
+      formatNumber(points()) + ' แต้ม';
+  }
 
+  function setRewardFilter(filter, button) {
+    document.querySelectorAll('.filter').forEach(function(el) {
+      el.classList.remove('active');
+    });
 
-/* =====================================================
-   DASHBOARD
-===================================================== */
+    button.classList.add('active');
 
-function showDashboard(member) {
+    const list = document.getElementById('rewardList');
 
-  hideAll();
+    let filtered = rewards.slice();
 
+    if (filter === 'available') {
+      filtered = filtered.filter(function(reward) {
+        return Number(reward.POINTS_REQUIRED) <= points() &&
+               Number(reward.STOCK) > 0;
+      });
+    }
 
-  currentMember =
-    member || {};
+    filtered.sort(function(a, b) {
+      return Number(a.POINTS_REQUIRED) - Number(b.POINTS_REQUIRED);
+    });
 
+    list.innerHTML = filtered.length
+      ? filtered.map(rewardListHTML).join('')
+      : emptyHTML('ยังไม่มีรางวัลที่แลกได้ตอนนี้');
+  }
 
-  setLogo(
-    'dashboardLogo',
-    'dashboardLogoText'
-  );
+  function showRewardDetail(reward) {
+    if (!reward) return;
 
+    selectedReward = reward;
 
-  /*
-   * PROFILE
-   */
+    const enough = points() >= Number(reward.POINTS_REQUIRED);
+    const stock = Number(reward.STOCK);
 
-  const image =
-    document.getElementById(
-      'dashboardProfileImage'
-    );
+    document.getElementById('detailContent').innerHTML = `
+      <div class="reward-detail-image">
+        ${imageHTML(reward.IMAGE_URL, '🎁')}
+      </div>
 
+      <h1 class="page-title">${escapeHTML(reward.NAME)}</h1>
 
-  image.src =
-    member.PICTURE_URL ||
-    lineProfile.pictureUrl ||
-    '';
+      <div class="detail-points">
+        ${formatNumber(reward.POINTS_REQUIRED)} แต้ม
+      </div>
 
+      <div class="detail-description">
+        ${escapeHTML(reward.DESCRIPTION || 'ของรางวัลสำหรับสมาชิก Mein Motion')}
+      </div>
 
-  document
-    .getElementById(
-      'dashboardName'
-    )
-    .textContent =
-      member.FIRST_NAME ||
-      member.DISPLAY_NAME ||
-      lineProfile.displayName ||
+      <div class="detail-box">
+        <div class="detail-row">
+          <span>แต้มปัจจุบัน</span>
+          <strong>${formatNumber(points())}</strong>
+        </div>
+        <div class="detail-row">
+          <span>แต้มหลังแลก</span>
+          <strong>${formatNumber(Math.max(0, points() - Number(reward.POINTS_REQUIRED)))}</strong>
+        </div>
+        <div class="detail-row">
+          <span>สถานะ</span>
+          <strong>${stock > 0 ? 'พร้อมแลก' : 'หมดแล้ว'}</strong>
+        </div>
+      </div>
+
+      <button
+        class="primary-button"
+        ${(!enough || stock <= 0) ? 'disabled' : ''}
+        onclick="showConfirm()"
+      >
+        ${stock <= 0 ? 'ของรางวัลหมดแล้ว' : !enough ? 'แต้มไม่เพียงพอ' : 'แลกรางวัล'}
+      </button>
+    `;
+
+    showScreen('detail');
+  }
+
+  function showConfirm() {
+    if (!selectedReward) return;
+
+    const cost = Number(selectedReward.POINTS_REQUIRED);
+
+    document.getElementById('confirmContent').innerHTML = `
+      <div class="confirm-card">
+        <div class="confirm-icon">🎁</div>
+        <h2>ยืนยันการแลกรางวัล</h2>
+        <p>ตรวจสอบข้อมูลก่อนกดยืนยัน</p>
+
+        <div class="detail-box" style="text-align:left;">
+          <div class="detail-row">
+            <span>รางวัล</span>
+            <strong>${escapeHTML(selectedReward.NAME)}</strong>
+          </div>
+          <div class="detail-row">
+            <span>แต้มปัจจุบัน</span>
+            <strong>${formatNumber(points())}</strong>
+          </div>
+          <div class="detail-row">
+            <span>ใช้แต้ม</span>
+            <strong>${formatNumber(cost)}</strong>
+          </div>
+          <div class="detail-row">
+            <span>แต้มคงเหลือ</span>
+            <strong>${formatNumber(points() - cost)}</strong>
+          </div>
+        </div>
+
+        <button id="confirmRedeemButton" class="primary-button" onclick="redeemSelectedReward()">
+          ยืนยันการแลก
+        </button>
+
+        <button class="secondary-button" onclick="showRewardDetail(selectedReward)">
+          ยกเลิก
+        </button>
+      </div>
+    `;
+
+    showScreen('confirm');
+  }
+
+  async function redeemSelectedReward() {
+    if (!selectedReward) return;
+
+    const button = document.getElementById('confirmRedeemButton');
+    button.disabled = true;
+    button.textContent = 'กำลังแลก...';
+
+    try {
+      const result = await apiRequest('redeemReward', {
+        userId: lineProfile.userId,
+        rewardId: selectedReward.REWARD_ID
+      });
+
+      currentMember.POINTS = result.balanceAfter;
+
+      await Promise.all([
+        loadRewards(),
+        loadHistory()
+      ]);
+
+      renderAll();
+
+      document.getElementById('successReward').textContent =
+        result.rewardName;
+
+      document.getElementById('successSpent').textContent =
+        '-' + formatNumber(result.pointsSpent) + ' แต้ม';
+
+      document.getElementById('successBalance').textContent =
+        formatNumber(result.balanceAfter) + ' แต้ม';
+
+      document.getElementById('successCode').textContent =
+        result.redemptionId;
+
+      showScreen('success');
+
+    } catch (error) {
+      showToast(error.message || 'แลกรางวัลไม่สำเร็จ');
+      button.disabled = false;
+      button.textContent = 'ยืนยันการแลก';
+    }
+  }
+
+  /* =========================
+     HISTORY
+  ========================= */
+
+  async function loadHistory() {
+    if (!lineProfile) return;
+
+    const result = await apiRequest('getHistory', {
+      userId: lineProfile.userId
+    });
+
+    history = result.history || [];
+    renderHistory();
+  }
+
+  function renderHistory() {
+    document.getElementById('historyPoints').textContent =
+      formatNumber(points());
+
+    const list = document.getElementById('historyList');
+
+    if (!history.length) {
+      list.innerHTML = emptyHTML('ยังไม่มีประวัติแต้ม');
+      return;
+    }
+
+    list.innerHTML = history.map(function(item) {
+      const value = Number(item.POINTS || 0);
+      const positive = value >= 0;
+
+      return `
+        <div class="history-item">
+          <div>
+            <div class="history-title">${escapeHTML(item.DESCRIPTION || item.TYPE || 'รายการแต้ม')}</div>
+            <div class="history-date">${formatDate(item.CREATED_AT)}</div>
+          </div>
+          <div class="history-points ${positive ? 'plus' : 'minus'}">
+            ${positive ? '+' : ''}${formatNumber(value)}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  /* =========================
+     RENDER
+  ========================= */
+
+  function renderAll() {
+    renderHome();
+    renderRewards();
+    renderHistory();
+    renderProfile();
+
+    setLogo('homeLogo', 'homeLogoFallback');
+
+    if (lineProfile && lineProfile.pictureUrl) {
+      document.getElementById('profilePhoto').src = lineProfile.pictureUrl;
+    }
+  }
+
+  function renderHome() {
+    const name =
+      currentMember?.FIRST_NAME ||
+      lineProfile?.displayName ||
       'สมาชิก';
 
+    document.getElementById('homeGreeting').textContent =
+      name;
 
-  /*
-   * POINTS
-   */
+    document.getElementById('homePoints').textContent =
+      formatNumber(points());
+  }
 
-  document
-    .getElementById(
-      'dashboardPoints'
-    )
-    .textContent =
-      Number(
-        member.POINTS || 0
-      ).toLocaleString();
+  function renderProfile() {
+    const first = currentMember?.FIRST_NAME || '';
+    const last = currentMember?.LAST_NAME || '';
 
+    document.getElementById('profileName').textContent =
+      (first + ' ' + last).trim() || 'สมาชิก Mein Motion';
 
-  /*
-   * TIER
-   */
+    document.getElementById('profileFirstName').textContent = first || '-';
+    document.getElementById('profileLastName').textContent = last || '-';
+    document.getElementById('profilePhone').textContent = currentMember?.PHONE || '-';
+    document.getElementById('profileEmail').textContent = currentMember?.EMAIL || '-';
+    document.getElementById('profileBirthday').textContent =
+      normalizeDateDisplay(currentMember?.BIRTHDAY);
+    document.getElementById('profileProvince').textContent =
+      currentMember?.PROVINCE || '-';
 
-  document
-    .getElementById(
-      'dashboardTier'
-    )
-    .textContent =
-      member.TIER ||
-      'MEMBER';
+    if (lineProfile?.pictureUrl) {
+      document.getElementById('profilePhoto').src = lineProfile.pictureUrl;
+    } else if (currentMember?.PICTURE_URL) {
+      document.getElementById('profilePhoto').src = currentMember.PICTURE_URL;
+    }
+  }
 
+  /* =========================
+     UI HELPERS
+  ========================= */
 
-  /*
-   * MEMBER INFO
-   */
+  function rewardCardHTML(reward) {
+    return `
+      <div class="reward-card">
+        <div class="reward-image">
+          ${imageHTML(reward.IMAGE_URL, '🎁')}
+        </div>
+        <div class="reward-content">
+          <div class="reward-name">${escapeHTML(reward.NAME)}</div>
+          <div class="reward-points">${formatNumber(reward.POINTS_REQUIRED)} แต้ม</div>
+          <button class="reward-button" onclick="showRewardDetail(findReward('${escapeAttr(reward.REWARD_ID)}'))">
+            ดูรางวัล
+          </button>
+        </div>
+      </div>
+    `;
+  }
 
-  setText(
-    'infoFirstName',
-    member.FIRST_NAME
-  );
+  function rewardListHTML(reward) {
+    const available =
+      Number(reward.POINTS_REQUIRED) <= points() &&
+      Number(reward.STOCK) > 0;
 
+    return `
+      <div class="reward-card">
+        <div class="reward-image">
+          ${imageHTML(reward.IMAGE_URL, '🎁')}
+        </div>
+        <div class="reward-content">
+          <div class="reward-name">${escapeHTML(reward.NAME)}</div>
+          <div class="reward-points">
+            ${formatNumber(reward.POINTS_REQUIRED)} แต้ม
+            · ${Number(reward.STOCK) > 0 ? 'มีของ' : 'หมดแล้ว'}
+          </div>
+          <button class="reward-button" onclick="showRewardDetail(findReward('${escapeAttr(reward.REWARD_ID)}'))">
+            ดูรางวัล
+          </button>
+        </div>
+      </div>
+    `;
+  }
 
-  setText(
-    'infoLastName',
-    member.LAST_NAME
-  );
-
-
-  setText(
-    'infoPhone',
-    member.PHONE
-  );
-
-
-  setText(
-    'infoEmail',
-    member.EMAIL
-  );
-
-
-  setText(
-    'infoBirthday',
-    formatBirthday(
-      member.BIRTHDAY
-    )
-  );
-
-
-  setText(
-    'infoProvince',
-    member.PROVINCE
-  );
-
-
-  setText(
-    'infoStatus',
-    member.STATUS
-  );
-
-
-  /*
-   * PROFILE DATA
-   */
-
-  restoreProfileSelections(
-    member
-  );
-
-
-  updateProfileProgress(
-    member
-  );
-
-
-  /*
-   * SHOW
-   */
-
-  document
-    .getElementById(
-      'dashboardScreen'
-    )
-    .classList
-    .remove('hidden');
-
-}
-
-
-/* =====================================================
-   RESTORE PROFILE
-===================================================== */
-
-function restoreProfileSelections(member) {
-
-  /*
-   * Reset all checkboxes
-   */
-
-  document
-    .querySelectorAll(
-      '.option input[type="checkbox"]'
-    )
-    .forEach(function(input) {
-
-      input.checked = false;
-
+  function findReward(id) {
+    return rewards.find(function(reward) {
+      return String(reward.REWARD_ID) === String(id);
     });
-
-
-  /*
-   * LIFESTYLE
-   */
-
-  checkValues(
-    member.LIFESTYLE,
-    document.getElementById(
-      'lifestyleOptions'
-    )
-  );
-
-
-  /*
-   * SPORTS
-   */
-
-  checkValuesByPrefix(
-    member.SPORTS,
-    'sport'
-  );
-
-
-  /*
-   * PAIN
-   */
-
-  checkValuesByPrefix(
-    member.PAIN_POINTS,
-    'pain'
-  );
-
-
-  /*
-   * PRODUCT
-   */
-
-  checkValuesByPrefix(
-    member.PRODUCT_INTEREST,
-    'product'
-  );
-
-
-  /*
-   * WORKOUT
-   */
-
-  const select =
-    document.getElementById(
-      'workoutFrequency'
-    );
-
-
-  select.value =
-    member.WORKOUT_FREQUENCY ||
-    '';
-
-}
-
-
-/* =====================================================
-   PROFILE PROGRESS
-===================================================== */
-
-function updateProfileProgress(member) {
-
-  let completed = 0;
-
-  const total = 5;
-
-
-  if (member.LIFESTYLE) {
-
-    completed++;
-
   }
 
+  function imageHTML(url, fallback) {
+    if (!url) {
+      return '<div class="reward-placeholder">' + fallback + '</div>';
+    }
 
-  if (member.SPORTS) {
-
-    completed++;
-
+    return `
+      <img
+        src="${escapeAttr(url)}"
+        alt=""
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+      >
+      <div class="reward-placeholder" style="display:none;">${fallback}</div>
+    `;
   }
 
+  function setLogo(imageId, fallbackId) {
+    const img = document.getElementById(imageId);
+    const fallback = document.getElementById(fallbackId);
 
-  if (member.WORKOUT_FREQUENCY) {
+    if (!img) return;
 
-    completed++;
+    if (!LOGO_URL || LOGO_URL.includes('ใส่_')) {
+      img.style.display = 'none';
+      if (fallback) fallback.style.display = 'grid';
+      return;
+    }
 
+    img.src = LOGO_URL;
+    img.style.display = 'block';
+
+    img.onerror = function() {
+      img.style.display = 'none';
+      if (fallback) fallback.style.display = 'grid';
+    };
   }
 
-
-  if (member.PAIN_POINTS) {
-
-    completed++;
-
+  function points() {
+    return Number(currentMember?.POINTS || 0);
   }
 
-
-  if (member.PRODUCT_INTEREST) {
-
-    completed++;
-
+  function value(id) {
+    return document.getElementById(id)?.value.trim() || '';
   }
 
-
-  const percent =
-    Math.round(
-      (completed / total) * 100
-    );
-
-
-  document
-    .getElementById(
-      'profilePercent'
-    )
-    .textContent =
-      percent + '%';
-
-
-  document
-    .getElementById(
-      'profileProgress'
-    )
-    .style
-    .width =
-      percent + '%';
-
-}
-
-
-/* =====================================================
-   CHECKED VALUES
-===================================================== */
-
-function getCheckedValues(container) {
-
-  /*
-   * Safety check
-   */
-
-  if (
-    !container ||
-    typeof container.querySelectorAll !== 'function'
-  ) {
-
-    return [];
-
+  function setValue(id, value) {
+    document.getElementById(id).value = value || '';
   }
 
+  function formatNumber(number) {
+    return Number(number || 0).toLocaleString('th-TH');
+  }
 
-  return Array.from(
-    container.querySelectorAll(
-      'input[type="checkbox"]:checked'
-    )
-  ).map(function(input) {
+  function normalizeDateInput(value) {
+    if (!value) return '';
+    return String(value).slice(0, 10);
+  }
 
-    return input.value;
+  function normalizeDateDisplay(value) {
+    if (!value) return '-';
 
-  });
+    const str = String(value);
+    const date = new Date(str);
 
-}
+    if (isNaN(date.getTime())) return str;
 
-
-function getCheckedValuesByPrefix(
-  prefix
-) {
-
-  return Array
-    .from(
-      document.querySelectorAll(
-        'input[id^="' +
-        prefix +
-        '"]:checked'
-      )
-    )
-    .map(function(input) {
-
-      return input.value;
-
+    return date.toLocaleDateString('th-TH', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
-
-}
-
-
-/* =====================================================
-   RESTORE CHECKBOXES
-===================================================== */
-
-function checkValues(
-  value,
-  container
-) {
-
-  if (!value) {
-
-    return;
-
   }
 
+  function formatDate(value) {
+    if (!value) return '-';
 
-  if (
-    !container ||
-    typeof container.querySelectorAll !== 'function'
-  ) {
+    const date = new Date(value);
 
-    return;
+    if (isNaN(date.getTime())) return String(value);
 
-  }
-
-
-  const values =
-    String(value)
-      .split(',')
-      .map(function(item) {
-
-        return item.trim();
-
-      })
-      .filter(Boolean);
-
-
-  container
-    .querySelectorAll(
-      'input[type="checkbox"]'
-    )
-    .forEach(function(input) {
-
-      input.checked =
-        values.includes(
-          input.value
-        );
-
+    return date.toLocaleDateString('th-TH', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
-
-}
-
-
-function checkValuesByPrefix(
-  value,
-  prefix
-) {
-
-  if (!value) {
-
-    return;
-
   }
 
-
-  const values =
-    String(value)
-      .split(',')
-      .map(function(item) {
-
-        return item.trim();
-
-      })
-      .filter(Boolean);
-
-
-  document
-    .querySelectorAll(
-      'input[id^="' +
-      prefix +
-      '"]'
-    )
-    .forEach(function(input) {
-
-      input.checked =
-        values.includes(
-          input.value
-        );
-
-    });
-
-}
-
-
-/* =====================================================
-   GET VALUE
-===================================================== */
-
-function getValue(id) {
-
-  const element =
-    document.getElementById(id);
-
-
-  if (!element) {
-
-    return '';
-
+  function emptyHTML(text) {
+    return '<div class="empty">' + escapeHTML(text) + '</div>';
   }
 
-
-  return String(
-    element.value || ''
-  ).trim();
-
-}
-
-
-/* =====================================================
-   SET TEXT
-===================================================== */
-
-function setText(
-  id,
-  value
-) {
-
-  const element =
-    document.getElementById(id);
-
-
-  if (!element) {
-
-    return;
-
+  function escapeHTML(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
   }
 
-
-  element.textContent =
-    value ||
-    '-';
-
-}
-
-
-/* =====================================================
-   BIRTHDAY
-===================================================== */
-
-function formatBirthday(
-  value
-) {
-
-  if (!value) {
-
-    return '-';
-
+  function escapeAttr(value) {
+    return escapeHTML(value);
   }
 
-
-  const text =
-    String(value);
-
-
-  /*
-   * yyyy-mm-dd
-   */
-
-  const match =
-    text.match(
-      /^(\d{4})-(\d{2})-(\d{2})/
-    );
-
-
-  if (match) {
-
-    return (
-      match[3] +
-      '/' +
-      match[2] +
-      '/' +
-      match[1]
-    );
-
+  function setLoading(text) {
+    document.getElementById('loadingText').textContent = text;
+    document.getElementById('loading').style.display = 'grid';
   }
 
-
-  return text;
-
-}
-
-
-/* =====================================================
-   LOGO
-===================================================== */
-
-function setLogo(
-  imageId,
-  textId
-) {
-
-  const image =
-    document.getElementById(
-      imageId
-    );
-
-
-  const text =
-    document.getElementById(
-      textId
-    );
-
-
-  if (LOGO_URL) {
-
-    image.src =
-      LOGO_URL;
-
-
-    image.classList
-      .remove('hidden');
-
-
-    text.classList
-      .add('hidden');
-
-  } else {
-
-    image.classList
-      .add('hidden');
-
-
-    text.classList
-      .remove('hidden');
-
+  function hideLoading() {
+    document.getElementById('loading').style.display = 'none';
   }
 
-}
+  function showError(message) {
+    hideLoading();
+    document.getElementById('errorMessage').textContent = message;
+    document.getElementById('errorView').style.display = 'grid';
+  }
 
+  let toastTimer;
 
-/* =====================================================
-   LOADING
-===================================================== */
+  function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent =
+      message?.message || String(message || 'เกิดข้อผิดพลาด');
 
-function setLoading(
-  message
-) {
+    toast.classList.add('show');
 
-  hideAll();
-
-
-  document
-    .getElementById(
-      'loadingText'
-    )
-    .textContent =
-      message;
-
-
-  document
-    .getElementById(
-      'loadingScreen'
-    )
-    .classList
-    .remove('hidden');
-
-}
-
-
-/* =====================================================
-   ERROR
-===================================================== */
-
-function showError(
-  message
-) {
-
-  hideAll();
-
-
-  document
-    .getElementById(
-      'errorMessage'
-    )
-    .textContent =
-      message;
-
-
-  document
-    .getElementById(
-      'errorScreen'
-    )
-    .classList
-    .remove('hidden');
-
-}
-
-
-/* =====================================================
-   HIDE ALL
-===================================================== */
-
-function hideAll() {
-
-  document
-    .querySelectorAll(
-      '#loadingScreen, #errorScreen, #registerScreen, #dashboardScreen'
-    )
-    .forEach(function(element) {
-
-      element.classList.add(
-        'hidden'
-      );
-
-    });
-
-}
-
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() {
+      toast.classList.remove('show');
+    }, 2800);
+  }
 </script>
-
 </body>
-
 </html>
