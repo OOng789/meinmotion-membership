@@ -36,7 +36,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--bg-light);
+      background: var(--bg-light); /* เปลี่ยนกลับเป็นพื้นสว่าง */
       color: var(--primary);
       font-family: var(--font-th);
       -webkit-font-smoothing: antialiased;
@@ -70,9 +70,9 @@
     .brand-wrap { display: flex; align-items: center; gap: 12px; }
     .brand-img {
       width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
-      background: var(--bg-white);
+      background: var(--bg-white); border: 2px solid var(--accent);
     }
-    .brand-text { font-family: var(--font-en); font-weight: 700; font-size: 24px; letter-spacing: -0.5px; color: var(--primary); }
+    .brand-text { font-family: var(--font-en); font-weight: 700; font-size: 24px; letter-spacing: -0.5px; text-transform: uppercase; color: var(--primary); }
 
     .greeting-sec { margin-bottom: 24px; }
     .greeting-sec p { color: var(--text-muted); font-size: 16px; margin-bottom: 4px; font-weight: 500; }
@@ -86,7 +86,7 @@
       background: var(--primary); 
       color: var(--bg-white); 
       position: relative; 
-      padding-bottom: 64px;
+      padding-bottom: 64px; /* เผื่อพื้นที่ให้ปุ่มด้านล่าง */
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(44,44,44,0.15);
     }
@@ -94,15 +94,16 @@
     .points-label { font-size: 14px; opacity: 0.9; margin-bottom: 8px; font-weight: 500; }
     .points-value { font-family: var(--font-en); font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -1.5px; }
     
+    /* ปุ่มในหน้าโฮมแบบลอยมุมขวาล่าง */
     .btn-history-home {
       position: absolute;
       bottom: 20px;
       right: 20px;
       background: var(--accent);
       color: var(--text-black);
-      padding: 12px 28px;
+      padding: 10px 20px;
       border-radius: 30px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 700;
       font-family: var(--font-en);
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -151,6 +152,11 @@
     .btn-main:active { transform: scale(0.98); }
     .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
     
+    .btn-outline {
+      width: 100%; background: transparent; color: var(--primary); border: 2px solid var(--primary);
+      padding: 16px; border-radius: 30px; font-weight: 700; font-size: 16px; margin-top: 10px;
+    }
+
     .btn-back {
       background: var(--bg-white); border: 1px solid var(--border-color);
       padding: 8px 16px; border-radius: 30px; font-size: 14px; font-weight: 700;
@@ -211,7 +217,7 @@
     .profile-header { text-align: center; padding: 20px 0 30px; }
     .profile-header img { 
       width: 100px; height: 100px; border-radius: 50%; 
-      border: 4px solid var(--bg-white); 
+      border: 4px solid var(--bg-white); /* Default Frame */
       margin-bottom: 16px; object-fit: cover; background: var(--bg-light);
       box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     }
@@ -302,6 +308,22 @@
   </div>
 
   <div id="toast" class="toast"></div>
+
+  <!-- Popup ยืนยันการแลกรางวัล -->
+  <div id="confirm-modal" class="modal-overlay">
+    <div class="modal-box">
+      <img id="c-logo" src="" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; object-fit: cover; display: block;">
+      <div style="font-family: var(--font-en); font-weight: 700; font-size: 14px; color: var(--primary); margin-bottom: 16px;">Mein Motion</div>
+      
+      <div class="modal-title">ยืนยันการแลกรางวัล</div>
+      <div class="modal-subtitle" id="confirm-sub-text">คุณต้องการใช้คะแนนเพื่อแลกรางวัลนี้ใช่หรือไม่?</div>
+      
+      <div style="display: flex; gap: 10px; margin-top: 24px;">
+        <button class="btn-main" style="background: var(--bg-light); color: var(--primary); border: 1px solid var(--border-color);" onclick="closeConfirmModal()">ยกเลิก</button>
+        <button class="btn-main" style="background: var(--accent); color: var(--primary);" onclick="executeRedeem()">ยืนยัน</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Popup สรุปการใช้/รับพอยต์ -->
   <div id="history-modal" class="modal-overlay">
@@ -420,10 +442,8 @@
       <div class="data-row"><span style="color: rgba(44,44,44,0.7);">อีเมล</span><span id="p-email" class="en-font">-</span></div>
       <div class="data-row"><span style="color: rgba(44,44,44,0.7);">วันเกิด</span><span id="p-bd" class="en-font">-</span></div>
       <div class="data-row"><span style="color: rgba(44,44,44,0.7);">จังหวัด</span><span id="p-prov">-</span></div>
-      <div class="data-row"><span style="color: rgba(44,44,44,0.7);">รับข่าวสารโปรโมชั่น (Marketing Consent)</span><span id="p-consent">-</span></div>
     </div>
 
-    <!-- กล่อง Lifestyle ปรับเป็นสีฟ้า -->
     <div class="profile-box card-accent" style="border: none;">
       <div class="profile-box-title" style="border-bottom-color: rgba(0,0,0,0.1);">
         <h3 style="color: var(--primary);">ไลฟ์สไตล์ (Lifestyle)</h3>
@@ -494,8 +514,8 @@
         <div class="color-picker" id="color-picker-ui">
           <div class="color-swatch" style="background:#FFFFFF" onclick="setFrameColor('#FFFFFF')"></div>
           <div class="color-swatch" style="background:#C4E0FD" onclick="setFrameColor('#C4E0FD')"></div>
-          <div class="color-swatch" style="background:#2C2C2C" onclick="setFrameColor('#2C2C2C')"></div>
-          <div class="color-swatch" style="background:#A73B24" onclick="setFrameColor('#A73B24')"></div>
+          <div class="color-swatch" style="background:#2A9D8F" onclick="setFrameColor('#2A9D8F')"></div>
+          <div class="color-swatch" style="background:#E63946" onclick="setFrameColor('#E63946')"></div>
           <div class="color-swatch" style="background:#F4A261" onclick="setFrameColor('#F4A261')"></div>
           <!-- โทนเขียวตุ่น (Sage Green) ให้ความรู้สึกมินิมอล ธรรมชาติ -->
           <div class="color-swatch" style="background:#A3B18A" onclick="setFrameColor('#A3B18A')"></div>
@@ -631,6 +651,7 @@
 const LIFF_ID = '2010909031-tWUD4KXE';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxeE794gZtF7RZv8soFJj32p8koGmv63LWfvqC3CYWBinTibm5S18jfL-oQvsO-6aY/exec';
 const LOGO_URL = 'https://raw.githubusercontent.com/OOng789/meinmotion-membership/refs/heads/main/%E0%B9%82%E0%B8%A5%E0%B9%82%E0%B8%81%E0%B9%89.png'; 
+
 
 // ข้อมูล Insights
 const INSIGHT_OPTIONS = {
@@ -833,9 +854,6 @@ function renderApp() {
 
   document.getElementById('p-prov').textContent = member.PROVINCE || '-';
   
-  const isConsent = member.MARKETING_CONSENT === true || String(member.MARKETING_CONSENT).toUpperCase() === 'TRUE';
-  document.getElementById('p-consent').textContent = isConsent ? 'รับข่าวสาร' : 'ไม่รับข่าวสาร';
-
   const renderTags = (id, strData) => {
     if(!strData) { document.getElementById(id).innerHTML = '-'; return; }
     document.getElementById(id).innerHTML = strData.split(',').map(s => `<div class="insight-tag">${s.trim()}</div>`).join('');
@@ -1058,14 +1076,12 @@ function openReward(id) {
   let btnHTML = '';
   if (stock <= 0) btnHTML = `<button class="btn-main" disabled>สินค้าหมด</button>`;
   else if (member.POINTS < cost) btnHTML = `<button class="btn-main" disabled>คะแนนไม่เพียงพอ</button>`;
-  // เปลี่ยนปุ่มเป็นสีฟ้า ตัดกับข้อความสีดำ
-  else btnHTML = `<button class="btn-main" style="background: var(--accent); color: var(--primary);" onclick="confirmRedeem()">แลกรางวัลเลย</button>`;
+  else btnHTML = `<button class="btn-main" style="background: var(--accent); color: var(--primary);" onclick="showConfirmModal()">แลกรางวัลเลย</button>`;
 
   document.getElementById('detail-content').innerHTML = `
     <div style="padding:0; overflow:hidden; border-radius: var(--radius-lg); background:var(--bg-white); margin-bottom: 24px; border: 1px solid var(--border-color);">
       <img src="${selectedReward.IMAGE_URL}" style="width:100%; aspect-ratio:1; object-fit:cover; background:var(--bg-light); border-bottom: 1px solid var(--border-color);">
       <div style="padding: 24px;">
-        <!-- ป้องกันชื่อรางวัลยาวเกินด้วยคำสั่งตัดคำ (word-break) -->
         <h2 style="font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text-black); word-break: break-word; white-space: normal;">${selectedReward.NAME}</h2>
         <div class="en-font" style="color:var(--primary); font-size:28px; font-weight:700; margin-bottom:16px;">
           ${fmt(cost)} <span style="font-size: 16px;">Point</span>
@@ -1080,12 +1096,19 @@ function openReward(id) {
   showScreen('detail');
 }
 
-function confirmRedeem() {
-  if(!confirm(`ยืนยันใช้ ${fmt(selectedReward.POINTS_REQUIRED)} Point แลก "${selectedReward.NAME}" หรือไม่?`)) return;
-  executeRedeem();
+// Custom Popup แทน confirm() แบบเดิม
+function showConfirmModal() {
+  if (!selectedReward) return;
+  document.getElementById('confirm-sub-text').textContent = `คุณต้องการใช้ ${fmt(selectedReward.POINTS_REQUIRED)} Point เพื่อแลก "${selectedReward.NAME}" ใช่หรือไม่?`;
+  document.getElementById('confirm-modal').style.display = 'flex';
+}
+
+function closeConfirmModal() {
+  document.getElementById('confirm-modal').style.display = 'none';
 }
 
 async function executeRedeem() {
+  closeConfirmModal();
   showLoading("กำลังดำเนินการ...");
   try {
     const res = await callAPI('redeemReward', {
@@ -1149,9 +1172,6 @@ function closeModal() {
   document.getElementById('history-modal').style.display = 'none';
 }
 
-/* ==========================================
-   NAVIGATION
-========================================== */
 function showScreen(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-' + screenId).classList.add('active');
@@ -1160,16 +1180,15 @@ function showScreen(screenId) {
   document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.target === navMap[screenId]));
 }
 
-/* ==========================================
-   UTILITIES
-========================================== */
 function val(id) { return document.getElementById(id).value.trim(); }
 function setVal(id, v) { document.getElementById(id).value = v || ''; }
 function fmt(num) { return Number(num||0).toLocaleString('th-TH'); }
 function showLoading(txt) { document.getElementById('loadText').textContent = txt || "LOADING..."; document.getElementById('loading').style.display = 'flex'; }
 function hideLoading() { document.getElementById('loading').style.display = 'none'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-function setAllLogos() { ['logo-home', 'logo-rew', 'logo-hist', 'logo-reg', 'logo-prof', 'm-logo'].forEach(id => { const el = document.getElementById(id); if(el) el.src = LOGO_URL; }); }
+function setAllLogos() { 
+  ['logo-home', 'logo-rew', 'logo-hist', 'logo-reg', 'logo-prof', 'm-logo', 'c-logo'].forEach(id => { const el = document.getElementById(id); if(el) el.src = LOGO_URL; }); 
+}
 </script>
 </body>
 </html>
