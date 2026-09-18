@@ -7,28 +7,25 @@
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  <!-- Fonts: Space Grotesk (EN/Numbers) & DM Sans (TH/General) -->
+  <!-- Fonts: Space Grotesk (EN) & Noto Sans Thai (TH) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      /* Brand Identity Colors */
-      --primary: #2C2C2C;     
-      --accent: #C4DFFC;      
-      --bg-white: #FFFFFF;    
-      --text-black: #000000;  
+      /* Brand Identity Colors ตามสัดส่วนที่ระบุ */
+      --primary: #2C2C2C;     /* 50% - พื้นหลังหลัก / สีหลัก */
+      --accent: #C4E0FD;      /* 30% - การ์ด / ปุ่ม / จุดเด่น */
+      --bg-white: #FFFFFF;    /* 10% - พื้นที่กรอกข้อมูล / กล่องเนื้อหาย่อย */
+      --text-black: #000000;  /* 10% - ข้อความหลัก */
       
-      /* UI Helper Colors */
-      --gray-light: #F7F8FA;  
-      --border-color: #EAEAEA;
       --text-muted: #777777;
       --error: #E63946;
       --success: #2A9D8F;
 
       --font-en: 'Space Grotesk', sans-serif;
-      --font-th: 'DM Sans', sans-serif;
+      --font-th: 'Noto Sans Thai', sans-serif;
 
       --radius-lg: 20px; 
       --radius-md: 12px;
@@ -37,7 +34,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: var(--gray-light);
+      background: var(--primary); /* คุมโทนหลัก 50% เป็นสีดำ */
       color: var(--text-black);
       font-family: var(--font-th);
       -webkit-font-smoothing: antialiased;
@@ -51,8 +48,8 @@
     /* Layout */
     .app {
       width: 100%; max-width: 480px; margin: 0 auto;
-      background: var(--gray-light); min-height: 100vh;
-      padding-bottom: 90px; position: relative;
+      background: var(--primary); min-height: 100vh;
+      padding-bottom: 100px; position: relative;
     }
 
     .screen {
@@ -70,46 +67,53 @@
     .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
     .brand-wrap { display: flex; align-items: center; gap: 12px; }
     .brand-img {
-      width: 44px; height: 44px; border-radius: 50%; object-fit: cover;
-      background: var(--bg-white); border: 1px solid var(--border-color);
+      width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+      background: var(--bg-white); border: 2px solid var(--accent);
     }
-    .brand-text { font-family: var(--font-en); font-weight: 700; font-size: 16px; letter-spacing: -0.5px; text-transform: uppercase; }
-    .user-avatar-mini { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 1.5px solid var(--border-color); }
+    .brand-text { font-family: var(--font-en); font-weight: 700; font-size: 24px; letter-spacing: -0.5px; text-transform: uppercase; color: var(--accent); }
 
     .greeting-sec { margin-bottom: 24px; }
-    .greeting-sec p { color: var(--text-muted); font-size: 16px; margin-bottom: 4px; }
-    .greeting-sec h1 { font-size: 28px; font-weight: 700; color: var(--primary); letter-spacing: -0.5px; line-height: 1.2; }
+    .greeting-sec p { color: var(--accent); font-size: 16px; margin-bottom: 4px; opacity: 0.8; }
+    .greeting-sec h1 { font-size: 32px; font-weight: 700; color: var(--bg-white); letter-spacing: -0.5px; line-height: 1.2; }
 
     /* --- Cards --- */
-    .card { background: var(--bg-white); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-    .card-dark { background: var(--primary); color: var(--bg-white); position: relative; overflow: hidden; }
+    .card { background: var(--bg-white); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px; }
     .card-accent { background: var(--accent); color: var(--primary); }
+    .card-dark { background: rgba(255,255,255,0.05); color: var(--bg-white); border: 1px solid rgba(255,255,255,0.1); }
     
-    .points-label { font-size: 13px; opacity: 0.8; margin-bottom: 8px; }
-    .points-value { font-family: var(--font-en); font-size: 52px; font-weight: 700; line-height: 1; margin-bottom: 24px; letter-spacing: -1.5px; }
+    .points-label { font-size: 14px; opacity: 0.8; margin-bottom: 8px; font-weight: 500; }
+    .points-value { font-family: var(--font-en); font-size: 56px; font-weight: 700; line-height: 1; margin-bottom: 24px; letter-spacing: -1.5px; }
     
     .btn-dark-outline {
-      background: rgba(255,255,255,0.1); color: var(--bg-white); padding: 10px 20px;
+      background: var(--primary); color: var(--bg-white); padding: 12px 24px;
       border-radius: 30px; font-size: 14px; display: inline-flex;
-      align-items: center; gap: 8px; transition: 0.2s; border: 1px solid rgba(255,255,255,0.2);
+      align-items: center; gap: 8px; transition: 0.2s; font-weight: 700;
     }
     
     /* --- Forms --- */
-    .form-group { margin-bottom: 18px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--primary); }
     .form-control {
-      width: 100%; padding: 14px 16px; border: 1px solid var(--border-color);
+      width: 100%; padding: 14px 16px; border: 1px solid #DDDDDD;
       border-radius: var(--radius-md); background: var(--bg-white);
       font-size: 15px; transition: 0.2s; color: var(--text-black);
     }
-    .form-control:focus { border-color: var(--primary); }
+    .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 2px var(--accent); }
     .required { color: var(--error); }
-    .error-msg { color: var(--error); font-size: 11px; margin-top: 4px; display: none; }
+    .error-msg { color: var(--error); font-size: 12px; margin-top: 6px; display: none; font-weight: 500; }
+
+    /* --- Gimmick: Frame Color Picker --- */
+    .color-picker { display: flex; gap: 12px; margin-top: 8px; }
+    .color-swatch { 
+      width: 36px; height: 36px; border-radius: 50%; cursor: pointer; 
+      border: 2px solid #DDD; transition: 0.2s;
+    }
+    .color-swatch.active { transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
 
     /* --- Chips (Lifestyle Choices) --- */
     .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .chip {
-      padding: 8px 16px; border: 1px solid var(--border-color); border-radius: 30px;
+      padding: 8px 16px; border: 1px solid #DDD; border-radius: 30px;
       font-size: 13px; color: var(--text-muted); cursor: pointer; transition: 0.2s; background: var(--bg-white);
     }
     .chip.active { background: var(--primary); color: var(--bg-white); border-color: var(--primary); font-weight: 700; }
@@ -117,92 +121,121 @@
     /* --- Buttons --- */
     .btn-main {
       width: 100%; background: var(--primary); color: var(--bg-white);
-      padding: 16px; border-radius: 30px; font-weight: 700; font-size: 15px; text-align: center; transition: 0.2s;
+      padding: 16px; border-radius: 30px; font-weight: 700; font-size: 16px; text-align: center; transition: 0.2s;
     }
     .btn-main:active { transform: scale(0.98); }
     .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
     
     .btn-outline {
-      width: 100%; background: transparent; color: var(--primary); border: 1px solid var(--primary);
-      padding: 16px; border-radius: 30px; font-weight: 700; font-size: 15px; margin-top: 10px;
+      width: 100%; background: transparent; color: var(--primary); border: 2px solid var(--primary);
+      padding: 16px; border-radius: 30px; font-weight: 700; font-size: 16px; margin-top: 10px;
     }
 
     .btn-back {
-      background: var(--bg-white); border: 1px solid var(--border-color);
-      padding: 8px 16px; border-radius: 30px; font-size: 13px; font-weight: 700;
+      background: var(--bg-white); border: none;
+      padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 700;
       display: inline-flex; align-items: center; gap: 6px; color: var(--primary);
     }
 
     /* --- Layouts & Lists --- */
     .section-title { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
-    .section-title h2 { font-size: 18px; font-weight: 700; color: var(--text-black); }
-    .text-link { color: var(--text-muted); font-size: 13px; text-decoration: underline; cursor: pointer; }
+    .section-title h2 { font-size: 20px; font-weight: 700; color: var(--bg-white); }
+    .text-link { color: var(--accent); font-size: 14px; text-decoration: underline; cursor: pointer; font-weight: 500; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     
-    .reward-box { background: var(--bg-white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-    .reward-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--gray-light); }
-    .reward-info { padding: 16px; }
-    .reward-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+    .reward-box { background: var(--bg-white); border-radius: var(--radius-lg); overflow: hidden; padding: 6px; border: 2px solid transparent; }
+    .reward-img { width: 100%; aspect-ratio: 1; border-radius: var(--radius-md); object-fit: cover; background: var(--primary); }
+    .reward-info { padding: 12px 8px; }
+    .reward-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--text-black);}
     .reward-pts { color: var(--primary); font-size: 16px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-en);}
-    .btn-sm { width: 100%; background: var(--primary); color: var(--bg-white); padding: 10px; border-radius: 30px; font-size: 12px; font-weight: 700; }
+    .btn-sm { width: 100%; background: var(--accent); color: var(--primary); padding: 10px; border-radius: 30px; font-size: 13px; font-weight: 700; }
 
     .list-item {
-      display: flex; gap: 16px; background: var(--bg-white); padding: 16px; border-radius: var(--radius-lg); margin-bottom: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03); align-items: center; cursor: pointer;
+      display: flex; gap: 16px; background: var(--bg-white); padding: 12px; border-radius: var(--radius-lg); margin-bottom: 12px;
+      align-items: center; cursor: pointer;
     }
-    .list-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: var(--gray-light); }
+    .list-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: var(--primary); }
     .list-item-content { flex: 1; }
     
     /* History Grouping */
-    .history-month-label { font-size: 14px; font-weight: 700; color: var(--text-muted); margin: 24px 0 12px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
-    .history-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-white); border-radius: var(--radius-md); margin-bottom: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
-    .hist-title { font-weight: 700; font-size: 14px; color: var(--primary); }
+    .history-month-label { font-size: 16px; font-weight: 700; color: var(--accent); margin: 24px 0 12px 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;}
+    .history-row { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-white); border-radius: var(--radius-md); margin-bottom: 8px; }
+    .hist-title { font-weight: 700; font-size: 14px; color: var(--text-black); }
     .hist-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
     .hist-pts { font-family: var(--font-en); font-weight: 700; font-size: 16px; }
     .hist-pts.plus { color: var(--success); }
-    .hist-pts.minus { color: var(--primary); opacity: 0.6; }
+    .hist-pts.minus { color: var(--primary); }
 
     /* Profile UI */
     .profile-header { text-align: center; padding: 20px 0 30px; }
-    .profile-header img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--bg-white); box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 16px;}
-    .profile-box { background: var(--bg-white); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
-    .profile-box-title { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 16px; }
-    .profile-box-title h3 { font-size: 15px; font-weight: 700; color: var(--primary); }
-    .edit-link { color: var(--text-muted); font-size: 12px; text-decoration: underline; cursor: pointer; }
+    .profile-header img { 
+      width: 100px; height: 100px; border-radius: 50%; 
+      border: 4px solid var(--bg-white); /* Default Frame */
+      margin-bottom: 16px; object-fit: cover; background: var(--primary);
+    }
+    #prof-name { color: var(--bg-white); }
+    
+    .profile-box { background: var(--accent); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 16px; }
+    .profile-box-title { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--primary); padding-bottom: 12px; margin-bottom: 16px; }
+    .profile-box-title h3 { font-size: 16px; font-weight: 700; color: var(--primary); }
+    .edit-link { color: var(--primary); font-size: 13px; text-decoration: underline; cursor: pointer; font-weight: 700; }
     
     .data-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 16px; }
     .data-row:last-child { margin-bottom: 0; }
-    .data-row span:first-child { color: var(--text-muted); font-size: 12px; }
+    .data-row span:first-child { color: var(--primary); opacity: 0.7; font-size: 13px; font-weight: 500; }
     .data-row span:last-child { font-weight: 700; font-size: 15px; color: var(--primary); }
+    
     .insight-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;}
-    .insight-tag { background: var(--gray-light); padding: 4px 10px; border-radius: 6px; font-size: 12px; color: var(--primary); }
+    .insight-tag { background: var(--primary); padding: 6px 12px; border-radius: 8px; font-size: 12px; color: var(--accent); font-weight: 500;}
 
-    /* Birthday Theme */
-    .bday-banner { display: none; background: linear-gradient(135deg, #F9D423 0%, #FF4E50 100%); color: white; padding: 12px; border-radius: var(--radius-md); text-align: center; font-weight: 700; margin-bottom: 20px; font-size: 14px; box-shadow: 0 4px 15px rgba(255, 78, 80, 0.2); }
-    .card-dark.is-bday { background: linear-gradient(135deg, #1A1A1A 0%, #434343 100%); }
-    .card-dark.is-bday::after { background: #FF4E50; opacity: 0.2; }
+    /* Birthday Theme (Premium Card) */
+    .bday-card { 
+      display: none; background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%); 
+      color: var(--text-black); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;
+      text-align: center; box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+    }
+    .bday-card h2 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .bday-card p { font-size: 14px; font-weight: 500; }
+
+    /* Modal / Popup */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
+      display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px;
+    }
+    .modal-box {
+      background: var(--bg-white); border-radius: var(--radius-lg); padding: 30px 24px;
+      width: 100%; max-width: 400px; text-align: center; position: relative;
+    }
+    .modal-icon { font-size: 50px; margin-bottom: 16px; }
+    .modal-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .modal-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+    .modal-detail { background: var(--gray-light); border-radius: var(--radius-md); padding: 16px; text-align: left; margin-bottom: 24px; }
+    .m-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
+    .m-row:last-child { margin-bottom: 0; }
+    .m-label { color: var(--text-muted); }
+    .m-val { font-weight: 700; color: var(--text-black); }
 
     /* --- Bottom Nav --- */
     .bottom-nav {
       position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px;
-      background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); display: flex; justify-content: space-around;
-      padding: 14px 10px calc(14px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-color); z-index: 100;
+      background: var(--bg-white); display: flex; justify-content: space-around;
+      padding: 16px 10px calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border-color); z-index: 100;
     }
     .nav-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; color: var(--text-muted); 
+      display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; color: #CCCCCC; 
       font-size: 10px; font-weight: 700; font-family: var(--font-en); letter-spacing: 0.5px;
     }
     .nav-btn.active { color: var(--primary); }
-    .nav-icon { font-size: 20px; margin-bottom: 2px;}
+    .nav-icon { font-size: 22px; margin-bottom: 2px;}
 
     /* Utilities */
-    .loading-overlay { position: absolute; inset: 0; background: var(--gray-light); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
-    .spinner { width: 36px; height: 36px; border: 3px solid #DDD; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
+    .loading-overlay { position: absolute; inset: 0; background: var(--primary); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999; }
+    .spinner { width: 40px; height: 40px; border: 4px solid rgba(255,255,255,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .toast {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); color: var(--bg-white); 
-      padding: 14px 24px; border-radius: 30px; font-size: 14px; font-weight: 700; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--primary); 
+      padding: 14px 24px; border-radius: 30px; font-size: 14px; font-weight: 700; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
     .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; background: var(--bg-white); border-radius: var(--radius-lg); }
@@ -215,31 +248,53 @@
 
   <div id="loading" class="loading-overlay">
     <div class="spinner"></div>
-    <div id="loadText" class="en-font" style="color: var(--text-muted); font-size: 14px;">LOADING...</div>
+    <div id="loadText" class="en-font" style="color: var(--accent); font-size: 14px;">LOADING...</div>
   </div>
 
   <div id="toast" class="toast"></div>
 
+  <!-- Popup สรุปการแลกรางวัล -->
+  <div id="redeem-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-icon">🎉</div>
+      <div class="modal-title">แลกรางวัลสำเร็จ!</div>
+      <div class="modal-subtitle">กรุณาบันทึกหน้าจอนี้ไว้เป็นหลักฐาน</div>
+      
+      <div class="modal-detail">
+        <div class="m-row"><span class="m-label">รางวัล:</span><span class="m-val" id="m-reward-name"></span></div>
+        <div class="m-row"><span class="m-label">แต้มที่ใช้:</span><span class="m-val en-font" id="m-spent" style="color:var(--error);"></span></div>
+        <div class="m-row"><span class="m-label">แต้มคงเหลือ:</span><span class="m-val en-font" id="m-bal"></span></div>
+        <div class="m-row"><span class="m-label">รหัสอ้างอิง:</span><span class="m-val en-font" id="m-code"></span></div>
+        <div class="m-row"><span class="m-label">วัน/เวลา:</span><span class="m-val en-font" id="m-date"></span></div>
+      </div>
+      
+      <button class="btn-main" onclick="closeModal()">ตกลง</button>
+    </div>
+  </div>
+
   <!-- ==================== HOME SCREEN ==================== -->
   <section id="screen-home" class="screen">
+    <!-- เอาวงกลมโปรไฟล์ออกตามคำขอ -->
     <div class="topbar">
       <div class="brand-wrap">
         <img id="logo-home" class="brand-img" src="" alt="Logo">
         <div class="brand-text">MEIN MOTION</div>
       </div>
-      <img id="user-avatar" class="user-avatar-mini" src="" alt="User">
     </div>
 
-    <!-- โบนัส: แบนเนอร์วันเกิด -->
-    <div id="bday-banner" class="bday-banner">🎉 สุขสันต์วันเกิด! ขอให้คุณมีความสุขกับ Mein Motion นะคะ 🎂</div>
+    <!-- UI วันเกิดแบบพรีเมียม -->
+    <div id="bday-banner" class="bday-card">
+      <h2>🎉 สุขสันต์วันเกิด! 🎂</h2>
+      <p>ขอให้ปีนี้เป็นปีที่ยอดเยี่ยม มีสุขภาพแข็งแรง และสนุกกับการออกกำลังกายไปกับ Mein Motion นะคะ</p>
+    </div>
 
     <div class="greeting-sec">
       <p>สวัสดี,</p>
       <h1 id="home-name">MEMBER</h1>
     </div>
 
-    <div id="home-pts-card" class="card card-dark">
-      <div class="points-label">คะแนนสะสมของคุณ</div>
+    <div id="home-pts-card" class="card card-accent">
+      <div class="points-label" style="color: var(--primary);">คะแนนสะสมของคุณ</div>
       <div class="points-value" id="home-pts">0</div>
       <button class="btn-dark-outline" onclick="showScreen('history')">
         ประวัติการใช้งาน ➔
@@ -257,16 +312,18 @@
   <section id="screen-rewards" class="screen">
     <div class="topbar">
       <div class="brand-wrap">
+        <img id="logo-rew" class="brand-img" src="" alt="Logo">
         <div class="brand-text">REWARDS</div>
       </div>
     </div>
     
+    <!-- กล่องพอยต์เป็นสีฟ้าตามคำขอ -->
     <div class="card card-accent" style="display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; margin-bottom: 20px;">
       <div>
-        <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">คะแนนปัจจุบัน</div>
-        <div style="font-size: 12px; opacity: 0.8;">แลกของรางวัลที่ต้องการได้เลย</div>
+        <div style="font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--primary);">คะแนนปัจจุบัน</div>
+        <div style="font-size: 12px; color: var(--primary); opacity: 0.8;">แลกของรางวัลที่ต้องการได้เลย</div>
       </div>
-      <strong class="en-font" style="font-size: 32px;" id="rew-pts">0</strong>
+      <strong class="en-font" style="font-size: 36px; color: var(--primary);" id="rew-pts">0</strong>
     </div>
 
     <div id="reward-list-full"></div>
@@ -276,6 +333,7 @@
   <section id="screen-history" class="screen">
     <div class="topbar">
       <div class="brand-wrap">
+        <img id="logo-hist" class="brand-img" src="" alt="Logo">
         <div class="brand-text">HISTORY</div>
       </div>
     </div>
@@ -286,13 +344,14 @@
   <section id="screen-profile" class="screen">
     <div class="topbar">
       <div class="brand-wrap">
+        <img id="logo-prof" class="brand-img" src="" alt="Logo">
         <div class="brand-text">PROFILE</div>
       </div>
     </div>
 
     <div class="profile-header">
       <img id="prof-img" src="" alt="Profile">
-      <h2 id="prof-name" style="font-size: 22px; font-weight: 700;">-</h2>
+      <h2 id="prof-name" style="font-size: 24px; font-weight: 700;">-</h2>
     </div>
 
     <div class="profile-box">
@@ -304,11 +363,12 @@
       <div class="data-row"><span>อีเมล</span><span id="p-email" class="en-font">-</span></div>
       <div class="data-row"><span>วันเกิด</span><span id="p-bd" class="en-font">-</span></div>
       <div class="data-row"><span>จังหวัด</span><span id="p-prov">-</span></div>
+      <div class="data-row"><span>รับข่าวสารโปรโมชั่น (Marketing Consent)</span><span id="p-consent">-</span></div>
     </div>
 
     <div class="profile-box">
       <div class="profile-box-title">
-        <h3>ไลฟ์สไตล์</h3>
+        <h3>ไลฟ์สไตล์ (Insights)</h3>
         <span class="edit-link" onclick="showExtraProfile()">อัปเดตข้อมูล</span>
       </div>
       <div class="data-row"><span>ไลฟ์สไตล์ของคุณ</span><div class="insight-tags" id="p-lifestyle">-</div></div>
@@ -322,7 +382,7 @@
   <section id="screen-register" class="screen">
     <div class="topbar" style="justify-content: center; flex-direction: column; gap: 16px; margin-bottom: 30px; padding-top: 20px;">
       <img id="logo-reg" class="brand-img" style="width: 72px; height: 72px;" src="" alt="Logo">
-      <div class="brand-text" style="font-size: 22px;">REGISTER</div>
+      <div class="brand-text" style="font-size: 26px;">REGISTER</div>
     </div>
 
     <div class="card">
@@ -337,7 +397,7 @@
       <div class="form-group">
         <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
         <input type="tel" id="r-phone" class="form-control en-font" placeholder="ตัวเลข 10 หลัก" maxlength="10">
-        <div id="err-phone" class="error-msg">กรุณากรอกเบอร์โทรศัพท์ 10 หลักให้ถูกต้อง</div>
+        <div id="err-phone" class="error-msg">กรุณากรอกเบอร์โทรศัพท์ 10 หลักให้ถูกต้อง (ตัวเลขเท่านั้น)</div>
       </div>
       <div class="form-group">
         <label>อีเมล <span class="required">*</span></label>
@@ -347,15 +407,15 @@
       <div class="form-group">
         <label>วันเกิด <span class="required">*</span></label>
         <input type="date" id="r-bd" class="form-control en-font">
-        <div id="err-age" class="error-msg">ต้องมีอายุ 15 ปีขึ้นไปเพื่อสมัครสมาชิก</div>
+        <div id="err-age" class="error-msg">ต้องมีอายุมากกว่า 15 ปีขึ้นไปเท่านั้น เพื่อสมัครสมาชิก</div>
       </div>
       <div class="form-group">
-        <label>จังหวัด</label>
+        <label>จังหวัด (ประเทศไทย)</label>
         <select id="r-prov" class="form-control"></select>
       </div>
       <div class="form-group" style="display: flex; gap: 12px; align-items: flex-start; margin-top: 24px;">
         <input type="checkbox" id="r-consent" style="margin-top: 2px; transform: scale(1.2); accent-color: var(--primary);">
-        <label style="font-size: 13px; line-height: 1.5; color: var(--text-muted); font-weight: 400;">ฉันยอมรับเงื่อนไขและต้องการรับข่าวสาร โปรโมชั่นพิเศษจาก Mein Motion</label>
+        <label style="font-size: 13px; line-height: 1.5; color: var(--text-muted); font-weight: 500;">ฉันยอมรับเงื่อนไขและต้องการรับข่าวสาร โปรโมชั่นพิเศษจาก Mein Motion</label>
       </div>
 
       <button id="btn-reg" class="btn-main" onclick="doRegister()">สมัครสมาชิก</button>
@@ -371,12 +431,40 @@
     </div>
     
     <div class="card">
+      <div class="form-group">
+        <label>เลือกสีกรอบรูปโปรไฟล์ (Gimmick)</label>
+        <div class="color-picker" id="color-picker-ui">
+          <div class="color-swatch" style="background:#FFFFFF" onclick="setFrameColor('#FFFFFF')"></div>
+          <div class="color-swatch" style="background:#C4E0FD" onclick="setFrameColor('#C4E0FD')"></div>
+          <div class="color-swatch" style="background:#2A9D8F" onclick="setFrameColor('#2A9D8F')"></div>
+          <div class="color-swatch" style="background:#E63946" onclick="setFrameColor('#E63946')"></div>
+          <div class="color-swatch" style="background:#F4A261" onclick="setFrameColor('#F4A261')"></div>
+        </div>
+      </div>
+      
       <div class="form-group"><label>ชื่อ <span class="required">*</span></label><input type="text" id="e-fn" class="form-control"></div>
       <div class="form-group"><label>นามสกุล <span class="required">*</span></label><input type="text" id="e-ln" class="form-control"></div>
-      <div class="form-group"><label>เบอร์โทรศัพท์ <span class="required">*</span></label><input type="tel" id="e-phone" class="form-control en-font" maxlength="10"><div id="e-err-phone" class="error-msg">กรุณากรอกเบอร์โทรศัพท์ 10 หลักให้ถูกต้อง</div></div>
-      <div class="form-group"><label>อีเมล <span class="required">*</span></label><input type="email" id="e-email" class="form-control en-font"><div id="e-err-email" class="error-msg">รูปแบบอีเมลไม่ถูกต้อง</div></div>
-      <div class="form-group"><label>วันเกิด</label><input type="date" id="e-bd" class="form-control en-font" readonly style="background:var(--gray-light); color:var(--text-muted);"></div>
+      <div class="form-group">
+        <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
+        <input type="tel" id="e-phone" class="form-control en-font" maxlength="10">
+        <div id="e-err-phone" class="error-msg">กรุณากรอกเบอร์โทรศัพท์ 10 หลักให้ถูกต้อง</div>
+      </div>
+      <div class="form-group">
+        <label>อีเมล <span class="required">*</span></label>
+        <input type="email" id="e-email" class="form-control en-font">
+        <div id="e-err-email" class="error-msg">รูปแบบอีเมลไม่ถูกต้อง</div>
+      </div>
+      <div class="form-group">
+        <label>วันเกิด <span class="required">*</span></label>
+        <input type="date" id="e-bd" class="form-control en-font">
+        <div id="e-err-age" class="error-msg">อายุต้องมากกว่า 15 ปีขึ้นไปเท่านั้น</div>
+      </div>
       <div class="form-group"><label>จังหวัด</label><select id="e-prov" class="form-control"></select></div>
+      
+      <div class="form-group" style="display: flex; gap: 12px; align-items: flex-start; margin-top: 24px;">
+        <input type="checkbox" id="e-consent" style="margin-top: 2px; transform: scale(1.2); accent-color: var(--primary);">
+        <label style="font-size: 13px; line-height: 1.5; color: var(--text-muted); font-weight: 500;">ฉันต้องการรับข่าวสาร โปรโมชั่นพิเศษจาก Mein Motion</label>
+      </div>
       
       <button id="btn-save-prof" class="btn-main" style="margin-top: 20px;" onclick="doSaveProfile()">บันทึกการแก้ไข</button>
     </div>
@@ -457,7 +545,7 @@ const LIFF_ID = '2010909031-tWUD4KXE';
 const API_URL = 'https://script.google.com/macros/s/AKfycbxeE794gZtF7RZv8soFJj32p8koGmv63LWfvqC3CYWBinTibm5S18jfL-oQvsO-6aY/exec';
 const LOGO_URL = 'https://raw.githubusercontent.com/OOng789/meinmotion-membership/refs/heads/main/%E0%B9%82%E0%B8%A5%E0%B9%82%E0%B8%81%E0%B9%89.png'; 
 
-// ข้อมูล Insights (แก้ไขง่ายๆ ที่นี่)
+// ข้อมูล Insights (เพิ่มลด ช้อยส์ได้ที่นี่)
 const INSIGHT_OPTIONS = {
   lifestyle: ['ทำงาน', 'เรียน', 'เข้าสังคม', 'ดูแลตัวเอง', 'ออกกำลังกาย', 'เดินทาง', 'Self-care / Wellness'],
   sports: ['Running', 'Gym', 'Cycling', 'Yoga / Pilates', 'Badminton', 'Tennis', 'Football', 'Basketball','Swimming', 'Hiking / Outdoor'],
@@ -473,6 +561,7 @@ let member = null;
 let rewards = [];
 let history = [];
 let selectedReward = null;
+let selectedFrameColor = '#FFFFFF'; // ค่าเริ่มต้นกรอบโปรไฟล์
 
 const thaiProvinces = ["กรุงเทพมหานคร","กระบี่","กาญจนบุรี","กาฬสินธุ์","กำแพงเพชร","ขอนแก่น","จันทบุรี","ฉะเชิงเทรา","ชลบุรี","ชัยนาท","ชัยภูมิ","ชุมพร","เชียงราย","เชียงใหม่","ตรัง","ตราด","ตาก","นครนายก","นครปฐม","นครพนม","นครราชสีมา","นครศรีธรรมราช","นครสวรรค์","นนทบุรี","นราธิวาส","น่าน","บึงกาฬ","บุรีรัมย์","ปทุมธานี","ประจวบคีรีขันธ์","ปราจีนบุรี","ปัตตานี","พระนครศรีอยุธยา","พะเยา","พังงา","พัทลุง","พิจิตร","พิษณุโลก","เพชรบุรี","เพชรบูรณ์","แพร่","ภูเก็ต","มหาสารคาม","มุกดาหาร","แม่ฮ่องสอน","ยโสธร","ยะลา","ร้อยเอ็ด","ระนอง","ระยอง","ราชบุรี","ลพบุรี","ลำปาง","ลำพูน","เลย","ศรีสะเกษ","สกลนคร","สงขลา","สตูล","สมุทรปราการ","สมุทรสงคราม","สมุทรสาคร","สระแก้ว","สระบุรี","สิงห์บุรี","สุโขทัย","สุพรรณบุรี","สุราษฎร์ธานี","สุรินทร์","หนองคาย","หนองบัวลำภู","อ่างทอง","อำนาจเจริญ","อุดรธานี","อุตรดิตถ์","อุทัยธานี","อุบลราชธานี","เบตง"];
 
@@ -496,7 +585,6 @@ async function initAll() {
     if (!liff.isLoggedIn()) { liff.login(); return; }
     
     lineProfile = await liff.getProfile();
-    document.getElementById('user-avatar').src = lineProfile.pictureUrl || '';
     
     const res = await callAPI('initApp', { userId: lineProfile.userId });
     rewards = res.rewards || [];
@@ -506,6 +594,11 @@ async function initAll() {
 
     if (res.member) {
       member = res.member;
+      
+      // ดึงสีกรอบโปรไฟล์จาก Local Storage ถ้าเคยตั้งไว้
+      const savedColor = localStorage.getItem('frameColor_' + lineProfile.userId);
+      if (savedColor) selectedFrameColor = savedColor;
+
       renderApp();
       showScreen('home');
       document.getElementById('bottomNav').style.display = 'flex';
@@ -546,8 +639,10 @@ function validateAge(dateString) {
   const birthDate = new Date(dateString);
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-  return age >= 15;
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age > 15; // ต้องมากกว่า 15 ปี (16 ขึ้นไป)
 }
 
 function showErr(id, show) { document.getElementById(id).style.display = show ? 'block' : 'none'; }
@@ -563,22 +658,17 @@ function checkBirthday() {
 }
 
 function renderApp() {
-  // ชื่อผู้ใช้
   document.getElementById('home-name').textContent = member.FIRST_NAME || lineProfile.displayName;
   
-  // Birthday Bonus
   if(checkBirthday()) {
     document.getElementById('bday-banner').style.display = 'block';
-    document.getElementById('home-pts-card').classList.add('is-bday');
   } else {
     document.getElementById('bday-banner').style.display = 'none';
-    document.getElementById('home-pts-card').classList.remove('is-bday');
   }
 
   document.getElementById('home-pts').textContent = fmt(member.POINTS);
   document.getElementById('rew-pts').textContent = fmt(member.POINTS);
 
-  // Rewards (Home limit 2)
   const hRewards = rewards.slice(0, 2);
   document.getElementById('home-rewards').innerHTML = hRewards.length 
     ? hRewards.map(r => `
@@ -586,27 +676,25 @@ function renderApp() {
         <img src="${r.IMAGE_URL}" class="reward-img" onerror="this.src='https://via.placeholder.com/150'">
         <div class="reward-info">
           <div class="reward-title">${r.NAME}</div>
-          <div class="reward-pts">${fmt(r.POINTS_REQUIRED)} PTS</div>
+          <div class="reward-pts">${fmt(r.POINTS_REQUIRED)} Point</div>
           <button class="btn-sm">แลกรางวัล</button>
         </div>
       </div>
     `).join('')
     : '<div class="empty-state" style="grid-column: span 2;">ยังไม่มีของรางวัลเปิดให้แลก</div>';
 
-  // Rewards (Full List)
   document.getElementById('reward-list-full').innerHTML = rewards.length
     ? rewards.map(r => `
       <div class="list-item" onclick="openReward('${r.REWARD_ID}')">
         <img src="${r.IMAGE_URL}" class="list-item-img" onerror="this.src='https://via.placeholder.com/150'">
         <div class="list-item-content">
           <div class="reward-title">${r.NAME}</div>
-          <div class="reward-pts" style="margin-bottom:0;">${fmt(r.POINTS_REQUIRED)} PTS</div>
+          <div class="reward-pts" style="margin-bottom:0;">${fmt(r.POINTS_REQUIRED)} Point</div>
         </div>
       </div>
     `).join('')
     : '<div class="empty-state">ยังไม่มีของรางวัลเปิดให้แลก</div>';
 
-  // History Grouping by Month/Year
   const histContainer = document.getElementById('history-list');
   if(!history.length) {
     histContainer.innerHTML = '<div class="empty-state">ยังไม่มีประวัติการใช้งาน</div>';
@@ -641,14 +729,29 @@ function renderApp() {
   }
 
   // Profile Info
-  document.getElementById('prof-img').src = lineProfile.pictureUrl || '';
+  const profImgEl = document.getElementById('prof-img');
+  profImgEl.src = lineProfile.pictureUrl || '';
+  profImgEl.style.borderColor = selectedFrameColor; // Apply Gimmick Border Color
+
   document.getElementById('prof-name').textContent = `${member.FIRST_NAME} ${member.LAST_NAME}`;
   document.getElementById('p-phone').textContent = member.PHONE || '-';
   document.getElementById('p-email').textContent = member.EMAIL || '-';
-  document.getElementById('p-bd').textContent = member.BIRTHDAY ? String(member.BIRTHDAY).slice(0,10) : '-';
-  document.getElementById('p-prov').textContent = member.PROVINCE || '-';
+  
+  // Format Date for immediate display update
+  const pBdEl = document.getElementById('p-bd');
+  if (member.BIRTHDAY) {
+    const bd = new Date(member.BIRTHDAY);
+    pBdEl.textContent = isNaN(bd) ? member.BIRTHDAY : bd.toISOString().slice(0,10);
+  } else {
+    pBdEl.textContent = '-';
+  }
 
-  // Profile Tags rendering
+  document.getElementById('p-prov').textContent = member.PROVINCE || '-';
+  
+  // Check Consent
+  const isConsent = member.MARKETING_CONSENT === true || String(member.MARKETING_CONSENT).toUpperCase() === 'TRUE';
+  document.getElementById('p-consent').textContent = isConsent ? 'รับข่าวสาร' : 'ไม่รับข่าวสาร';
+
   const renderTags = (id, strData) => {
     if(!strData) { document.getElementById(id).innerHTML = '-'; return; }
     document.getElementById(id).innerHTML = strData.split(',').map(s => `<div class="insight-tag">${s.trim()}</div>`).join('');
@@ -674,10 +777,7 @@ function buildInsightChips() {
   });
 }
 
-function toggleChip(el, cat) {
-  el.classList.toggle('active');
-}
-
+function toggleChip(el, cat) { el.classList.toggle('active'); }
 function toggleOtherChip(el, cat) {
   el.classList.toggle('active');
   const input = document.getElementById(`other-${cat}`);
@@ -729,6 +829,14 @@ function setChipsFromData(cat, strData) {
 /* ==========================================
    USER ACTIONS
 ========================================== */
+function setFrameColor(color) {
+  selectedFrameColor = color;
+  // อัปเดต UI ของ Color Picker ให้เห็นว่าอันไหนถูกเลือก
+  const swatches = document.querySelectorAll('.color-swatch');
+  swatches.forEach(sw => sw.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
 async function doRegister() {
   const fn = val('r-fn'), ln = val('r-ln'), ph = val('r-phone'), em = val('r-email'), bd = val('r-bd');
   let isValid = true;
@@ -768,21 +876,31 @@ async function doRegister() {
 function showEditProfile() {
   setVal('e-fn', member.FIRST_NAME); setVal('e-ln', member.LAST_NAME);
   setVal('e-phone', member.PHONE); setVal('e-email', member.EMAIL);
-  if(member.BIRTHDAY) setVal('e-bd', String(member.BIRTHDAY).slice(0,10));
+  
+  // Set Date Input correctly (yyyy-mm-dd)
+  if (member.BIRTHDAY) {
+    const bd = new Date(member.BIRTHDAY);
+    if(!isNaN(bd)) setVal('e-bd', bd.toISOString().slice(0,10));
+  }
+  
   setVal('e-prov', member.PROVINCE);
   
-  showErr('e-err-phone', false); showErr('e-err-email', false);
+  const isConsent = member.MARKETING_CONSENT === true || String(member.MARKETING_CONSENT).toUpperCase() === 'TRUE';
+  document.getElementById('e-consent').checked = isConsent;
+  
+  showErr('e-err-phone', false); showErr('e-err-email', false); showErr('e-err-age', false);
   showScreen('edit-profile');
 }
 
 async function doSaveProfile() {
-  const fn = val('e-fn'), ln = val('e-ln'), ph = val('e-phone'), em = val('e-email');
+  const fn = val('e-fn'), ln = val('e-ln'), ph = val('e-phone'), em = val('e-email'), bd = val('e-bd');
   let isValid = true;
   
-  if(!fn || !ln || !ph || !em) { showToast("กรุณากรอกข้อมูลที่มี * ให้ครบถ้วน"); return; }
+  if(!fn || !ln || !ph || !em || !bd) { showToast("กรุณากรอกข้อมูลที่มี * ให้ครบถ้วน"); return; }
   
   if(!validatePhone(ph)) { showErr('e-err-phone', true); isValid = false; } else { showErr('e-err-phone', false); }
   if(!validateEmail(em)) { showErr('e-err-email', true); isValid = false; } else { showErr('e-err-email', false); }
+  if(!validateAge(bd)) { showErr('e-err-age', true); isValid = false; } else { showErr('e-err-age', false); }
   
   if(!isValid) return;
 
@@ -790,13 +908,19 @@ async function doSaveProfile() {
   btn.disabled = true; btn.textContent = "กำลังบันทึก...";
 
   try {
+    const consentVal = document.getElementById('e-consent').checked;
     await callAPI('updateMember', {
       userId: lineProfile.userId, firstName: fn, lastName: ln, phone: ph, email: em,
-      birthday: val('e-bd'), country: "Thailand", province: val('e-prov')
+      birthday: bd, country: "Thailand", province: val('e-prov'), marketingConsent: consentVal
     });
     
+    // อัปเดตข้อมูลในตัวเครื่องทันที เพื่อให้แสดงผลเลยไม่ต้องรีเฟรช
     member.FIRST_NAME = fn; member.LAST_NAME = ln; member.PHONE = ph;
-    member.EMAIL = em; member.PROVINCE = val('e-prov');
+    member.EMAIL = em; member.PROVINCE = val('e-prov'); member.BIRTHDAY = bd;
+    member.MARKETING_CONSENT = consentVal;
+    
+    // บันทึกสีกรอบรูปใน Local Storage
+    localStorage.setItem('frameColor_' + lineProfile.userId, selectedFrameColor);
     
     renderApp();
     showToast("บันทึกการแก้ไขสำเร็จ");
@@ -856,12 +980,12 @@ function openReward(id) {
   else btnHTML = `<button class="btn-main" onclick="confirmRedeem()">แลกรางวัลเลย</button>`;
 
   document.getElementById('detail-content').innerHTML = `
-    <div style="padding:0; overflow:hidden; border-radius: var(--radius-lg); background:var(--bg-white); box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-bottom: 24px;">
-      <img src="${selectedReward.IMAGE_URL}" style="width:100%; aspect-ratio:1; object-fit:cover; background:var(--gray-light);">
+    <div style="padding:0; overflow:hidden; border-radius: var(--radius-lg); background:var(--bg-white); margin-bottom: 24px;">
+      <img src="${selectedReward.IMAGE_URL}" style="width:100%; aspect-ratio:1; object-fit:cover; background:var(--primary);">
       <div style="padding: 24px;">
         <h2 style="font-size:20px; font-weight:700; margin-bottom:8px; color:var(--primary);">${selectedReward.NAME}</h2>
         <div class="en-font" style="color:var(--primary); font-size:28px; font-weight:700; margin-bottom:16px;">
-          ${fmt(cost)} <span style="font-size: 16px;">PTS</span>
+          ${fmt(cost)} <span style="font-size: 16px;">Point</span>
         </div>
         <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:24px;">
           ${selectedReward.DESCRIPTION || 'รายละเอียดของรางวัล'}
@@ -874,7 +998,7 @@ function openReward(id) {
 }
 
 function confirmRedeem() {
-  if(!confirm(`ยืนยันใช้ ${fmt(selectedReward.POINTS_REQUIRED)} แต้ม แลก "${selectedReward.NAME}" หรือไม่?`)) return;
+  if(!confirm(`ยืนยันใช้ ${fmt(selectedReward.POINTS_REQUIRED)} Point แลก "${selectedReward.NAME}" หรือไม่?`)) return;
   executeRedeem();
 }
 
@@ -895,12 +1019,25 @@ async function executeRedeem() {
     renderApp();
     hideLoading();
     
-    alert(`แลกรางวัลสำเร็จ!\nรหัสอ้างอิง: ${res.redemptionId}`);
-    showScreen('rewards');
+    // โชว์ Popup สรุปการแลกของรางวัล
+    document.getElementById('m-reward-name').textContent = selectedReward.NAME;
+    document.getElementById('m-spent').textContent = "-" + fmt(selectedReward.POINTS_REQUIRED) + " Point";
+    document.getElementById('m-bal').textContent = fmt(res.balanceAfter) + " Point";
+    document.getElementById('m-code').textContent = res.redemptionId;
+    document.getElementById('m-date').textContent = new Date().toLocaleString('th-TH');
+    
+    document.getElementById('redeem-modal').style.display = 'flex';
+    
+    // showScreen('rewards'); (จะเปลี่ยนหน้าตอนกดปิด Modal แทน)
   } catch(e) {
     hideLoading();
     showToast(e.message);
   }
+}
+
+function closeModal() {
+  document.getElementById('redeem-modal').style.display = 'none';
+  showScreen('rewards');
 }
 
 /* ==========================================
@@ -923,7 +1060,7 @@ function fmt(num) { return Number(num||0).toLocaleString('th-TH'); }
 function showLoading(txt) { document.getElementById('loadText').textContent = txt || "LOADING..."; document.getElementById('loading').style.display = 'flex'; }
 function hideLoading() { document.getElementById('loading').style.display = 'none'; }
 function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000); }
-function setAllLogos() { ['logo-home', 'logo-rew', 'logo-hist', 'logo-reg'].forEach(id => { const el = document.getElementById(id); if(el) el.src = LOGO_URL; }); }
+function setAllLogos() { ['logo-home', 'logo-rew', 'logo-hist', 'logo-reg', 'logo-prof'].forEach(id => { const el = document.getElementById(id); if(el) el.src = LOGO_URL; }); }
 </script>
 </body>
-</html>ท
+</html>
