@@ -86,7 +86,7 @@
       background: var(--primary); 
       color: var(--bg-white); 
       position: relative; 
-      padding-bottom: 72px; /* เผื่อพื้นที่ให้ปุ่มด้านล่าง */
+      padding-bottom: 78px; /* เผื่อพื้นที่ให้ปุ่มด้านล่าง */
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(44,44,44,0.15);
     }
@@ -312,13 +312,15 @@
   <!-- Popup ยืนยันการแลกรางวัล -->
   <div id="confirm-modal" class="modal-overlay">
     <div class="modal-box">
-      <img id="c-logo" src="" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%; margin: 0 auto 8px; object-fit: cover; display: block;">
-      <div style="font-family: var(--font-en); font-weight: 700; font-size: 14px; color: var(--primary); margin-bottom: 16px;">Mein Motion</div>
+      <div class="modal-title" style="margin-top: 8px;">ยืนยันการแลกรางวัล</div>
+      <div class="modal-subtitle" style="margin-bottom: 12px;">คุณต้องการใช้ <strong id="c-pts" class="en-font" style="color: var(--primary);"></strong> เพื่อแลก</div>
       
-      <div class="modal-title">ยืนยันการแลกรางวัล</div>
-      <div class="modal-subtitle" id="confirm-sub-text">คุณต้องการใช้คะแนนเพื่อแลกรางวัลนี้ใช่หรือไม่?</div>
+      <!-- กล่องชื่อรางวัล: ป้องกันล้นจอและจำกัด 3 บรรทัด -->
+      <div id="c-reward-name" style="font-size: 15px; font-weight: 700; color: var(--text-black); background: var(--bg-light); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin-bottom: 12px; word-break: break-word; white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;"></div>
       
-      <div style="display: flex; gap: 10px; margin-top: 24px;">
+      <div class="modal-subtitle" style="margin-bottom: 24px;">ใช่หรือไม่?</div>
+      
+      <div style="display: flex; gap: 10px;">
         <button class="btn-main" style="background: var(--bg-light); color: var(--primary); border: 1px solid var(--border-color);" onclick="closeConfirmModal()">ยกเลิก</button>
         <button class="btn-main" style="background: var(--accent); color: var(--primary);" onclick="executeRedeem()">ยืนยัน</button>
       </div>
@@ -1099,7 +1101,8 @@ function openReward(id) {
 // Custom Popup แทน confirm() แบบเดิม
 function showConfirmModal() {
   if (!selectedReward) return;
-  document.getElementById('confirm-sub-text').textContent = `คุณต้องการใช้ ${fmt(selectedReward.POINTS_REQUIRED)} Point เพื่อแลก "${selectedReward.NAME}" ใช่หรือไม่?`;
+  document.getElementById('c-pts').textContent = `${fmt(selectedReward.POINTS_REQUIRED)} Point`;
+  document.getElementById('c-reward-name').textContent = selectedReward.NAME;
   document.getElementById('confirm-modal').style.display = 'flex';
 }
 
