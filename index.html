@@ -1,2312 +1,885 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>MEIN MOTION</title>
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --blue: #c4dffc;
-      --dark: #2C2C2C;
-      --line: #e8e8e8;
-      --muted: #888;
-      --soft: #f5f6f7;
+      --primary: #1A1A1A;
+      --secondary: #c4dffc;
+      --bg: #F4F6F9;
+      --white: #ffffff;
+      --text-main: #1A1A1A;
+      --text-muted: #6B7280;
+      --border: #E5E7EB;
+      --shadow: 0 4px 20px rgba(0,0,0,0.05);
+      --radius-lg: 24px;
+      --radius-md: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      background: #f6f7f8;
-      color: var(--dark);
-      font-family: 'DM Sans', 'Noto Sans Thai', sans-serif;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Prompt', sans-serif;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
     }
 
-    button,
-    input,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .55;
-    }
-
-    .hidden {
-      display: none !important;
-    }
+    button, input, select, textarea { font: inherit; outline: none; }
+    button { cursor: pointer; border: none; }
 
     .app {
       width: 100%;
       max-width: 480px;
-      min-height: 100vh;
       margin: 0 auto;
-      background: #fff;
-      padding-bottom: 82px;
+      background: var(--bg);
+      padding-bottom: 90px;
+      position: relative;
     }
 
     .screen {
       display: none;
-      padding: 22px 18px 28px;
-    }
-
-    .screen.active {
-      display: block;
-    }
-
-    .loading,
-    .error {
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 30px;
-      text-align: center;
+      padding: 24px 20px;
+      animation: fadeIn 0.3s ease;
+    }
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .spinner {
-      width: 34px;
-      height: 34px;
-      margin: 0 auto 14px;
-      border: 3px solid #ddd;
-      border-top-color: var(--dark);
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .brand {
-      margin: 8px 0 24px;
-      text-align: center;
-    }
-
-    .logo {
-      width: 96px;
-      height: 96px;
-      margin: 0 auto 12px;
-      display: block;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #eee;
-    }
-
-    .brand-name {
-      font: 700 18px 'Space Grotesk', sans-serif;
-      letter-spacing: .06em;
-    }
-
-    .tagline,
-    .small,
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    h1,
-    h2,
-    h3 {
-      margin: 0;
-      font-family: 'Space Grotesk', 'Noto Sans Thai', sans-serif;
-    }
-
-    h1 {
-      font-size: 25px;
-    }
-
-    h2 {
-      margin-bottom: 14px;
-      font-size: 22px;
-    }
-
-    h3 {
-      font-size: 17px;
-    }
-
-    .profile-head {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-    }
-
-    .avatar {
-      width: 58px;
-      height: 58px;
-      flex: 0 0 58px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #eee;
-    }
-
-    .hello {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .points {
-      margin: 18px 0;
-      padding: 22px;
-      color: #fff;
-      background: var(--dark);
-      border-radius: 24px;
-    }
-
-    .point-label {
-      font: 12px 'Space Grotesk', sans-serif;
-      letter-spacing: .1em;
-      opacity: .75;
-    }
-
-    .point-number {
-      margin: 7px 0 12px;
-      font: 700 48px 'Space Grotesk', sans-serif;
-      line-height: 1;
-    }
-
-    .link-btn {
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: var(--blue);
-      font-weight: 700;
-    }
-
-    .section-head,
-    .row,
+    /* --- Headers & Nav --- */
     .topbar {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      align-items: center;
+      margin-bottom: 24px;
     }
 
-    .section-head {
-      margin: 22px 0 12px;
-    }
-
-    .reward-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .reward {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #fff;
-    }
-
-    .reward-img {
-      width: 100%;
-      height: 120px;
-      display: block;
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .brand-img {
+      width: 46px; height: 46px; 
+      border-radius: 50%; /* โลโก้กลม */
       object-fit: cover;
-      background: #f0f1f2;
+      box-shadow: var(--shadow);
+      background: var(--white);
+    }
+    .brand-text { font-weight: 700; font-size: 16px; letter-spacing: 0.5px;}
+    
+    .user-avatar-mini {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--white);
+      box-shadow: var(--shadow);
     }
 
-    .reward-body {
-      padding: 11px;
-    }
+    .greeting-sec h1 { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+    .greeting-sec p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
 
-    .reward-name {
-      min-height: 38px;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-
-    .reward-points {
-      margin: 7px 0;
-      font: 700 16px 'Space Grotesk', sans-serif;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 13px;
-      border: 0;
-      border-radius: 14px;
-      background: var(--dark);
-      color: #fff;
-      font-weight: 700;
-    }
-
-    .btn.blue {
-      background: var(--blue);
-      color: var(--dark);
-    }
-
-    .btn.secondary {
-      background: #f0f1f2;
-      color: var(--dark);
-    }
-
+    /* --- Cards --- */
     .card {
-      margin-top: 13px;
-      padding: 17px;
-      border: 1px solid var(--line);
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .card-dark {
+      background: var(--primary);
+      color: var(--white);
+      background-image: linear-gradient(135deg, #1A1A1A 0%, #333333 100%);
+    }
+
+    .points-label { font-size: 13px; color: rgba(255,255,255,0.8); margin-bottom: 8px;}
+    .points-value { font-size: 42px; font-weight: 700; line-height: 1; margin-bottom: 16px;}
+    .btn-glass {
+      background: rgba(255,255,255,0.15);
+      color: var(--white);
+      padding: 8px 16px;
       border-radius: 20px;
-      background: #fff;
-    }
-
-    .form-group {
-      margin-bottom: 13px;
-    }
-
-    .field-label {
-      display: block;
-      margin-bottom: 6px;
       font-size: 13px;
-      font-weight: 700;
+      backdrop-filter: blur(5px);
     }
 
-    .optional {
-      color: #999;
-      font-weight: 400;
+    /* --- Forms --- */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
+    .form-control {
+      width: 100%; padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--white);
+      font-size: 15px; transition: 0.2s;
+    }
+    .form-control:focus { border-color: var(--primary); }
+    .required { color: #E63946; }
+
+    /* --- Buttons --- */
+    .btn-main {
+      width: 100%; background: var(--primary); color: var(--white);
+      padding: 16px; border-radius: var(--radius-md);
+      font-weight: 600; font-size: 15px; text-align: center;
+      transition: 0.2s;
+    }
+    .btn-main:active { transform: scale(0.98); }
+    .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
+    
+    .btn-outline {
+      width: 100%; background: transparent; color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 16px; border-radius: var(--radius-md);
+      font-weight: 600; font-size: 15px; margin-top: 10px;
     }
 
-    input,
-    select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ddd;
-      border-radius: 13px;
-      outline: none;
-      background: #fff;
+    .btn-back {
+      background: var(--white); border: 1px solid var(--border);
+      padding: 8px 16px; border-radius: 20px; font-size: 14px;
+      display: inline-flex; align-items: center; gap: 6px; box-shadow: var(--shadow);
     }
 
-    input:focus,
-    select:focus {
-      border-color: #bbb;
-    }
+    /* --- Layouts & Lists --- */
+    .section-title { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+    .section-title h2 { font-size: 18px; font-weight: 600; }
+    .text-link { color: var(--text-muted); font-size: 14px; text-decoration: underline; }
 
-    .consent {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      margin: 15px 0;
-      font-size: 13px;
-      line-height: 1.5;
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    .reward-box {
+      background: var(--white); border-radius: var(--radius-md);
+      overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border);
     }
+    .reward-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: #eee; }
+    .reward-info { padding: 12px; }
+    .reward-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;}
+    .reward-pts { color: var(--primary); font-size: 13px; font-weight: 600; margin-bottom: 12px; }
+    .btn-sm { width: 100%; background: var(--bg); color: var(--primary); padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600; }
 
-    .consent input {
-      width: 18px;
-      flex: 0 0 18px;
-      margin-top: 2px;
+    /* --- Lists (Rewards & History) --- */
+    .list-item {
+      display: flex; gap: 16px; background: var(--white);
+      padding: 16px; border-radius: var(--radius-md); margin-bottom: 12px;
+      box-shadow: var(--shadow); align-items: center;
     }
+    .list-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+    .list-item-content { flex: 1; }
+    
+    .history-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border); }
+    .history-row:last-child { border-bottom: none; }
+    .hist-title { font-weight: 500; font-size: 15px; }
+    .hist-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .hist-pts.plus { color: #10B981; font-weight: 600;}
+    .hist-pts.minus { color: #EF4444; font-weight: 600;}
 
-    .nav {
-      position: fixed;
-      z-index: 50;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      max-width: 480px;
-      height: 70px;
-      margin: auto;
-      display: flex;
-      border-top: 1px solid var(--line);
-      background: #fff;
-    }
+    /* --- Profile Details --- */
+    .profile-header { text-align: center; padding: 20px 0; }
+    .profile-header img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--white); box-shadow: var(--shadow); margin-bottom: 12px;}
+    .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed var(--border); font-size: 14px;}
+    .data-row span:first-child { color: var(--text-muted); }
+    .data-row span:last-child { font-weight: 500; text-align: right;}
 
-    .nav button {
-      flex: 1;
-      padding: 5px 0;
-      border: 0;
-      background: transparent;
-      color: #999;
-      font-size: 11px;
+    /* --- Bottom Nav --- */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 480px;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      display: flex; justify-content: space-around;
+      padding: 12px 10px calc(12px + env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+      border-top-left-radius: 24px; border-top-right-radius: 24px;
+      z-index: 100;
     }
+    .nav-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      background: none; color: var(--text-muted); font-size: 11px; font-weight: 500;
+    }
+    .nav-btn.active { color: var(--primary); }
+    .nav-icon { font-size: 22px; }
 
-    .nav button.active {
-      color: #222;
-      font-weight: 700;
+    /* --- Utilities --- */
+    .loading-overlay {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 999;
     }
-
-    .nav-icon {
-      display: block;
-      margin-bottom: 2px;
-      font-size: 20px;
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 1s linear infinite; margin-bottom: 16px;
     }
-
-    .topbar {
-      justify-content: flex-start;
-      margin-bottom: 17px;
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .toast {
+      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--primary); color: white; padding: 12px 24px;
+      border-radius: 30px; font-size: 14px; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 1000; box-shadow: var(--shadow);
     }
-
-    .back {
-      width: 40px;
-      height: 40px;
-      border: 0;
-      border-radius: 12px;
-      background: #f0f1f2;
-    }
-
-    .balance-mini {
-      margin-bottom: 13px;
-      padding: 13px;
-      border-radius: 16px;
-      background: var(--soft);
-    }
-
-    .balance-mini strong {
-      display: block;
-      margin-top: 2px;
-      font: 700 27px 'Space Grotesk', sans-serif;
-    }
-
-    .detail-img {
-      width: 100%;
-      height: 225px;
-      display: block;
-      margin-bottom: 16px;
-      border-radius: 22px;
-      object-fit: cover;
-      background: #f0f1f2;
-    }
-
-    .big-reward-points {
-      margin: 7px 0 15px;
-      font: 700 34px 'Space Grotesk', sans-serif;
-    }
-
-    .history-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .history-desc {
-      font-weight: 600;
-    }
-
-    .history-date {
-      margin-top: 3px;
-      color: #999;
-      font-size: 11px;
-    }
-
-    .earn {
-      color: #19733b;
-      font: 700 16px 'Space Grotesk', sans-serif;
-    }
-
-    .spend {
-      color: #b33d3d;
-      font: 700 16px 'Space Grotesk', sans-serif;
-    }
-
-    .empty {
-      padding: 28px;
-      color: #999;
-      text-align: center;
-    }
-
-    .profile-line {
-      padding: 12px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .profile-label {
-      color: #999;
-      font-size: 11px;
-    }
-
-    .profile-value {
-      margin-top: 3px;
-      font-weight: 600;
-      word-break: break-word;
-    }
-
-    .option-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-    }
-
-    .option {
-      position: relative;
-    }
-
-    .option input {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-    }
-
-    .option label {
-      display: block;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 12px;
-    }
-
-    .option input:checked + label {
-      border-color: var(--blue);
-      background: var(--blue);
-      font-weight: 700;
-    }
-
-    .success {
-      padding: 45px 15px;
-      text-align: center;
-    }
-
-    .check {
-      width: 72px;
-      height: 72px;
-      margin: 0 auto 18px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--blue);
-      font-size: 35px;
-    }
-
-    .status {
-      padding: 5px 9px;
-      border-radius: 99px;
-      background: #eef8f0;
-      font-size: 11px;
-    }
-
-    .my-reward {
-      margin-bottom: 10px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 17px;
-    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(10px); }
+    .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; background: var(--white); border-radius: var(--radius-md); border: 1px dashed var(--border);}
   </style>
 </head>
 
 <body>
-  <!-- ==================================================
-       LOADING
-  =================================================== -->
-  <div id="loadingScreen" class="loading">
-    <div>
-      <div class="spinner"></div>
-      <div id="loadingText">กำลังเริ่มต้น...</div>
+
+<div id="loading" class="loading-overlay">
+  <div class="spinner"></div>
+  <div id="loadText" style="color: var(--text-muted); font-size: 14px;">กำลังโหลดข้อมูล...</div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<main id="app" class="app" style="display:none;">
+
+  <!-- ==================== HOME SCREEN ==================== -->
+  <section id="screen-home" class="screen">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <img id="logo-home" class="brand-img" src="" alt="Logo">
+        <div class="brand-text">MEIN MOTION</div>
+      </div>
+      <img id="user-avatar" class="user-avatar-mini" src="" alt="User">
     </div>
-  </div>
 
-  <!-- ==================================================
-       ERROR
-  =================================================== -->
-  <div id="errorScreen" class="error hidden">
-    <div>
-      <h2>เชื่อมต่อระบบไม่สำเร็จ</h2>
-      <p id="errorMessage" class="small"></p>
-      <button class="btn" onclick="location.reload()">
-        ลองใหม่
-      </button>
+    <div class="greeting-sec">
+      <h1 id="home-name">สวัสดีสมาชิก</h1>
+      <p>พร้อมสะสมแต้มแลกความคุ้มค่าแล้วหรือยัง?</p>
     </div>
-  </div>
 
-  <!-- ==================================================
-       APP
-  =================================================== -->
-  <div id="app" class="app hidden">
+    <div class="card card-dark">
+      <div class="points-label">คะแนนสะสมของคุณ</div>
+      <div class="points-value" id="home-pts">0</div>
+      <button class="btn-glass" onclick="showScreen('history')">ประวัติการใช้คะแนน ➔</button>
+    </div>
 
-    <!-- REGISTER -->
-    <section id="registerScreen" class="screen">
-      <div class="brand">
-        <img id="registerLogo" class="logo" alt="Mein Motion">
-        <div class="brand-name">MEIN MOTION</div>
-        <div class="tagline">คนธรรมดาที่ใช้ชีวิตเต็มที่</div>
+    <div class="section-title">
+      <h2>รางวัลแนะนำ</h2>
+      <span class="text-link" onclick="showScreen('rewards')">ดูทั้งหมด</span>
+    </div>
+    <div id="home-rewards" class="grid-2"></div>
+  </section>
+
+  <!-- ==================== REWARDS SCREEN ==================== -->
+  <section id="screen-rewards" class="screen">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <img id="logo-rew" class="brand-img" src="" alt="Logo">
+        <div class="brand-text">ของรางวัล</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px;">
+      <span style="color: var(--text-muted); font-size: 14px;">แต้มของคุณ</span>
+      <strong style="font-size: 20px;" id="rew-pts">0</strong>
+    </div>
+
+    <div id="reward-list-full"></div>
+  </section>
+
+  <!-- ==================== HISTORY SCREEN ==================== -->
+  <section id="screen-history" class="screen">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <img id="logo-hist" class="brand-img" src="" alt="Logo">
+        <div class="brand-text">ประวัติแต้ม</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div id="history-list"></div>
+    </div>
+  </section>
+
+  <!-- ==================== PROFILE SCREEN ==================== -->
+  <section id="screen-profile" class="screen">
+    <div class="topbar">
+      <div class="brand-wrap">
+        <div class="brand-text">ข้อมูลสมาชิก</div>
+      </div>
+    </div>
+
+    <div class="card profile-header">
+      <img id="prof-img" src="" alt="Profile">
+      <h2 id="prof-name" style="font-size: 18px; margin-bottom: 4px;">-</h2>
+      <p style="color: var(--text-muted); font-size: 13px;">Member</p>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size: 16px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">ข้อมูลส่วนตัว</h3>
+      <div class="data-row"><span>เบอร์โทร</span><span id="p-phone">-</span></div>
+      <div class="data-row"><span>อีเมล</span><span id="p-email">-</span></div>
+      <div class="data-row"><span>วันเกิด</span><span id="p-bd">-</span></div>
+      <div class="data-row"><span>ประเทศ</span><span id="p-country">-</span></div>
+      <div class="data-row"><span>จังหวัด</span><span id="p-prov">-</span></div>
+      <button class="btn-outline" style="margin-top: 16px;" onclick="showEditProfile()">แก้ไขข้อมูลส่วนตัว</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size: 16px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px;">ข้อมูลความสนใจ (Insight)</h3>
+      <div class="data-row"><span>ไลฟ์สไตล์</span><span id="p-lifestyle">-</span></div>
+      <div class="data-row"><span>กีฬาที่ชอบ</span><span id="p-sports">-</span></div>
+      <div class="data-row"><span>ความถี่ออกกำลัง</span><span id="p-freq">-</span></div>
+      <div class="data-row"><span>ปัญหาที่พบ</span><span id="p-pain">-</span></div>
+      <div class="data-row"><span>สินค้าที่สนใจ</span><span id="p-prod">-</span></div>
+      <button class="btn-main" style="margin-top: 16px;" onclick="showExtraProfile()">จัดการข้อมูลเชิงลึก</button>
+    </div>
+  </section>
+
+  <!-- ==================== REGISTER SCREEN ==================== -->
+  <section id="screen-register" class="screen">
+    <div class="topbar" style="justify-content: center; flex-direction: column; gap: 12px; margin-bottom: 30px; padding-top: 20px;">
+      <img id="logo-reg" class="brand-img" style="width: 70px; height: 70px;" src="" alt="Logo">
+      <div class="brand-text" style="font-size: 20px;">สมัครสมาชิก</div>
+    </div>
+
+    <div class="card">
+      <div class="form-group">
+        <label>ชื่อ <span class="required">*</span></label>
+        <input type="text" id="r-fn" class="form-control" placeholder="ชื่อจริง">
+      </div>
+      <div class="form-group">
+        <label>นามสกุล <span class="required">*</span></label>
+        <input type="text" id="r-ln" class="form-control" placeholder="นามสกุล">
+      </div>
+      <div class="form-group">
+        <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
+        <input type="tel" id="r-phone" class="form-control" placeholder="08xxxxxxxx">
+      </div>
+      <div class="form-group">
+        <label>อีเมล</label>
+        <input type="email" id="r-email" class="form-control" placeholder="example@email.com">
+      </div>
+      <div class="form-group">
+        <label>วันเกิด</label>
+        <input type="date" id="r-bd" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>ประเทศ</label>
+        <select id="r-country" class="form-control" onchange="updateProvDrop('r-country', 'r-prov')"></select>
+      </div>
+      <div class="form-group">
+        <label>จังหวัด</label>
+        <select id="r-prov" class="form-control"></select>
+      </div>
+      <div class="form-group" style="display: flex; gap: 10px; align-items: flex-start; margin-top: 20px;">
+        <input type="checkbox" id="r-consent" style="margin-top: 4px; transform: scale(1.2);">
+        <label style="font-size: 12px; line-height: 1.4;">ฉันยอมรับเงื่อนไขและต้องการรับข่าวสาร โปรโมชั่นพิเศษจาก Mein Motion</label>
       </div>
 
-      <div class="card">
-        <h2>สมัครสมาชิก</h2>
-        <p class="small">
-          กรอกข้อมูลที่จำเป็นเพื่อเริ่มสะสมแต้ม
-        </p>
+      <button id="btn-reg" class="btn-main" onclick="doRegister()">สมัครสมาชิก</button>
+    </div>
+  </section>
 
-        <div class="form-group">
-          <label class="field-label">ชื่อ <span class="required">*</span></label>
-          <input id="firstName" type="text" placeholder="กรุณากรอกชื่อ" autocomplete="given-name">
-        </div>
+  <!-- ==================== EDIT PROFILE SCREEN ==================== -->
+  <section id="screen-edit-profile" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="showScreen('profile')">← กลับ</button>
+      <div class="brand-text">แก้ไขข้อมูลส่วนตัว</div>
+      <div style="width: 60px;"></div> <!-- spacer -->
+    </div>
+    
+    <div class="card">
+      <!-- เหมือน Register แต่อยู่ในหน้า Edit -->
+      <div class="form-group"><label>ชื่อ <span class="required">*</span></label><input type="text" id="e-fn" class="form-control"></div>
+      <div class="form-group"><label>นามสกุล <span class="required">*</span></label><input type="text" id="e-ln" class="form-control"></div>
+      <div class="form-group"><label>เบอร์โทร <span class="required">*</span></label><input type="tel" id="e-phone" class="form-control"></div>
+      <div class="form-group"><label>อีเมล</label><input type="email" id="e-email" class="form-control"></div>
+      <div class="form-group"><label>วันเกิด</label><input type="date" id="e-bd" class="form-control"></div>
+      <div class="form-group"><label>ประเทศ</label><select id="e-country" class="form-control" onchange="updateProvDrop('e-country', 'e-prov')"></select></div>
+      <div class="form-group"><label>จังหวัด</label><select id="e-prov" class="form-control"></select></div>
+      
+      <button id="btn-save-prof" class="btn-main" style="margin-top: 20px;" onclick="doSaveProfile()">บันทึกข้อมูล</button>
+    </div>
+  </section>
 
-        <div class="form-group">
-          <label class="field-label">นามสกุล <span class="required">*</span></label>
-          <input id="lastName" type="text" placeholder="กรุณากรอกนามสกุล" autocomplete="family-name">
-        </div>
+  <!-- ==================== EXTRA PROFILE SCREEN (INSIGHT) ==================== -->
+  <section id="screen-extra-profile" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="showScreen('profile')">← กลับ</button>
+      <div class="brand-text" style="font-size: 15px;">ข้อมูลความสนใจ</div>
+      <div style="width: 60px;"></div>
+    </div>
+    
+    <div class="card">
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+        กรอกข้อมูลส่วนนี้เพื่อให้เรานำเสนอสินค้าและสิทธิพิเศษที่ตรงใจคุณมากที่สุด
+      </p>
 
-        <div class="form-group">
-          <label class="field-label">เบอร์โทรศัพท์ <span class="required">*</span></label>
-          <input id="phone" type="tel" inputmode="tel" placeholder="08xxxxxxxx" autocomplete="tel">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">
-            Email <span class="optional">(ไม่บังคับ)</span>
-          </label>
-          <input id="email" type="email" placeholder="example@email.com" autocomplete="email">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">
-            วันเกิด <span class="optional">(ไม่บังคับ)</span>
-          </label>
-          <input id="birthday" type="date">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">ประเทศ</label>
-          <select id="country" onchange="updateProvinceOptions()"></select>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">
-            จังหวัด / รัฐ / เขต <span class="optional">(ไม่บังคับ)</span>
-          </label>
-          <select id="province"></select>
-          <div id="provinceHint" class="hint"></div>
-        </div>
-
-        <label class="consent">
-          <input id="marketingConsent" type="checkbox">
-          <span>
-            ฉันต้องการรับข่าวสาร โปรโมชั่น และสิทธิพิเศษจาก Mein Motion
-          </span>
-        </label>
-
-        <button id="registerButton" class="btn blue" onclick="registerMember()">
-          สมัครสมาชิก
-        </button>
+      <div class="form-group">
+        <label>ไลฟ์สไตล์ของคุณ</label>
+        <input type="text" id="x-lifestyle" class="form-control" placeholder="เช่น ชอบเที่ยวคาเฟ่, สายลุยป่า">
       </div>
-    </section>
-
-    <!-- HOME -->
-    <section id="homeScreen" class="screen">
-      <div class="profile-head">
-        <img id="homeAvatar" class="avatar" alt="LINE Profile">
-        <div>
-          <div class="hello">สวัสดี,</div>
-          <h1 id="homeName">-</h1>
-          <div class="tagline">คนธรรมดาที่ใช้ชีวิตเต็มที่</div>
-        </div>
+      <div class="form-group">
+        <label>กีฬาที่ชื่นชอบ</label>
+        <input type="text" id="x-sports" class="form-control" placeholder="เช่น วิ่ง, แบดมินตัน, โยคะ">
+      </div>
+      <div class="form-group">
+        <label>ความถี่ในการออกกำลังกาย</label>
+        <select id="x-freq" class="form-control">
+          <option value="">-- เลือก --</option>
+          <option value="ไม่ออกกำลังกายเลย">ไม่ออกกำลังกายเลย</option>
+          <option value="1-2 ครั้ง/สัปดาห์">1-2 ครั้ง/สัปดาห์</option>
+          <option value="3-4 ครั้ง/สัปดาห์">3-4 ครั้ง/สัปดาห์</option>
+          <option value="5 ครั้งขึ้นไป/สัปดาห์">5 ครั้งขึ้นไป/สัปดาห์</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>ปัญหาทางร่างกายที่พบ (Pain Points)</label>
+        <textarea id="x-pain" class="form-control" rows="3" placeholder="เช่น ปวดเข่าเวลาวิ่ง, รองช้ำ"></textarea>
+      </div>
+      <div class="form-group">
+        <label>ประเภทสินค้าที่สนใจ</label>
+        <input type="text" id="x-prod" class="form-control" placeholder="เช่น รองเท้าวิ่ง, ถุงเท้าซัพพอร์ต">
       </div>
 
-      <div class="points">
-        <div class="point-label">MEIN MOTION POINTS</div>
-        <div id="homePoints" class="point-number">0</div>
-        <button class="link-btn" onclick="openScreen('historyScreen'); loadHistory()">
-          ดูประวัติแต้ม →
-        </button>
-      </div>
-
-      <div class="section-head">
-        <h3>รางวัลที่แลกได้</h3>
-        <button class="link-btn" onclick="openScreen('rewardsScreen')">
-          ดูทั้งหมด
-        </button>
-      </div>
-
-      <div id="homeRewards" class="reward-grid"></div>
-    </section>
-
-    <!-- REWARDS -->
-    <section id="rewardsScreen" class="screen">
-      <div class="topbar">
-        <h2>ใช้แต้มแลกรางวัล</h2>
-      </div>
-
-      <div class="balance-mini">
-        <span class="small">แต้มของคุณ</span>
-        <strong id="rewardBalance">0</strong>
-      </div>
-
-      <div id="rewardList" class="reward-grid"></div>
-    </section>
-
-    <!-- REWARD DETAIL -->
-    <section id="rewardDetailScreen" class="screen">
-      <div class="topbar">
-        <button class="back" onclick="openScreen('rewardsScreen')">←</button>
-        <h2>รายละเอียดรางวัล</h2>
-      </div>
-
-      <img id="detailImage" class="detail-img" alt="Reward">
-
-      <h1 id="detailName"></h1>
-      <div id="detailPoints" class="big-reward-points"></div>
-      <p id="detailDescription" class="small"></p>
-
-      <div class="card">
-        <div class="row">
-          <span>แต้มปัจจุบัน</span>
-          <strong id="detailBalance"></strong>
-        </div>
-
-        <div class="row" style="margin-top: 8px;">
-          <span>หลังแลก</span>
-          <strong id="detailAfter"></strong>
-        </div>
-      </div>
-
-      <button class="btn blue" style="margin-top: 14px;" onclick="openConfirm()">
-        แลกรางวัล
-      </button>
-    </section>
-
-    <!-- CONFIRM -->
-    <section id="confirmScreen" class="screen">
-      <div class="topbar">
-        <button class="back" onclick="openScreen('rewardDetailScreen')">←</button>
-        <h2>ยืนยันการแลก</h2>
-      </div>
-
-      <div class="card">
-        <h3 id="confirmName"></h3>
-
-        <div class="profile-line">
-          <div class="profile-label">แต้มปัจจุบัน</div>
-          <div id="confirmCurrent" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">ใช้แต้ม</div>
-          <div id="confirmSpent" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">แต้มคงเหลือ</div>
-          <div id="confirmAfter" class="profile-value"></div>
-        </div>
-      </div>
-
-      <button id="confirmButton" class="btn blue" style="margin-top: 14px;" onclick="confirmRedeem()">
-        ยืนยันการแลก
-      </button>
-
-      <button class="btn secondary" style="margin-top: 8px;" onclick="openScreen('rewardDetailScreen')">
-        ยกเลิก
-      </button>
-    </section>
-
-    <!-- SUCCESS -->
-    <section id="successScreen" class="screen">
-      <div class="success">
-        <div class="check">✓</div>
-        <h2>แลกรางวัลสำเร็จ!</h2>
-        <p id="successName"></p>
-        <p class="small">
-          ใช้แต้ม <strong id="successSpent"></strong>
-          · คงเหลือ <strong id="successBalance"></strong>
-        </p>
-
-        <button class="btn blue" style="margin-top: 18px;" onclick="openScreen('myRewardsScreen'); loadMyRewards()">
-          ดูรางวัลของฉัน
-        </button>
-
-        <button class="btn secondary" style="margin-top: 8px;" onclick="goHome()">
-          กลับหน้าแรก
-        </button>
-      </div>
-    </section>
-
-    <!-- MY REWARDS -->
-    <section id="myRewardsScreen" class="screen">
-      <div class="topbar">
-        <button class="back" onclick="openScreen('rewardsScreen')">←</button>
-        <h2>รางวัลของฉัน</h2>
-      </div>
-
-      <div id="myRewardList"></div>
-    </section>
-
-    <!-- HISTORY -->
-    <section id="historyScreen" class="screen">
-      <div class="topbar">
-        <h2>ประวัติแต้ม</h2>
-      </div>
-
-      <div class="points" style="margin-top: 0;">
-        <div class="point-label">POINTS BALANCE</div>
-        <div id="historyBalance" class="point-number">0</div>
-      </div>
-
-      <div id="historyList"></div>
-    </section>
-
-    <!-- PROFILE -->
-    <section id="profileScreen" class="screen">
-      <div class="topbar">
-        <h2>โปรไฟล์</h2>
-      </div>
-
-      <div class="card">
-        <div class="profile-line">
-          <div class="profile-label">ชื่อ</div>
-          <div id="pName" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">เบอร์โทร</div>
-          <div id="pPhone" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">Email</div>
-          <div id="pEmail" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">วันเกิด</div>
-          <div id="pBirthday" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">ประเทศ</div>
-          <div id="pCountry" class="profile-value"></div>
-        </div>
-
-        <div class="profile-line">
-          <div class="profile-label">จังหวัด / รัฐ / เขต</div>
-          <div id="pProvince" class="profile-value"></div>
-        </div>
-      </div>
-
-      <button class="btn blue" style="margin-top: 14px;" onclick="openScreen('editProfileScreen'); fillEditProfile()">
-        แก้ไขข้อมูล
-      </button>
-    </section>
-
-    <!-- EDIT PROFILE -->
-    <section id="editProfileScreen" class="screen">
-      <div class="topbar">
-        <button class="back" onclick="openScreen('profileScreen')">←</button>
-        <h2>แก้ไขข้อมูล</h2>
-      </div>
-
-      <div class="card">
-        <div class="form-group">
-          <label class="field-label">ชื่อ</label>
-          <input id="editFirstName">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">นามสกุล</label>
-          <input id="editLastName">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">เบอร์โทร</label>
-          <input id="editPhone" type="tel" inputmode="tel">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">Email</label>
-          <input id="editEmail" type="email">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">วันเกิด</label>
-          <input id="editBirthday" type="date">
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">ประเทศ</label>
-          <select id="editCountry" onchange="updateEditProvinceOptions()"></select>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">จังหวัด / รัฐ / เขต</label>
-          <select id="editProvince"></select>
-        </div>
-
-        <label class="consent">
-          <input id="editMarketing" type="checkbox">
-          <span>
-            ฉันต้องการรับข่าวสาร โปรโมชั่น และสิทธิพิเศษจาก Mein Motion
-          </span>
-        </label>
-      </div>
-
-      <div class="card">
-        <h3>ข้อมูลเพิ่มเติม</h3>
-        <p class="small">
-          ตอบภายหลังได้ เพื่อให้ Mein Motion เข้าใจสมาชิกและนำไปใช้ทำอินไซต์ลูกค้า
-        </p>
-
-        <div class="form-group">
-          <label class="field-label">Lifestyle</label>
-          <div id="lifestyleOptions" class="option-grid"></div>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">กิจกรรม / กีฬา</label>
-          <div id="sportsOptions" class="option-grid"></div>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">ออกกำลังกายบ่อยแค่ไหน?</label>
-          <select id="workoutFrequency">
-            <option value="">เลือกความถี่</option>
-            <option>ไม่ค่อยออกกำลังกาย</option>
-            <option>1-2 วัน/สัปดาห์</option>
-            <option>3-4 วัน/สัปดาห์</option>
-            <option>5-6 วัน/สัปดาห์</option>
-            <option>ทุกวัน</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">ปัญหาที่เจอบ่อย</label>
-          <div id="painOptions" class="option-grid"></div>
-        </div>
-
-        <div class="form-group">
-          <label class="field-label">สนใจสินค้าประเภทไหน?</label>
-          <div id="productOptions" class="option-grid"></div>
-        </div>
-      </div>
-
-      <button id="saveProfileButton" class="btn blue" style="margin-top: 14px;" onclick="saveProfile()">
-        บันทึกข้อมูล
-      </button>
-    </section>
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <nav id="bottomNav" class="nav hidden">
-    <button data-screen="homeScreen" onclick="goHome()">
-      <span class="nav-icon">⌂</span>
-      หน้าแรก
-    </button>
-
-    <button data-screen="rewardsScreen" onclick="openScreen('rewardsScreen')">
-      <span class="nav-icon">🎁</span>
-      รางวัล
-    </button>
-
-    <button data-screen="historyScreen" onclick="openScreen('historyScreen'); loadHistory()">
-      <span class="nav-icon">▤</span>
-      ประวัติ
-    </button>
-
-    <button data-screen="profileScreen" onclick="openScreen('profileScreen')">
-      <span class="nav-icon">○</span>
-      โปรไฟล์
-    </button>
-  </nav>
-
-  <script>
-    /* ==================================================
-       CONFIG
-    =================================================== */
-
-    const LIFF_ID = '2010909031-tWUD4KXE';
-
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyTzvwTLj_WJ5XhJm5kejgyAq_fUc3lBYeTw1nvGg8YgZE9aJ7-0-PhaCEhjlkoBH0/exec';
-
-    const LOGO_URL = 'https://github.com/OOng789/LOGO/blob/main/logo.png?raw=true';
-
-
-    /* ==================================================
-       COUNTRY / PROVINCE DATA
-       โหลดจาก API อัตโนมัติ ไม่ฝังรายการประเทศในไฟล์
-    =================================================== */
-
-    const COUNTRY_API =
-      'https://restcountries.com/v3.1/all?fields=cca2,name';
-
-    const STATE_API =
-      'https://countriesnow.space/api/v0.1/countries/states';
-
-    let countriesLoaded = false;
-    let countryLoadPromise = null;
-    const provinceCache = {};
-
-
-    async function loadCountries() {
-      if (countriesLoaded) {
-        return;
-      }
-
-      if (countryLoadPromise) {
-        return countryLoadPromise;
-      }
-
-      countryLoadPromise = (async () => {
-        const cacheKey = 'mein_motion_countries_v1';
-        const cached = localStorage.getItem(cacheKey);
-
-        try {
-          let countries;
-
-          if (cached) {
-            countries = JSON.parse(cached);
-          } else {
-            const response = await fetch(COUNTRY_API);
-
-            if (!response.ok) {
-              throw new Error('โหลดรายชื่อประเทศไม่สำเร็จ');
-            }
-
-            const data = await response.json();
-
-            countries = data
-              .filter(item => item.cca2 && item.name?.common)
-              .map(item => [
-                item.cca2,
-                item.name.common
-              ])
-              .sort((a, b) => {
-                if (a[0] === 'TH') return -1;
-                if (b[0] === 'TH') return 1;
-                return a[1].localeCompare(b[1]);
-              });
-
-            localStorage.setItem(
-              cacheKey,
-              JSON.stringify(countries)
-            );
-          }
-
-          COUNTRIES_DYNAMIC = countries;
-          countriesLoaded = true;
-        } catch (error) {
-          console.error('COUNTRY API:', error);
-
-          if (cached) {
-            COUNTRIES_DYNAMIC = JSON.parse(cached);
-            countriesLoaded = true;
-            return;
-          }
-
-          throw error;
-        }
-      })();
-
-      return countryLoadPromise;
+      <button id="btn-save-extra" class="btn-main" style="margin-top: 10px;" onclick="doSaveExtraProfile()">บันทึกข้อมูลเชิงลึก</button>
+    </div>
+  </section>
+
+  <!-- ==================== DETAIL / CONFIRM / SUCCESS (ใช้ร่วมกับ Rewards) ==================== -->
+  <section id="screen-detail" class="screen">
+    <div class="topbar">
+      <button class="btn-back" onclick="showScreen('rewards')">← กลับ</button>
+    </div>
+    <div id="detail-content"></div>
+  </section>
+
+</main>
+
+<!-- ==================== BOTTOM NAV ==================== -->
+<nav id="bottomNav" class="bottom-nav" style="display:none;">
+  <button class="nav-btn active" data-target="home" onclick="showScreen('home')">
+    <span class="nav-icon">🏠</span><span>หน้าแรก</span>
+  </button>
+  <button class="nav-btn" data-target="rewards" onclick="showScreen('rewards')">
+    <span class="nav-icon">🎁</span><span>รางวัล</span>
+  </button>
+  <button class="nav-btn" data-target="history" onclick="showScreen('history')">
+    <span class="nav-icon">🧾</span><span>ประวัติ</span>
+  </button>
+  <button class="nav-btn" data-target="profile" onclick="showScreen('profile')">
+    <span class="nav-icon">👤</span><span>โปรไฟล์</span>
+  </button>
+</nav>
+
+<script>
+/* ==========================================
+   CONFIG (ใส่ค่าของคุณตรงนี้)
+========================================== */
+const LIFF_ID = '2010909031-tWUD4KXE';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxeE794gZtF7RZv8soFJj32p8koGmv63LWfvqC3CYWBinTibm5S18jfL-oQvsO-6aY/exec';
+const LOGO_URL = 'https://raw.githubusercontent.com/OOng789/meinmotion-membership/refs/heads/main/%E0%B9%82%E0%B8%A5%E0%B9%82%E0%B8%81%E0%B9%89.png'; // ใส่ URL รูปโลโก้แบรนด์
+
+/* ==========================================
+   DATA & STATE
+========================================== */
+let lineProfile = null;
+let member = null;
+let rewards = [];
+let history = [];
+let selectedReward = null;
+
+// ข้อมูลประเทศและจังหวัดไทย
+const countryList = ["Thailand", "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Australia", "Austria", "Bangladesh", "Belgium", "Brazil", "Cambodia", "Canada", "China", "Colombia", "Denmark", "Egypt", "Finland", "France", "Germany", "Greece", "Hong Kong", "India", "Indonesia", "Italy", "Japan", "Laos", "Malaysia", "Mexico", "Myanmar", "Netherlands", "New Zealand", "Norway", "Philippines", "Russia", "Singapore", "South Africa", "South Korea", "Spain", "Sweden", "Switzerland", "Taiwan", "United Kingdom", "United States", "Vietnam"];
+const thaiProvinces = ["กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "เชียงราย", "เชียงใหม่", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "แม่ฮ่องสอน", "ยโสธร", "ยะลา", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี", "เบตง"];
+
+document.addEventListener('DOMContentLoaded', initAll);
+
+/* ==========================================
+   INITIALIZATION
+========================================== */
+async function initAll() {
+  setupDropdowns();
+  setAllLogos();
+  
+  if(LIFF_ID.includes('ใส่_')) return alert("โปรดใส่ LIFF ID");
+
+  try {
+    await liff.init({ liffId: LIFF_ID });
+    if (!liff.isLoggedIn()) {
+      liff.login();
+      return;
+    }
+    lineProfile = await liff.getProfile();
+    document.getElementById('user-avatar').src = lineProfile.pictureUrl || '';
+    
+    // ยิง API โหลดทุกอย่างในรอบเดียว! (ลดปัญหาค้าง)
+    const res = await callAPI('initApp', { userId: lineProfile.userId });
+    
+    rewards = res.rewards || [];
+    history = res.history || [];
+    
+    if (res.member) {
+      member = res.member;
+      renderApp();
+      hideLoading();
+      showScreen('home');
+      document.getElementById('bottomNav').style.display = 'flex';
+    } else {
+      // ไม่ใช่สมาชิก
+      hideLoading();
+      showScreen('register'); // ไปหน้าลงทะเบียน
     }
 
-
-    let COUNTRIES_DYNAMIC = [];
-
-
-    async function loadProvinces(countryCode, countryName) {
-      const select = $('province');
-
-      if (!select) {
-        return [];
-      }
-
-      select.innerHTML =
-        '<option value="">กำลังโหลด...</option>';
-      select.disabled = true;
-
-      const cacheKey =
-        'mein_motion_states_' + countryCode;
-
-      try {
-        if (provinceCache[countryCode]) {
-          return renderProvinceOptions(
-            select,
-            provinceCache[countryCode]
-          );
-        }
-
-        const cached = localStorage.getItem(cacheKey);
-
-        if (cached) {
-          const cachedStates = JSON.parse(cached);
-          provinceCache[countryCode] = cachedStates;
-
-          return renderProvinceOptions(
-            select,
-            cachedStates
-          );
-        }
-
-        const response = await fetch(STATE_API, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            country: countryName
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error('โหลดจังหวัด / รัฐ / เขตไม่สำเร็จ');
-        }
-
-        const result = await response.json();
-        const states = (result.data?.states || [])
-          .map(item => item.name)
-          .filter(Boolean)
-          .sort((a, b) => a.localeCompare(b));
-
-        provinceCache[countryCode] = states;
-        localStorage.setItem(
-          cacheKey,
-          JSON.stringify(states)
-        );
-
-        return renderProvinceOptions(
-          select,
-          states
-        );
-      } catch (error) {
-        console.error('STATE API:', error);
-
-        select.innerHTML =
-          '<option value="">ไม่สามารถโหลดรายการได้</option>';
-        select.disabled = false;
-
-        return [];
-      }
-    }
-
-
-    function renderProvinceOptions(select, states, selected = '') {
-      select.innerHTML = '';
-
-      const firstOption = document.createElement('option');
-      firstOption.value = '';
-      firstOption.textContent =
-        states.length
-          ? 'เลือกจังหวัด / รัฐ / เขต'
-          : 'ไม่มีข้อมูลจังหวัด / รัฐ / เขต';
-
-      select.appendChild(firstOption);
-
-      states.forEach(state => {
-        const option = document.createElement('option');
-        option.value = state;
-        option.textContent = state;
-        option.selected = state === selected;
-        select.appendChild(option);
-      });
-
-      select.disabled = false;
-      return states;
-    }
-
-
-    function setupCountries(id, selected = 'TH') {
-      const select = $(id);
-
-      if (!select) {
-        return;
-      }
-
-      select.innerHTML = '';
-
-      COUNTRIES_DYNAMIC.forEach(([code, name]) => {
-        const option = document.createElement('option');
-        option.value = code;
-        option.textContent = name;
-        option.selected = code === selected;
-        select.appendChild(option);
-      });
-    }
-
-
-    async function updateProvinceOptions() {
-      const select = $('country');
-
-      if (!select) {
-        return;
-      }
-
-      const selected =
-        COUNTRIES_DYNAMIC.find(item => item[0] === select.value);
-
-      if (!selected) {
-        return;
-      }
-
-      await loadProvinces(
-        selected[0],
-        selected[1]
-      );
-    }
-
-
-    async function updateEditProvinceOptions() {
-      const select = $('editCountry');
-
-      if (!select) {
-        return;
-      }
-
-      const selected =
-        COUNTRIES_DYNAMIC.find(item => item[0] === select.value);
-
-      if (!selected) {
-        return;
-      }
-
-      const target = $('editProvince');
-      target.innerHTML =
-        '<option value="">กำลังโหลด...</option>';
-      target.disabled = true;
-
-      const countryCode = selected[0];
-      const countryName = selected[1];
-      const cacheKey =
-        'mein_motion_states_' + countryCode;
-
-      try {
-        let states = provinceCache[countryCode];
-
-        if (!states) {
-          const cached = localStorage.getItem(cacheKey);
-          states = cached ? JSON.parse(cached) : null;
-        }
-
-        if (!states) {
-          const response = await fetch(STATE_API, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              country: countryName
-            })
-          });
-
-          if (!response.ok) {
-            throw new Error('โหลดจังหวัด / รัฐ / เขตไม่สำเร็จ');
-          }
-
-          const result = await response.json();
-          states = (result.data?.states || [])
-            .map(item => item.name)
-            .filter(Boolean)
-            .sort((a, b) => a.localeCompare(b));
-
-          provinceCache[countryCode] = states;
-          localStorage.setItem(
-            cacheKey,
-            JSON.stringify(states)
-          );
-        }
-
-        renderProvinceOptions(
-          target,
-          states,
-          currentMember?.PROVINCE || ''
-        );
-      } catch (error) {
-        console.error('EDIT STATE API:', error);
-        target.innerHTML =
-          '<option value="">ไม่สามารถโหลดรายการได้</option>';
-        target.disabled = false;
-      }
-    }
-
-
-    const INSIGHT_OPTIONS = {
-      lifestyle: [
-        'ทำงาน',
-        'เรียน',
-        'เข้าสังคม',
-        'ดูแลตัวเอง',
-        'ออกกำลังกาย',
-        'เดินทาง',
-        'Self-care / Wellness'
-      ],
-
-      sports: [
-        'Running',
-        'Gym',
-        'Cycling',
-        'Yoga / Pilates',
-        'Badminton',
-        'Tennis',
-        'Football',
-        'Basketball',
-        'Swimming',
-        'Hiking / Outdoor'
-      ],
-
-      pain: [
-        'เหงื่อออกเยอะ',
-        'กลิ่นตัว',
-        'เสื้อผ้าเสียดสี',
-        'เสื้อผ้าอับชื้น',
-        'เหนียวตัว',
-        'ผิวระคายเคือง'
-      ],
-
-      product: [
-        'Everyday',
-        'Activewear',
-        'Sportswear',
-        'Body Care',
-        'Accessories',
-        'New Arrival',
-        'Limited Edition'
-      ]
-    };
-
-
-    /* ==================================================
-       GLOBAL
-    =================================================== */
-
-    let lineProfile = null;
-    let currentMember = null;
-    let rewards = [];
-    let selectedReward = null;
-
-    const $ = id => document.getElementById(id);
-
-
-    /* ==================================================
-       LOADING / ERROR
-    =================================================== */
-
-    function setLoading(message) {
-      $('loadingText').textContent = message;
-    }
-
-
-    function showError(error) {
-      console.error('MEIN MOTION ERROR:', error);
-
-      $('loadingScreen').classList.add('hidden');
-      $('app').classList.add('hidden');
-      $('bottomNav').classList.add('hidden');
-      $('errorScreen').classList.remove('hidden');
-
-      $('errorMessage').textContent =
-        error && error.message
-          ? error.message
-          : 'ไม่สามารถเชื่อมต่อระบบได้';
-    }
-
-
-    /* ==================================================
-       NAVIGATION
-    =================================================== */
-
-    function openScreen(id) {
-      document
-        .querySelectorAll('.screen')
-        .forEach(screen => screen.classList.remove('active'));
-
-      const target = $(id);
-
-      if (!target) {
-        return;
-      }
-
-      target.classList.add('active');
-      window.scrollTo(0, 0);
-
-      const mainScreens = [
-        'homeScreen',
-        'rewardsScreen',
-        'historyScreen',
-        'profileScreen'
-      ];
-
-      $('bottomNav').classList.toggle(
-        'hidden',
-        !mainScreens.includes(id)
-      );
-
-      document
-        .querySelectorAll('.nav button')
-        .forEach(button => {
-          button.classList.toggle(
-            'active',
-            button.dataset.screen === id
-          );
-        });
-
-      if (id === 'rewardsScreen') {
-        loadRewards();
-      }
-
-      if (id === 'profileScreen') {
-        renderProfile();
-      }
-    }
-
-
-    function goHome() {
-      openScreen('homeScreen');
-    }
-
-
-    /* ==================================================
-       LOGO
-    =================================================== */
-
-    function setLogo(id) {
-      const image = $(id);
-
-      if (!image || !LOGO_URL) {
-        return;
-      }
-
-      image.src = LOGO_URL;
-
-      image.onerror = () => {
-        image.style.display = 'none';
-      };
-    }
-
-
-    /* ==================================================
-       API
-    =================================================== */
-
-    async function api(action, data = {}) {
-      const controller = new AbortController();
-
-      const timeout = setTimeout(() => {
-        controller.abort();
-      }, 10000);
-
-      try {
-        const response = await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'text/plain;charset=utf-8'
-          },
-          body: JSON.stringify({
-            action,
-            ...data
-          }),
-          signal: controller.signal
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            'เชื่อมต่อระบบไม่สำเร็จ (' + response.status + ')'
-          );
-        }
-
-        const text = await response.text();
-        let result;
-
-        try {
-          result = JSON.parse(text);
-        } catch (error) {
-          console.error('BACKEND RESPONSE:', text);
-
-          throw new Error(
-            'Backend ส่งข้อมูลกลับมาไม่ถูกต้อง'
-          );
-        }
-
-        if (!result.success) {
-          throw new Error(
-            result.message || 'ดำเนินการไม่สำเร็จ'
-          );
-        }
-
-        return result;
-
-      } catch (error) {
-        if (error.name === 'AbortError') {
-          throw new Error(
-            'ระบบตอบกลับช้าเกินไป กรุณาลองใหม่'
-          );
-        }
-
-        throw error;
-
-      } finally {
-        clearTimeout(timeout);
-      }
-    }
-
-
-    /* ==================================================
-       DATE / SECURITY HELPERS
-    =================================================== */
-
-    function formatDate(value) {
-      if (!value) {
-        return '-';
-      }
-
-      const date = new Date(value);
-
-      if (Number.isNaN(date.getTime())) {
-        return String(value);
-      }
-
-      return date.toLocaleDateString('th-TH', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      });
-    }
-
-
-    function esc(value) {
-      return String(value ?? '').replace(
-        /[&<>'"]/g,
-        character => ({
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          "'": '&#39;',
-          '"': '&quot;'
-        })[character]
-      );
-    }
-
-
-    /* ==================================================
-       COUNTRY / PROVINCE
-    =================================================== */
-
-    function setupCountries(id, selected = 'TH') {
-      const select = $(id);
-
-      if (!select) {
-        return;
-      }
-
-      select.innerHTML = '';
-
-      COUNTRIES.forEach(([code, name]) => {
-        const option = document.createElement('option');
-
-        option.value = code;
-        option.textContent = name;
-        option.selected = code === selected;
-
-        select.appendChild(option);
-      });
-    }
-
-
-    function fillProvince(id, country, selected = '') {
-      const select = $(id);
-
-      if (!select) {
-        return;
-      }
-
-      select.innerHTML = '';
-
-      const firstOption = document.createElement('option');
-      firstOption.value = '';
-      firstOption.textContent =
-        country === 'TH'
-          ? 'เลือกจังหวัด'
-          : 'เลือกจังหวัด / รัฐ / เขต';
-
-      select.appendChild(firstOption);
-
-      if (country === 'TH') {
-        THAILAND_PROVINCES.forEach(province => {
-          const option = document.createElement('option');
-
-          option.value = province;
-          option.textContent = province;
-          option.selected = province === selected;
-
-          select.appendChild(option);
-        });
-
-        return;
-      }
-
-      const unavailable = document.createElement('option');
-      unavailable.value = '';
-      unavailable.textContent =
-        'ประเทศนี้ยังไม่มีรายการจังหวัดในระบบ';
-      unavailable.disabled = true;
-
-      select.appendChild(unavailable);
-    }
-
-
-    function updateProvinceOptions() {
-      fillProvince(
-        'province',
-        $('country').value
-      );
-    }
-
-
-    function updateEditProvinceOptions() {
-      fillProvince(
-        'editProvince',
-        $('editCountry').value
-      );
-    }
-
-
-    /* ==================================================
-       HOME
-    =================================================== */
-
-    function renderHome() {
-      const member = currentMember || {};
-      const points = Number(member.POINTS || 0);
-
-      $('homeName').textContent =
-        member.FIRST_NAME ||
-        member.DISPLAY_NAME ||
-        '-';
-
-      $('homePoints').textContent =
-        points.toLocaleString();
-
-      $('rewardBalance').textContent =
-        points.toLocaleString();
-
-      $('historyBalance').textContent =
-        points.toLocaleString();
-
-      $('homeAvatar').src =
-        lineProfile?.pictureUrl ||
-        member.PICTURE_URL ||
-        '';
-    }
-
-
-    /* ==================================================
-       REWARDS
-    =================================================== */
-
-    function rewardCard(reward) {
-      const image = esc(reward.IMAGE_URL || '');
-      const id = esc(reward.REWARD_ID || '');
-      const name = esc(reward.NAME || '');
-      const points = Number(
-        reward.POINTS_REQUIRED || 0
-      ).toLocaleString();
-
-      return `
-        <div class="reward">
-          <img
-            class="reward-img"
-            src="${image}"
-            alt="${name}"
-            onerror="this.style.display='none'"
-          >
-
-          <div class="reward-body">
-            <div class="reward-name">${name}</div>
-            <div class="reward-points">${points} แต้ม</div>
-
-            <button
-              class="btn secondary"
-              onclick="showRewardDetail('${id}')"
-            >
-              ดูรางวัล
-            </button>
+  } catch (err) {
+    alert("Error: " + err.message);
+  }
+}
+
+async function callAPI(action, payload={}) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    body: JSON.stringify({ action, ...payload })
+  });
+  const data = await res.json();
+  if(!data.success) throw new Error(data.message);
+  return data;
+}
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+function showScreen(screenId) {
+  // ปิดทุกหน้า
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  // เปิดหน้าที่ต้องการ
+  document.getElementById('screen-' + screenId).classList.add('active');
+  window.scrollTo(0,0);
+
+  // จัดการ Bottom Nav Active State
+  const navMap = {
+    'home': 'home', 'rewards': 'rewards', 'detail': 'rewards', 
+    'history': 'history', 'profile': 'profile', 'edit-profile': 'profile', 'extra-profile': 'profile'
+  };
+  
+  const targetNav = navMap[screenId];
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.target === targetNav);
+  });
+}
+
+/* ==========================================
+   RENDERING
+========================================== */
+function renderApp() {
+  // --- Home ---
+  document.getElementById('home-name').textContent = `สวัสดีคุณ ${member.FIRST_NAME || lineProfile.displayName}`;
+  document.getElementById('home-pts').textContent = fmt(member.POINTS);
+  
+  const hRewards = rewards.slice(0, 2);
+  document.getElementById('home-rewards').innerHTML = hRewards.length 
+    ? hRewards.map(r => `
+      <div class="reward-box">
+        <img src="${r.IMAGE_URL}" class="reward-img" onerror="this.src='https://via.placeholder.com/150'">
+        <div class="reward-info">
+          <div class="reward-title">${r.NAME}</div>
+          <div class="reward-pts">${fmt(r.POINTS_REQUIRED)} แต้ม</div>
+          <button class="btn-sm" onclick="openReward('${r.REWARD_ID}')">ดูรางวัล</button>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="empty-state" style="grid-column: span 2;">ยังไม่มีของรางวัล</div>';
+
+  // --- Rewards ---
+  document.getElementById('rew-pts').textContent = fmt(member.POINTS);
+  document.getElementById('reward-list-full').innerHTML = rewards.length
+    ? rewards.map(r => `
+      <div class="list-item" onclick="openReward('${r.REWARD_ID}')">
+        <img src="${r.IMAGE_URL}" class="list-item-img" onerror="this.src='https://via.placeholder.com/150'">
+        <div class="list-item-content">
+          <div class="reward-title">${r.NAME}</div>
+          <div class="reward-pts" style="margin-bottom:0;">${fmt(r.POINTS_REQUIRED)} แต้ม</div>
+          <div style="font-size:11px; color:#888; margin-top:4px;">คงเหลือ: ${r.STOCK}</div>
+        </div>
+      </div>
+    `).join('')
+    : '<div class="empty-state">ยังไม่มีของรางวัลเปิดให้แลก</div>';
+
+  // --- History ---
+  document.getElementById('history-list').innerHTML = history.length
+    ? history.map(h => {
+        const isPlus = Number(h.POINTS) >= 0;
+        return `
+        <div class="history-row">
+          <div>
+            <div class="hist-title">${h.DESCRIPTION || h.TYPE}</div>
+            <div class="hist-date">${h.CREATED_AT}</div>
           </div>
+          <div class="hist-pts ${isPlus ? 'plus' : 'minus'}">
+            ${isPlus ? '+' : ''}${fmt(h.POINTS)}
+          </div>
+        </div>`
+      }).join('')
+    : '<div class="empty-state">ยังไม่มีประวัติการใช้แต้ม</div>';
+
+  // --- Profile ---
+  document.getElementById('prof-img').src = lineProfile.pictureUrl || '';
+  document.getElementById('prof-name').textContent = `${member.FIRST_NAME} ${member.LAST_NAME}`;
+  document.getElementById('p-phone').textContent = member.PHONE || '-';
+  document.getElementById('p-email').textContent = member.EMAIL || '-';
+  document.getElementById('p-bd').textContent = member.BIRTHDAY ? String(member.BIRTHDAY).slice(0,10) : '-';
+  document.getElementById('p-country').textContent = member.COUNTRY || '-';
+  document.getElementById('p-prov').textContent = member.PROVINCE || '-';
+
+  // Extra Profile (Insight)
+  document.getElementById('p-lifestyle').textContent = member.LIFESTYLE || '-';
+  document.getElementById('p-sports').textContent = member.SPORTS || '-';
+  document.getElementById('p-freq').textContent = member.WORKOUT_FREQUENCY || '-';
+  document.getElementById('p-pain').textContent = member.PAIN_POINTS || '-';
+  document.getElementById('p-prod').textContent = member.PRODUCT_INTEREST || '-';
+}
+
+/* ==========================================
+   DROPDOWNS (COUNTRY & PROVINCE)
+========================================== */
+function setupDropdowns() {
+  const cHtml = countryList.map(c => `<option value="${c}">${c}</option>`).join('');
+  const pStr = `<option value="">-- เลือก --</option>` + thaiProvinces.map(p => `<option value="${p}">${p}</option>`).join('');
+  
+  // Register Form
+  document.getElementById('r-country').innerHTML = cHtml;
+  document.getElementById('r-prov').innerHTML = pStr;
+  
+  // Edit Form
+  document.getElementById('e-country').innerHTML = cHtml;
+  document.getElementById('e-prov').innerHTML = pStr;
+}
+
+function updateProvDrop(countryId, provId) {
+  const c = document.getElementById(countryId).value;
+  const pDrop = document.getElementById(provId);
+  if (c === 'Thailand') {
+    pDrop.innerHTML = `<option value="">-- เลือก --</option>` + thaiProvinces.map(p => `<option value="${p}">${p}</option>`).join('');
+    pDrop.disabled = false;
+  } else {
+    pDrop.innerHTML = `<option value="Other">Other (ต่างประเทศ)</option>`;
+    pDrop.disabled = true; // ไม่ต้องให้เลือกถ้าไม่ใช่ไทย
+  }
+}
+
+/* ==========================================
+   REGISTER & PROFILE LOGIC
+========================================== */
+async function doRegister() {
+  const fn = val('r-fn'), ln = val('r-ln'), ph = val('r-phone');
+  if(!fn || !ln || !ph) return showToast("กรุณากรอกข้อมูลที่มี * ให้ครบถ้วน");
+
+  const btn = document.getElementById('btn-reg');
+  btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+
+  try {
+    await callAPI('registerMember', {
+      userId: lineProfile.userId,
+      displayName: lineProfile.displayName,
+      pictureUrl: lineProfile.pictureUrl,
+      firstName: fn, lastName: ln, phone: ph,
+      email: val('r-email'), birthday: val('r-bd'),
+      country: val('r-country'), province: document.getElementById('r-prov').value,
+      marketingConsent: document.getElementById('r-consent').checked
+    });
+    
+    // รีโหลด Data
+    const res = await callAPI('initApp', { userId: lineProfile.userId });
+    member = res.member;
+    renderApp();
+    
+    showToast("สมัครสมาชิกสำเร็จ!");
+    document.getElementById('bottomNav').style.display = 'flex';
+    showScreen('home');
+  } catch(e) {
+    showToast(e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = "สมัครสมาชิก";
+  }
+}
+
+function showEditProfile() {
+  setVal('e-fn', member.FIRST_NAME);
+  setVal('e-ln', member.LAST_NAME);
+  setVal('e-phone', member.PHONE);
+  setVal('e-email', member.EMAIL);
+  if(member.BIRTHDAY) setVal('e-bd', String(member.BIRTHDAY).slice(0,10));
+  
+  setVal('e-country', member.COUNTRY || 'Thailand');
+  updateProvDrop('e-country', 'e-prov');
+  setVal('e-prov', member.PROVINCE);
+
+  showScreen('edit-profile');
+}
+
+async function doSaveProfile() {
+  const fn = val('e-fn'), ln = val('e-ln'), ph = val('e-phone');
+  if(!fn || !ln || !ph) return showToast("กรุณากรอกข้อมูลที่มี * ให้ครบถ้วน");
+
+  const btn = document.getElementById('btn-save-prof');
+  btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+
+  try {
+    await callAPI('updateMember', {
+      userId: lineProfile.userId,
+      firstName: fn, lastName: ln, phone: ph,
+      email: val('e-email'), birthday: val('e-bd'),
+      country: val('e-country'), province: document.getElementById('e-prov').value
+    });
+    
+    member.FIRST_NAME = fn; member.LAST_NAME = ln; member.PHONE = ph;
+    member.EMAIL = val('e-email'); member.BIRTHDAY = val('e-bd');
+    member.COUNTRY = val('e-country'); member.PROVINCE = document.getElementById('e-prov').value;
+    
+    renderApp();
+    showToast("บันทึกสำเร็จ!");
+    showScreen('profile');
+  } catch(e) {
+    showToast(e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = "บันทึกข้อมูล";
+  }
+}
+
+function showExtraProfile() {
+  setVal('x-lifestyle', member.LIFESTYLE);
+  setVal('x-sports', member.SPORTS);
+  setVal('x-freq', member.WORKOUT_FREQUENCY);
+  setVal('x-pain', member.PAIN_POINTS);
+  setVal('x-prod', member.PRODUCT_INTEREST);
+  showScreen('extra-profile');
+}
+
+async function doSaveExtraProfile() {
+  const btn = document.getElementById('btn-save-extra');
+  btn.disabled = true; btn.textContent = "กำลังบันทึก...";
+
+  try {
+    await callAPI('updateExtraProfile', {
+      userId: lineProfile.userId,
+      lifestyle: val('x-lifestyle'),
+      sports: val('x-sports'),
+      workoutFreq: val('x-freq'),
+      painPoints: val('x-pain'),
+      productInterest: val('x-prod')
+    });
+    
+    member.LIFESTYLE = val('x-lifestyle');
+    member.SPORTS = val('x-sports');
+    member.WORKOUT_FREQUENCY = val('x-freq');
+    member.PAIN_POINTS = val('x-pain');
+    member.PRODUCT_INTEREST = val('x-prod');
+    
+    renderApp();
+    showToast("บันทึกข้อมูลเชิงลึกสำเร็จ!");
+    showScreen('profile');
+  } catch(e) {
+    showToast(e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = "บันทึกข้อมูลเชิงลึก";
+  }
+}
+
+/* ==========================================
+   REDEEM LOGIC
+========================================== */
+function openReward(id) {
+  selectedReward = rewards.find(r => String(r.REWARD_ID) === String(id));
+  if(!selectedReward) return;
+
+  const cost = Number(selectedReward.POINTS_REQUIRED);
+  const stock = Number(selectedReward.STOCK);
+  const canRedeem = member.POINTS >= cost && stock > 0;
+
+  let btnHTML = '';
+  if (stock <= 0) btnHTML = `<button class="btn-main" disabled>สินค้าหมด</button>`;
+  else if (member.POINTS < cost) btnHTML = `<button class="btn-main" disabled>แต้มไม่เพียงพอ</button>`;
+  else btnHTML = `<button class="btn-main" onclick="confirmRedeem()">แลกรางวัลตอนนี้</button>`;
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="card" style="padding:0; overflow:hidden;">
+      <img src="${selectedReward.IMAGE_URL}" style="width:100%; aspect-ratio:1; object-fit:cover;">
+      <div style="padding: 20px;">
+        <h2 style="font-size:20px; margin-bottom:8px;">${selectedReward.NAME}</h2>
+        <div style="color:var(--primary); font-size:24px; font-weight:700; margin-bottom:16px;">
+          ${fmt(cost)} แต้ม
         </div>
-      `;
-    }
-
-
-    let rewardsLoadPromise = null;
-
-
-    async function loadRewards() {
-      if (rewards.length) {
-        renderRewards();
-        return rewards;
-      }
-
-      if (rewardsLoadPromise) {
-        return rewardsLoadPromise;
-      }
-
-      rewardsLoadPromise = (async () => {
-        try {
-          const cached = localStorage.getItem(
-            'mein_motion_rewards_v1'
-          );
-
-          if (cached) {
-            rewards = JSON.parse(cached);
-            renderRewards();
-          }
-
-          const result = await api('getRewards');
-          rewards = result.rewards || [];
-
-          localStorage.setItem(
-            'mein_motion_rewards_v1',
-            JSON.stringify(rewards)
-          );
-
-          renderRewards();
-          return rewards;
-        } catch (error) {
-          console.error('REWARDS:', error);
-
-          if (!rewards.length) {
-            $('homeRewards').innerHTML =
-              '<div class="empty">โหลดรางวัลไม่สำเร็จ</div>';
-            $('rewardList').innerHTML =
-              '<div class="empty">โหลดรางวัลไม่สำเร็จ</div>';
-          }
-
-          return [];
-        } finally {
-          rewardsLoadPromise = null;
-        }
-      })();
-
-      return rewardsLoadPromise;
-    }
-
-
-    function renderRewards() {
-      const available = rewards.filter(reward =>
-        String(reward.STATUS || '').toUpperCase() === 'ACTIVE' &&
-        Number(reward.STOCK || 0) > 0
-      );
-
-      $('rewardList').innerHTML = available.length
-        ? available.map(rewardCard).join('')
-        : '<div class="empty">ยังไม่มีรางวัล</div>';
-
-      $('homeRewards').innerHTML = available.length
-        ? available.slice(0, 2).map(rewardCard).join('')
-        : '<div class="empty">ยังไม่มีรางวัล</div>';
-    }
-
-
-    function showRewardDetail(id) {
-      selectedReward = rewards.find(
-        reward => String(reward.REWARD_ID) === String(id)
-      );
-
-      if (!selectedReward) {
-        return;
-      }
-
-      const balance = Number(currentMember.POINTS || 0);
-      const required = Number(
-        selectedReward.POINTS_REQUIRED || 0
-      );
-
-      $('detailImage').src =
-        selectedReward.IMAGE_URL || '';
-
-      $('detailImage').style.display =
-        selectedReward.IMAGE_URL
-          ? 'block'
-          : 'none';
-
-      $('detailName').textContent =
-        selectedReward.NAME || '';
-
-      $('detailPoints').textContent =
-        required.toLocaleString() + ' แต้ม';
-
-      $('detailDescription').textContent =
-        selectedReward.DESCRIPTION || '';
-
-      $('detailBalance').textContent =
-        balance.toLocaleString() + ' แต้ม';
-
-      $('detailAfter').textContent =
-        Math.max(0, balance - required).toLocaleString() +
-        ' แต้ม';
-
-      openScreen('rewardDetailScreen');
-    }
-
-
-    function openConfirm() {
-      if (!selectedReward) {
-        return;
-      }
-
-      const balance = Number(currentMember.POINTS || 0);
-      const required = Number(
-        selectedReward.POINTS_REQUIRED || 0
-      );
-
-      $('confirmName').textContent =
-        selectedReward.NAME || '';
-
-      $('confirmCurrent').textContent =
-        balance.toLocaleString() + ' แต้ม';
-
-      $('confirmSpent').textContent =
-        required.toLocaleString() + ' แต้ม';
-
-      $('confirmAfter').textContent =
-        Math.max(0, balance - required).toLocaleString() +
-        ' แต้ม';
-
-      $('confirmButton').disabled =
-        balance < required ||
-        Number(selectedReward.STOCK || 0) <= 0;
-
-      openScreen('confirmScreen');
-    }
-
-
-    async function confirmRedeem() {
-      if (!selectedReward) {
-        return;
-      }
-
-      const button = $('confirmButton');
-
-      button.disabled = true;
-      button.textContent = 'กำลังแลก...';
-
-      try {
-        const result = await api('redeemReward', {
-          userId: lineProfile.userId,
-          rewardId: selectedReward.REWARD_ID
-        });
-
-        currentMember.POINTS = result.balanceAfter;
-
-        $('successName').textContent =
-          result.rewardName;
-
-        $('successSpent').textContent =
-          Number(result.pointsSpent).toLocaleString() +
-          ' แต้ม';
-
-        $('successBalance').textContent =
-          Number(result.balanceAfter).toLocaleString() +
-          ' แต้ม';
-
-        rewards = [];
-        localStorage.removeItem('mein_motion_rewards_v1');
-
-        renderHome();
-        openScreen('successScreen');
-
-      } catch (error) {
-        alert(error.message);
-
-        button.disabled = false;
-        button.textContent = 'ยืนยันการแลก';
-      }
-    }
-
-
-    async function loadMyRewards() {
-      try {
-        const result = await api('getRedemptions', {
-          userId: lineProfile.userId
-        });
-
-        const list = result.redemptions || [];
-
-        $('myRewardList').innerHTML = list.length
-          ? list.map(item => `
-              <div class="my-reward">
-                <div class="row">
-                  <strong>${esc(item.REWARD_NAME)}</strong>
-                  <span class="status">${esc(item.STATUS)}</span>
-                </div>
-
-                <div class="small">
-                  ใช้ ${Number(item.POINTS_SPENT || 0).toLocaleString()} แต้ม
-                  · ${formatDate(item.CREATED_AT)}
-                </div>
-
-                <div class="small">
-                  รหัสการแลก: ${esc(item.REDEMPTION_ID)}
-                </div>
-              </div>
-            `).join('')
-          : '<div class="empty">ยังไม่มีรางวัลที่แลก</div>';
-
-      } catch (error) {
-        showError(error);
-      }
-    }
-
-
-    /* ==================================================
-       HISTORY
-    =================================================== */
-
-    async function loadHistory() {
-      try {
-        const result = await api('getHistory', {
-          userId: lineProfile.userId
-        });
-
-        const list = result.history || [];
-
-        $('historyList').innerHTML = list.length
-          ? list.map(item => `
-              <div class="history-row">
-                <div>
-                  <div class="history-desc">
-                    ${esc(item.DESCRIPTION || '-')}
-                  </div>
-
-                  <div class="history-date">
-                    ${formatDate(item.CREATED_AT)}
-                  </div>
-                </div>
-
-                <div class="${Number(item.POINTS) >= 0 ? 'earn' : 'spend'}">
-                  ${Number(item.POINTS) >= 0 ? '+' : ''}${Number(item.POINTS || 0).toLocaleString()}
-                </div>
-              </div>
-            `).join('')
-          : '<div class="empty">ยังไม่มีประวัติแต้ม</div>';
-
-      } catch (error) {
-        showError(error);
-      }
-    }
-
-
-    /* ==================================================
-       PROFILE
-    =================================================== */
-
-    function renderProfile() {
-      const member = currentMember || {};
-
-      $('pName').textContent = [
-        member.FIRST_NAME,
-        member.LAST_NAME
-      ].filter(Boolean).join(' ') || '-';
-
-      $('pPhone').textContent =
-        member.PHONE || '-';
-
-      $('pEmail').textContent =
-        member.EMAIL || '-';
-
-      $('pBirthday').textContent =
-        formatDate(member.BIRTHDAY);
-
-      $('pCountry').textContent =
-        member.COUNTRY || '-';
-
-      $('pProvince').textContent =
-        member.PROVINCE || '-';
-    }
-
-
-    function renderOptions(id, options, value) {
-      const selected = String(value || '')
-        .split(',')
-        .map(item => item.trim())
-        .filter(Boolean);
-
-      $(id).innerHTML = options.map((item, index) => `
-        <div class="option">
-          <input
-            type="checkbox"
-            id="${id}-${index}"
-            value="${esc(item)}"
-            ${selected.includes(item) ? 'checked' : ''}
-          >
-
-          <label for="${id}-${index}">
-            ${esc(item)}
-          </label>
-        </div>
-      `).join('');
-    }
-
-
-    function checked(id) {
-      return Array.from(
-        $(id).querySelectorAll('input:checked')
-      )
-        .map(input => input.value)
-        .join(', ');
-    }
-
-
-    function fillEditProfile() {
-      const member = currentMember || {};
-
-      $('editFirstName').value =
-        member.FIRST_NAME || '';
-
-      $('editLastName').value =
-        member.LAST_NAME || '';
-
-      $('editPhone').value =
-        member.PHONE || '';
-
-      $('editEmail').value =
-        member.EMAIL || '';
-
-      $('editBirthday').value =
-        member.BIRTHDAY
-          ? String(member.BIRTHDAY).slice(0, 10)
-          : '';
-
-      const country = COUNTRIES_DYNAMIC.find(
-        item => item[1] === member.COUNTRY
-      );
-
-      const countryCode = country
-        ? country[0]
-        : 'TH';
-
-      setupCountries(
-        'editCountry',
-        countryCode
-      );
-
-      const editCountryName = country
-        ? country[1]
-        : 'Thailand';
-
-      loadEditProvinceForMember(
-        countryCode,
-        editCountryName,
-        member.PROVINCE || ''
-      );
-
-      $('editMarketing').checked =
-        member.MARKETING_CONSENT === true ||
-        String(member.MARKETING_CONSENT) === 'true';
-
-      renderOptions(
-        'lifestyleOptions',
-        INSIGHT_OPTIONS.lifestyle,
-        member.LIFESTYLE
-      );
-
-      renderOptions(
-        'sportsOptions',
-        INSIGHT_OPTIONS.sports,
-        member.SPORTS
-      );
-
-      renderOptions(
-        'painOptions',
-        INSIGHT_OPTIONS.pain,
-        member.PAIN_POINTS
-      );
-
-      renderOptions(
-        'productOptions',
-        INSIGHT_OPTIONS.product,
-        member.PRODUCT_INTEREST
-      );
-
-      $('workoutFrequency').value =
-        member.WORKOUT_FREQUENCY || '';
-    }
-
-
-    async function loadEditProvinceForMember(
-      countryCode,
-      countryName,
-      selected = ''
-    ) {
-      const target = $('editProvince');
-
-      if (!target) {
-        return;
-      }
-
-      target.innerHTML =
-        '<option value="">กำลังโหลด...</option>';
-      target.disabled = true;
-
-      const cacheKey =
-        'mein_motion_states_' + countryCode;
-
-      try {
-        let states = provinceCache[countryCode];
-
-        if (!states) {
-          const cached = localStorage.getItem(cacheKey);
-          states = cached ? JSON.parse(cached) : null;
-        }
-
-        if (!states) {
-          const response = await fetch(STATE_API, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              country: countryName
-            })
-          });
-
-          if (!response.ok) {
-            throw new Error('โหลดจังหวัด / รัฐ / เขตไม่สำเร็จ');
-          }
-
-          const result = await response.json();
-          states = (result.data?.states || [])
-            .map(item => item.name)
-            .filter(Boolean)
-            .sort((a, b) => a.localeCompare(b));
-
-          provinceCache[countryCode] = states;
-          localStorage.setItem(
-            cacheKey,
-            JSON.stringify(states)
-          );
-        }
-
-        renderProvinceOptions(
-          target,
-          states,
-          selected
-        );
-      } catch (error) {
-        console.error('EDIT STATE API:', error);
-        target.innerHTML =
-          '<option value="">ไม่สามารถโหลดรายการได้</option>';
-        target.disabled = false;
-      }
-    }
-
-
-    async function saveProfile() {
-      const button = $('saveProfileButton');
-
-      button.disabled = true;
-      button.textContent = 'กำลังบันทึก...';
-
-      try {
-        const data = {
-          userId: lineProfile.userId,
-          firstName: $('editFirstName').value.trim(),
-          lastName: $('editLastName').value.trim(),
-          phone: $('editPhone').value.trim(),
-          email: $('editEmail').value.trim(),
-          birthday: $('editBirthday').value,
-          country: $('editCountry').selectedOptions[0]?.textContent || 'Thailand',
-          province: $('editProvince').value,
-          marketingConsent: $('editMarketing').checked,
-          lifestyle: checked('lifestyleOptions'),
-          sports: checked('sportsOptions'),
-          workoutFrequency: $('workoutFrequency').value,
-          painPoints: checked('painOptions'),
-          productInterest: checked('productOptions')
-        };
-
-        if (!data.firstName || !data.lastName || !data.phone) {
-          throw new Error(
-            'กรุณากรอกชื่อ นามสกุล และเบอร์โทรศัพท์'
-          );
-        }
-
-        const result = await api(
-          'updateMember',
-          data
-        );
-
-        currentMember = result.member;
-
-        renderHome();
-        renderProfile();
-        openScreen('profileScreen');
-
-        alert('บันทึกข้อมูลสำเร็จ');
-
-      } catch (error) {
-        alert(error.message);
-
-      } finally {
-        button.disabled = false;
-        button.textContent = 'บันทึกข้อมูล';
-      }
-    }
-
-
-    /* ==================================================
-       REGISTER
-    =================================================== */
-
-    async function registerMember() {
-      const button = $('registerButton');
-
-      const firstName =
-        $('firstName').value.trim();
-
-      const lastName =
-        $('lastName').value.trim();
-
-      const phone =
-        $('phone').value.trim();
-
-      const email =
-        $('email').value.trim();
-
-      if (!firstName || !lastName || !phone) {
-        alert(
-          'กรุณากรอกชื่อ นามสกุล และเบอร์โทรศัพท์'
-        );
-        return;
-      }
-
-      if (email && !/^\S+@\S+\.\S+$/.test(email)) {
-        alert('กรุณาตรวจสอบ Email');
-        return;
-      }
-
-      button.disabled = true;
-      button.textContent = 'กำลังสมัครสมาชิก...';
-
-      try {
-        const result = await api(
-          'registerMember',
-          {
-            userId: lineProfile.userId,
-            displayName: lineProfile.displayName,
-            pictureUrl: lineProfile.pictureUrl,
-            firstName,
-            lastName,
-            phone,
-            email,
-            birthday: $('birthday').value,
-            country: $('country').selectedOptions[0]?.textContent || 'Thailand',
-            province: $('province').value,
-            marketingConsent: $('marketingConsent').checked
-          }
-        );
-
-        currentMember = result.member;
-        rewards = [];
-        localStorage.removeItem('mein_motion_rewards_v1');
-
-        renderHome();
-
-        $('loadingScreen').classList.add('hidden');
-        $('app').classList.remove('hidden');
-
-        goHome();
-
-        loadRewards();
-
-      } catch (error) {
-        alert(error.message);
-
-      } finally {
-        button.disabled = false;
-        button.textContent = 'สมัครสมาชิก';
-      }
-    }
-
-
-    /* ==================================================
-       START APP
-    =================================================== */
-
-    async function startApp() {
-      try {
-        if (!LIFF_ID) {
-          throw new Error(
-            'กรุณาใส่ LIFF ID ใน index.html'
-          );
-        }
-
-        if (!API_URL) {
-          throw new Error(
-            'กรุณาใส่ Apps Script /exec URL ใน index.html'
-          );
-        }
-
-        setLoading('กำลังเชื่อมต่อ LINE...');
-
-        await liff.init({
-          liffId: LIFF_ID
-        });
-
-        if (!liff.isLoggedIn()) {
-          setLoading('กำลังเข้าสู่ระบบ LINE...');
-          liff.login();
-          return;
-        }
-
-        setLoading('กำลังโหลดข้อมูลสมาชิก...');
-
-        lineProfile = await liff.getProfile();
-
-        const result = await api(
-          'checkMember',
-          {
-            userId: lineProfile.userId
-          }
-        );
-
-        $('loadingScreen').classList.add('hidden');
-        $('app').classList.remove('hidden');
-
-        if (result.member) {
-          currentMember = result.member;
-
-          setLogo('dashboardLogo');
-          renderHome();
-          goHome();
-
-          loadRewards();
-          return;
-        }
-
-        await loadCountries();
-        setupCountries('country', 'TH');
-        await updateProvinceOptions();
-        setLogo('registerLogo');
-
-        document
-          .querySelectorAll('.screen')
-          .forEach(screen => {
-            screen.classList.remove('active');
-          });
-
-        $('registerScreen').classList.add('active');
-        $('bottomNav').classList.add('hidden');
-
-      } catch (error) {
-        showError(error);
-      }
-    }
-
-
-    document.addEventListener(
-      'DOMContentLoaded',
-      startApp
-    );
-  </script>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+          ${selectedReward.DESCRIPTION || 'รายละเอียดของรางวัล'}
+        </p>
+        ${btnHTML}
+      </div>
+    </div>
+  `;
+  showScreen('detail');
+}
+
+function confirmRedeem() {
+  if(!confirm(`ยืนยันใช้ ${fmt(selectedReward.POINTS_REQUIRED)} แต้ม แลก "${selectedReward.NAME}" หรือไม่?`)) return;
+  executeRedeem();
+}
+
+async function executeRedeem() {
+  showLoading("กำลังทำรายการ...");
+  try {
+    const res = await callAPI('redeemReward', {
+      userId: lineProfile.userId,
+      rewardId: selectedReward.REWARD_ID
+    });
+    
+    // อัปเดต Data ในเครื่อง
+    member.POINTS = res.balanceAfter;
+    
+    // อัปเดตสต๊อกในตัวแปร rewards (ลบไป 1)
+    const rIdx = rewards.findIndex(r => r.REWARD_ID === selectedReward.REWARD_ID);
+    if(rIdx > -1) rewards[rIdx].STOCK = Number(rewards[rIdx].STOCK) - 1;
+    
+    // ดึงประวัติใหม่เพื่อแสดง
+    const newHist = await callAPI('initApp', { userId: lineProfile.userId });
+    history = newHist.history || [];
+
+    renderApp();
+    hideLoading();
+    
+    alert(`แลกรางวัลสำเร็จ!\nรหัสอ้างอิง: ${res.redemptionId}`);
+    showScreen('rewards');
+  } catch(e) {
+    hideLoading();
+    showToast(e.message);
+  }
+}
+
+/* ==========================================
+   HELPERS
+========================================== */
+function val(id) { return document.getElementById(id).value.trim(); }
+function setVal(id, v) { document.getElementById(id).value = v || ''; }
+function fmt(num) { return Number(num||0).toLocaleString('th-TH'); }
+
+function showLoading(txt) {
+  document.getElementById('loadText').textContent = txt || "กำลังโหลดข้อมูล...";
+  document.getElementById('loading').style.display = 'flex';
+}
+function hideLoading() { document.getElementById('loading').style.display = 'none'; }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function setAllLogos() {
+  const ids = ['logo-home', 'logo-rew', 'logo-hist', 'logo-reg'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.src = LOGO_URL;
+  });
+}
+</script>
 </body>
 </html>
