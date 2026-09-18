@@ -122,12 +122,18 @@
     .required { color: var(--error); }
     .error-msg { color: var(--error); font-size: 12px; margin-top: 6px; display: none; font-weight: 500; }
 
-    .color-picker { display: flex; gap: 12px; margin-top: 8px; }
+    /* Color Picker Gimmick */
+    .color-picker { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
     .color-swatch { 
       width: 36px; height: 36px; border-radius: 50%; cursor: pointer; 
-      border: 2px solid var(--border-color); transition: 0.2s;
+      border: 2px solid var(--border-color); transition: 0.2s; flex-shrink: 0;
     }
-    .color-swatch.active { transform: scale(1.1); border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+    /* ปรับให้ขอบเป็นสีขาวตามรีเควส และใส่เงาให้เห็นชัดขึ้นบนพื้นขาว */
+    .color-swatch.active { 
+      transform: scale(1.1); 
+      border-color: var(--bg-white); 
+      box-shadow: 0 0 0 2px #DDDDDD, 0 4px 10px rgba(0,0,0,0.15); 
+    }
 
     /* --- Chips (Lifestyle Choices) --- */
     .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
@@ -156,28 +162,27 @@
     .section-title h2 { font-size: 20px; font-weight: 700; color: var(--text-black); }
     .text-link { color: var(--text-muted); font-size: 14px; text-decoration: underline; cursor: pointer; font-weight: 500; }
 
-    /* Scroll แนวนอนสำหรับหน้า Home Rewards */
     .horizontal-scroll {
-      display: flex;
-      overflow-x: auto;
-      gap: 16px;
-      padding-bottom: 12px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none; /* Firefox */
+      display: flex; overflow-x: auto; gap: 16px; padding-bottom: 12px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
     }
-    .horizontal-scroll::-webkit-scrollbar { display: none; /* Chrome */ }
-    .horizontal-scroll .reward-box {
-      flex: 0 0 160px; /* ขนาดตายตัวสำหรับเลื่อนแนวนอน */
-      scroll-snap-align: start;
-    }
+    .horizontal-scroll::-webkit-scrollbar { display: none; }
+    .horizontal-scroll .reward-box { flex: 0 0 160px; scroll-snap-align: start; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     
     .reward-box { background: var(--bg-white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
     .reward-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--bg-light); border-bottom: 1px solid var(--border-color); }
     .reward-info { padding: 16px; }
-    .reward-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; color: var(--text-black);}
+    
+    /* ตัดคำรางวัลไม่ให้เกิน 2 บรรทัด และปัดบรรทัดถ้ายาวเกิน */
+    .reward-title { 
+      font-size: 14px; font-weight: 700; margin-bottom: 4px; 
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+      overflow: hidden; text-overflow: ellipsis; white-space: normal; word-break: break-word;
+      color: var(--text-black); line-height: 1.4;
+    }
+    
     .reward-pts { color: var(--primary); font-size: 16px; font-weight: 700; margin-bottom: 12px; font-family: var(--font-en);}
     .btn-sm { width: 100%; background: var(--accent); color: var(--primary); padding: 10px; border-radius: 30px; font-size: 13px; font-weight: 700; }
 
@@ -185,8 +190,8 @@
       display: flex; gap: 16px; background: var(--bg-white); padding: 12px; border-radius: var(--radius-lg); margin-bottom: 12px;
       align-items: center; cursor: pointer; border: 1px solid var(--border-color);
     }
-    .list-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: var(--bg-light); }
-    .list-item-content { flex: 1; }
+    .list-item-img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; background: var(--bg-light); flex-shrink: 0; }
+    .list-item-content { flex: 1; min-width: 0; } /* min-width: 0 ป้องกัน Flexbox ดันกรอบทะลุจอ */
     
     /* History Grouping */
     .history-month-label { font-size: 16px; font-weight: 700; color: var(--text-muted); margin: 24px 0 12px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
@@ -196,9 +201,9 @@
       border: 1px solid var(--border-color); cursor: pointer; transition: 0.2s;
     }
     .history-row:active { transform: scale(0.98); background: var(--bg-light); }
-    .hist-title { font-weight: 700; font-size: 14px; color: var(--text-black); }
+    .hist-title { font-weight: 700; font-size: 14px; color: var(--text-black); word-break: break-word; }
     .hist-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-    .hist-pts { font-family: var(--font-en); font-weight: 700; font-size: 16px; }
+    .hist-pts { font-family: var(--font-en); font-weight: 700; font-size: 16px; flex-shrink: 0; margin-left: 12px;}
     .hist-pts.plus { color: var(--success); }
     .hist-pts.minus { color: var(--primary); }
 
@@ -223,10 +228,12 @@
     .data-row span:last-child { font-weight: 700; font-size: 15px; color: var(--primary); }
     
     .insight-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px;}
+    
+    /* ปรับป้ายไลฟ์สไตล์เป็นสีดำ */
     .insight-tag { 
-      background: var(--accent);
+      background: var(--primary);
       padding: 6px 12px; border-radius: 8px; font-size: 12px; 
-      color: var(--primary); font-weight: 600; border: none;
+      color: var(--bg-white); font-weight: 500; border: none;
     }
 
     /* Birthday Theme (CI Brand Card) */
@@ -256,8 +263,8 @@
     .modal-detail { background: var(--bg-light); border-radius: var(--radius-md); padding: 16px; text-align: left; margin-bottom: 24px; border: 1px solid var(--border-color); }
     .m-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; }
     .m-row:last-child { margin-bottom: 0; }
-    .m-label { color: var(--text-muted); }
-    .m-val { font-weight: 700; color: var(--text-black); }
+    .m-label { color: var(--text-muted); flex-shrink: 0; }
+    .m-val { font-weight: 700; color: var(--text-black); text-align: right; word-break: break-word; }
 
     /* --- Bottom Nav --- */
     .bottom-nav {
@@ -307,7 +314,11 @@
       <div class="modal-subtitle" id="m-subtitle">บันทึกข้อมูลคะแนนสะสม</div>
       
       <div class="modal-detail">
-        <div class="m-row"><span class="m-label">รายการ:</span><span class="m-val" id="m-reward-name"></span></div>
+        <div class="m-row">
+          <span class="m-label" style="width: 35%;">รายการ:</span>
+          <!-- ป้องกันชื่อรางวัลล้นขอบขวา -->
+          <span class="m-val" id="m-reward-name" style="width: 65%; text-align: right; word-wrap: break-word; white-space: normal;"></span>
+        </div>
         <div class="m-row"><span class="m-label">พอยต์ที่ใช้/รับ:</span><span class="m-val en-font" id="m-spent"></span></div>
         <div class="m-row"><span class="m-label">พอยต์คงเหลือ:</span><span class="m-val en-font" id="m-bal"></span></div>
         <div class="m-row"><span class="m-label">รหัสอ้างอิง:</span><span class="m-val en-font" id="m-code"></span></div>
@@ -412,15 +423,16 @@
       <div class="data-row"><span style="color: rgba(44,44,44,0.7);">รับข่าวสารโปรโมชั่น (Marketing Consent)</span><span id="p-consent">-</span></div>
     </div>
 
-    <div class="profile-box">
-      <div class="profile-box-title">
-        <h3>ไลฟ์สไตล์ (Lifestyle)</h3>
-        <span class="edit-link" onclick="showExtraProfile()">อัปเดตข้อมูล</span>
+    <!-- กล่อง Lifestyle ปรับเป็นสีฟ้า -->
+    <div class="profile-box card-accent" style="border: none;">
+      <div class="profile-box-title" style="border-bottom-color: rgba(0,0,0,0.1);">
+        <h3 style="color: var(--primary);">ไลฟ์สไตล์ (Lifestyle)</h3>
+        <span class="edit-link" onclick="showExtraProfile()" style="color: var(--primary);">อัปเดตข้อมูล</span>
       </div>
-      <div class="data-row"><span>ไลฟ์สไตล์ของคุณ</span><div class="insight-tags" id="p-lifestyle">-</div></div>
-      <div class="data-row"><span>กีฬาที่ชื่นชอบ</span><div class="insight-tags" id="p-sports">-</div></div>
-      <div class="data-row"><span>ปัญหาทางร่างกายที่พบ</span><div class="insight-tags" id="p-pain">-</div></div>
-      <div class="data-row"><span>ประเภทสินค้าที่สนใจ</span><div class="insight-tags" id="p-prod">-</div></div>
+      <div class="data-row"><span style="color: rgba(44,44,44,0.7);">ไลฟ์สไตล์ของคุณ</span><div class="insight-tags" id="p-lifestyle">-</div></div>
+      <div class="data-row"><span style="color: rgba(44,44,44,0.7);">กีฬาที่ชื่นชอบ</span><div class="insight-tags" id="p-sports">-</div></div>
+      <div class="data-row"><span style="color: rgba(44,44,44,0.7);">ปัญหาทางร่างกายที่พบ</span><div class="insight-tags" id="p-pain">-</div></div>
+      <div class="data-row"><span style="color: rgba(44,44,44,0.7);">ประเภทสินค้าที่สนใจ</span><div class="insight-tags" id="p-prod">-</div></div>
     </div>
   </section>
 
@@ -434,11 +446,11 @@
     <div class="card">
       <div class="form-group">
         <label>ชื่อ <span class="required">*</span></label>
-        <input type="text" id="r-fn" class="form-control" placeholder="ชื่อจริง">
+        <input type="text" id="r-fn" class="form-control" placeholder="ชื่อจริง" maxlength="20">
       </div>
       <div class="form-group">
         <label>นามสกุล <span class="required">*</span></label>
-        <input type="text" id="r-ln" class="form-control" placeholder="นามสกุล">
+        <input type="text" id="r-ln" class="form-control" placeholder="นามสกุล" maxlength="20">
       </div>
       <div class="form-group">
         <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
@@ -482,43 +494,14 @@
         <div class="color-picker" id="color-picker-ui">
           <div class="color-swatch" style="background:#FFFFFF" onclick="setFrameColor('#FFFFFF')"></div>
           <div class="color-swatch" style="background:#C4E0FD" onclick="setFrameColor('#C4E0FD')"></div>
-          <div class="color-swatch" style="background:#2C2C2C" onclick="setFrameColor('#2C2C2C')"></div>
-          <div class="color-swatch" style="background:#A73B24" onclick="setFrameColor('#A73B24')"></div>
+          <div class="color-swatch" style="background:#2A9D8F" onclick="setFrameColor('#2A9D8F')"></div>
+          <div class="color-swatch" style="background:#E63946" onclick="setFrameColor('#E63946')"></div>
           <div class="color-swatch" style="background:#F4A261" onclick="setFrameColor('#F4A261')"></div>
-          <!-- โทนเขียวตุ่น (Sage Green) ให้ความรู้สึกมินิมอล ธรรมชาติ -->
-          <div class="color-swatch" style="background:#A3B18A" onclick="setFrameColor('#A3B18A')"></div>
-
-          <!-- โทนชมพูหม่น (Dusty Rose) หวานแบบดูแพง ไม่เลี่ยน -->
-          <div class="color-swatch" style="background:#B5838D" onclick="setFrameColor('#B5838D')"></div>
-
-          <!-- โทนม่วงพาสเทล (Soft Lilac) น่ารัก ละมุนตา -->
-          <div class="color-swatch" style="background:#CDB4DB" onclick="setFrameColor('#CDB4DB')"></div>
-
-          <!-- โทนเหลืองมัสตาร์ด (Saffron) สดใสแต่มีความวินเทจ -->
-          <div class="color-swatch" style="background:#E9C46A" onclick="setFrameColor('#E9C46A')"></div>
-
-          <!-- โทนน้ำเงินอมเขียวเข้ม (Charcoal Blue) เท่ สุขุม ดูโปรเฟสชันนอล -->
-          <div class="color-swatch" style="background:#264653" onclick="setFrameColor('#264653')"></div>
-
-          <!-- โทนส้มอิฐ (Terracotta) อบอุ่น มีสไตล์ -->
-          <div class="color-swatch" style="background:#E76F51" onclick="setFrameColor('#E76F51')"></div>
-
-          <!-- โทนส้มพีช (Soft Coral) สว่าง สดชื่น หน้าไบรท์ -->
-          <div class="color-swatch" style="background:#F8AD9D" onclick="setFrameColor('#F8AD9D')"></div>
-
-          <!-- โทนม่วงอมเทา (Muted Plum) ลึกลับ มีเสน่ห์ ไม่ซ้ำใคร -->
-          <div class="color-swatch" style="background:#6D6875" onclick="setFrameColor('#6D6875')"></div>
-
-          <!-- โทนเขียวมิ้นต์ตุ่น (Seafoam Green) สบายตา วัยรุ่นฮิต -->
-          <div class="color-swatch" style="background:#84DCC6" onclick="setFrameColor('#84DCC6')"></div>
-
-          <!-- โทนแชมเปญ/ครีมชมพู (Champagne Pink) คลีนๆ สุภาพ ใช้ได้กับทุกรูป -->
-          <div class="color-swatch" style="background:#FFE5D9" onclick="setFrameColor('#FFE5D9')"></div>
         </div>
       </div>
       
-      <div class="form-group"><label>ชื่อ <span class="required">*</span></label><input type="text" id="e-fn" class="form-control"></div>
-      <div class="form-group"><label>นามสกุล <span class="required">*</span></label><input type="text" id="e-ln" class="form-control"></div>
+      <div class="form-group"><label>ชื่อ <span class="required">*</span></label><input type="text" id="e-fn" class="form-control" maxlength="20"></div>
+      <div class="form-group"><label>นามสกุล <span class="required">*</span></label><input type="text" id="e-ln" class="form-control" maxlength="20"></div>
       <div class="form-group">
         <label>เบอร์โทรศัพท์ <span class="required">*</span></label>
         <input type="tel" id="e-phone" class="form-control en-font" maxlength="10">
@@ -716,7 +699,7 @@ function validateAge(dateString) {
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  return age > 15; 
+  return age >= 15; 
 }
 
 function showErr(id, show) { document.getElementById(id).style.display = show ? 'block' : 'none'; }
@@ -743,7 +726,7 @@ function renderApp() {
   document.getElementById('home-pts').textContent = fmt(member.POINTS);
   document.getElementById('rew-pts').textContent = fmt(member.POINTS);
 
-  const hRewards = rewards; // เปลี่ยนจาก slice(0,2) เป็นแสดงผลทั้งหมด เพื่อให้สไลด์ดูได้
+  const hRewards = rewards; 
   document.getElementById('home-rewards').innerHTML = hRewards.length 
     ? hRewards.map(r => `
       <div class="reward-box" onclick="openReward('${r.REWARD_ID}')" style="cursor:pointer;">
@@ -1046,13 +1029,15 @@ function openReward(id) {
   let btnHTML = '';
   if (stock <= 0) btnHTML = `<button class="btn-main" disabled>สินค้าหมด</button>`;
   else if (member.POINTS < cost) btnHTML = `<button class="btn-main" disabled>คะแนนไม่เพียงพอ</button>`;
-  else btnHTML = `<button class="btn-main" onclick="confirmRedeem()">แลกรางวัลเลย</button>`;
+  // เปลี่ยนปุ่มเป็นสีฟ้า ตัดกับข้อความสีดำ
+  else btnHTML = `<button class="btn-main" style="background: var(--accent); color: var(--primary);" onclick="confirmRedeem()">แลกรางวัลเลย</button>`;
 
   document.getElementById('detail-content').innerHTML = `
     <div style="padding:0; overflow:hidden; border-radius: var(--radius-lg); background:var(--bg-white); margin-bottom: 24px; border: 1px solid var(--border-color);">
       <img src="${selectedReward.IMAGE_URL}" style="width:100%; aspect-ratio:1; object-fit:cover; background:var(--bg-light); border-bottom: 1px solid var(--border-color);">
       <div style="padding: 24px;">
-        <h2 style="font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text-black);">${selectedReward.NAME}</h2>
+        <!-- ป้องกันชื่อรางวัลยาวเกินด้วยคำสั่งตัดคำ (word-break) -->
+        <h2 style="font-size:20px; font-weight:700; margin-bottom:8px; color:var(--text-black); word-break: break-word; white-space: normal;">${selectedReward.NAME}</h2>
         <div class="en-font" style="color:var(--primary); font-size:28px; font-weight:700; margin-bottom:16px;">
           ${fmt(cost)} <span style="font-size: 16px;">Point</span>
         </div>
